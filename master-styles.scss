@@ -1,0 +1,40 @@
+/*-- scss:defaults --*/
+
+$primary-color: #2E86AB;
+$success-color: #6A994E;
+$font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
+
+/*-- scss:rules --*/
+
+.dashboard {
+  font-family: $font-stack;
+}
+
+/* Keep typography tweaks only; avoid overriding card/plot sizing */
+
+.card-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #666;
+  margin-bottom: 15px;
+  letter-spacing: 0.02em;
+}
+
+/* Value box styling – no height/padding hacks */
+
+.valuebox {
+  border-radius: 8px;
+}
+
+.valuebox-value {
+  font-size: 2.5rem !important;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.valuebox-title {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.8;
+}
