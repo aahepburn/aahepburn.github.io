@@ -1,166 +1,756 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Alexander Hepburn — Data Scientist</title>
-  <style>
-    /* Global Styles */
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: "Roboto", sans-serif;
-      background-color: #f3f4e5; /* Ivory paper tone */
-      color: #2b2b2b;
-      line-height: 1.6;
-      background-image:
-        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-      background-size: 4px 4px; /* Subtle paper texture */
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Quiet Signals Lab - Full-stack data science and machine learning solutions for NLP, information retrieval, and production ML systems.">
+    <meta name="author" content="Alexander Hepburn">
+    <title>Quiet Signals Lab | Data Science & ML</title>
+    
+    <!-- Google Fonts - Modern Sans Serif -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ============ CSS VARIABLES ============ */
+        :root {
+            --primary-bg: #ffffff;
+            --primary-text: #0a0a0a;
+            --secondary-text: #626262;
+            --accent: #0b8b8b;
+            --border-color: #f0f0f0;
+            --light-bg: #fafafa;
+            
+            /* Spacing */
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 1.5rem;
+            --spacing-lg: 2rem;
+            --spacing-xl: 3rem;
+            --spacing-2xl: 4rem;
+            
+            /* Container widths */
+            --max-width: 1200px;
+        }
 
-    .container {
-      max-width: 800px;
-      margin: 60px auto;
-      padding: 60px 40px;
-      background-color: #f9f9f4;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-      border-radius: 8px;
-      border: 1px solid #e2e2d9;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    /* Header */
-    .name {
-      text-align: center;
-      font-family: "Courier New", Courier, monospace;
-      font-size: 2.6rem;
-      margin-bottom: 0.5em;
-      color: #1f1f1f;
-      letter-spacing: 1px;
-    }
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
 
-    .intro {
-      text-align: center;
-      font-size: 1.2rem;
-      color: #4a4a4a;
-      margin-bottom: 2.5em;
-      font-style: italic;
-    }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--primary-text);
+            background: var(--primary-bg);
+        }
 
-    /* Sections */
-    .section {
-      margin-bottom: 3em;
-    }
+        /* ============ HEADER ============ */
+        header {
+            position: sticky;
+            top: 0;
+            background: var(--primary-bg);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 100;
+            backdrop-filter: blur(8px);
+            background-color: rgba(255, 255, 255, 0.95);
+        }
 
-    .section h2 {
-      font-family: "Courier New", monospace;
-      color: #5a6a8a;
-      font-size: 1.5rem;
-      margin-bottom: 0.5em;
-      border-bottom: 1px solid #d0d0d0;
-      padding-bottom: 0.25em;
-      letter-spacing: 0.5px;
-    }
+        nav {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-sm) var(--spacing-lg);
+            font-size: 0.9rem;
+        }
 
-    .section p {
-      font-size: 1rem;
-      color: #3c3c3c;
-    }
+        .nav-brand {
+            font-weight: 600;
+            font-size: 1rem;
+            letter-spacing: -0.3px;
+        }
 
-    /* Contact */
-    .contact {
-      border-top: 1px solid #d0d0d0;
-      padding-top: 2em;
-      text-align: center;
-      font-size: 0.95rem;
-      color: #4a4a4a;
-    }
+        .nav-links {
+            display: flex;
+            gap: var(--spacing-xl);
+            list-style: none;
+        }
 
-    .contact a {
-      color: #5a6a8a;
-      text-decoration: none;
-      font-family: "Courier New", monospace;
-    }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--primary-text);
+            transition: color 0.2s;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
 
-    .contact a:hover {
-      text-decoration: underline;
-    }
+        .nav-links a:hover {
+            color: var(--accent);
+        }
 
-    /* Footer note */
-    .footer {
-      text-align: center;
-      font-size: 0.85rem;
-      color: #777;
-      margin-top: 1.5em;
-      font-style: italic;
-    }
-  </style>
+        /* ============ HERO SECTION (TWO-COLUMN) ============ */
+        .hero {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: var(--spacing-2xl) var(--spacing-lg);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-2xl);
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .hero-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: var(--spacing-lg);
+            letter-spacing: -1.5px;
+            color: var(--primary-text);
+        }
+
+        .hero-meta {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xs);
+            font-size: 0.95rem;
+            color: var(--secondary-text);
+        }
+
+        .hero-meta .label {
+            font-weight: 500;
+            color: var(--primary-text);
+        }
+
+        .social-buttons {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-lg);
+        }
+
+        .social-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--light-bg);
+            border: 1px solid var(--border-color);
+            text-decoration: none;
+            color: var(--primary-text);
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .social-button:hover {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(11, 139, 139, 0.2);
+        }
+
+        .hero-right {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .hero-intro {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: var(--secondary-text);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .hero-intro p {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .hero-intro strong {
+            color: var(--primary-text);
+            font-weight: 600;
+        }
+
+        /* ============ SERVICES (NOW FIRST) ============ */
+        .services {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: var(--spacing-2xl) var(--spacing-lg);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: var(--spacing-xl);
+            letter-spacing: -0.5px;
+            color: var(--primary-text);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--spacing-xl);
+        }
+
+        .service-card {
+            padding: 0;
+            border-left: 2px solid var(--accent);
+            padding-left: var(--spacing-lg);
+            transition: all 0.3s ease;
+        }
+
+        .service-card h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: var(--spacing-md);
+            color: var(--primary-text);
+        }
+
+        .service-card p {
+            font-size: 0.9rem;
+            color: var(--secondary-text);
+            line-height: 1.7;
+        }
+
+        /* ============ FEATURED WORK (NOW SECOND) ============ */
+        .featured-work {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: var(--spacing-2xl) var(--spacing-lg);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .project-card {
+            background: var(--light-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            transform: translateY(-4px);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #f5f5f5 0%, #efefef 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--secondary-text);
+            font-size: 0.9rem;
+        }
+
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .project-content {
+            padding: var(--spacing-lg);
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+            color: var(--primary-text);
+        }
+
+        .project-desc {
+            font-size: 0.9rem;
+            color: var(--secondary-text);
+            margin-bottom: var(--spacing-md);
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .tag {
+            display: inline-block;
+            background: #f0f0f0;
+            color: var(--secondary-text);
+            padding: 0.3rem 0.7rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .project-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: gap 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .project-link:hover {
+            gap: 0.75rem;
+        }
+
+        /* ============ TECH STACK ============ */
+        .tech-stack {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: var(--spacing-2xl) var(--spacing-lg);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .tech-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+        }
+
+        .tech-pill {
+            background: var(--light-bg);
+            border: 1px solid var(--border-color);
+            color: var(--primary-text);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .tech-pill:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* ============ CTA SECTION ============ */
+        .cta-section {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: var(--spacing-2xl) var(--spacing-lg);
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .cta-text {
+            font-size: 1rem;
+            color: var(--secondary-text);
+            margin-bottom: var(--spacing-xl);
+            line-height: 1.8;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: var(--spacing-md);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 0.75rem 1.75rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            border: 1px solid var(--accent);
+        }
+
+        .cta-button:hover {
+            background: #086565;
+            border-color: #086565;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(11, 139, 139, 0.15);
+        }
+
+        .cta-secondary {
+            display: inline-block;
+            border: 1px solid var(--border-color);
+            color: var(--primary-text);
+            padding: 0.75rem 1.75rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            background: transparent;
+        }
+
+        .cta-secondary:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(11, 139, 139, 0.02);
+        }
+
+        /* ============ FOOTER ============ */
+        footer {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: var(--spacing-lg) var(--spacing-lg);
+            text-align: center;
+            color: var(--secondary-text);
+            font-size: 0.85rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-md);
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--primary-text);
+            text-decoration: none;
+            transition: color 0.2s;
+            font-weight: 500;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        .footer-meta {
+            color: var(--secondary-text);
+            font-size: 0.8rem;
+        }
+
+        .footer-meta p {
+            margin-bottom: 0.25rem;
+        }
+
+        /* ============ SCROLL ANIMATIONS ============ */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 1024px) {
+            .hero {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-xl);
+                padding: var(--spacing-xl) var(--spacing-lg);
+            }
+
+            .hero h1 {
+                font-size: 3.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: var(--spacing-xl) var(--spacing-md);
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-meta {
+                font-size: 0.9rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .nav-links {
+                gap: var(--spacing-lg);
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                gap: var(--spacing-sm);
+            }
+
+            .cta-button,
+            .cta-secondary {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            nav {
+                flex-direction: column;
+                gap: var(--spacing-sm);
+                padding: var(--spacing-md);
+            }
+
+            .hero {
+                padding: var(--spacing-lg) var(--spacing-md);
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero-meta {
+                font-size: 0.85rem;
+            }
+
+            .hero-intro {
+                font-size: 0.9rem;
+            }
+
+            .section-title {
+                font-size: 1.2rem;
+            }
+
+            .tech-grid {
+                gap: 0.4rem;
+            }
+
+            .tech-pill {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.75rem;
+            }
+        }
+    </style>
 </head>
-
 <body>
-  <div class="container">
-    <div class="name">Alexander Hepburn</div>
-    <div class="intro">
-      Data scientist based in Amsterdam — specialising in natural language processing, causality, and business analytics.
-    </div>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="nav-brand">Quiet Signals Lab</div>
+            <ul class="nav-links">
+                <li><a href="#services">Services</a></li>
+                <li><a href="#work">Work</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
 
-    <div class="section" id="about">
-      <h2>About</h2>
-      <p>
-        Alexander is a data scientist with expertise in <strong>natural language processing</strong>,
-        <strong>causal inference</strong>, and <strong>business analytics</strong>. His focus lies in building
-        <strong>robust machine learning systems</strong> that can adapt to real-world challenges like
-        <em>distribution shifts</em> and <em>concept drift</em>.
-      </p>
-      <p>
-        With an international, interdisciplinary background, Alexander thrives in diverse data science teams
-        where effective <strong>cross-domain collaboration</strong> is essential.
-      </p>
-      <p>
-        He is passionate about <strong>privacy</strong> and <strong>responsible AI development</strong>, and contributes
-        to several open-source projects — some of which are listed below.
-      </p>
-    </div>
+    <!-- Hero Section (Two-Column) -->
+    <section class="hero">
+        <div class="hero-left">
+            <h1>Quiet Signals<br>Lab</h1>
+            <div class="hero-meta">
+                <div><span class="label">Alexander Hepburn</span></div>
+                <div>Full-stack Data Scientist</div>
+                <div>Amsterdam, NL</div>
+            </div>
+            <div class="social-buttons">
+                <a href="https://www.linkedin.com/in/aahepburn" target="_blank" rel="noopener noreferrer" class="social-button" title="LinkedIn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/>
+                    </svg>
+                </a>
+                <a href="https://github.com/aahepburn" target="_blank" rel="noopener noreferrer" class="social-button" title="GitHub">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+                    </svg>
+                </a>
+                <a href="mailto:aahepburn@proton.me" class="social-button" title="Email">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+        <div class="hero-right">
+            <div class="hero-intro">
+                <p>
+                    Full-stack data scientist specialising in NLP, information retrieval, and production machine learning. 
+                    I deliver end-to-end solutions—from problem framing and experimentation to deployment—with a focus on robust, ethical, and maintainable systems.
+                </p>
+            </div>
+        </div>
+    </section>
 
-    <div class="section" id="work">
-      <h2>Work & Focus Areas</h2>
-      <p>
-        Alexander’s work spans three main domains:
-      </p>
-      <ul>
-        <li><strong>Natural Language Processing</strong> — developing text analytics and large language model pipelines.</li>
-        <li><strong>Causal & Predictive Analytics</strong> — uncovering cause-effect relationships for actionable business insights.</li>
-        <li><strong>Reliable Machine Learning Systems</strong> — creating scalable, maintainable, and fair ML applications.</li>
-      </ul>
-      <p>
-        He is currently open for freelance or collaborative work opportunities.
-      </p>
-    </div>
+    <!-- Services (NOW FIRST) -->
+    <section class="services" id="services">
+        <h2 class="section-title">What I Do</h2>
+        <div class="services-grid fade-in">
+            <div class="service-card">
+                <h3>Machine Learning & Automation</h3>
+                <p>Prototyping and deploying models that solve business problems, primarily with text and financial data. I balance state-of-the-art approaches with well-established solutions tailored to your specific needs.</p>
+            </div>
+            <div class="service-card">
+                <h3>Model Robustness & Evaluation</h3>
+                <p>Diagnosing model behaviour under distribution shifts and biased data. I assess both performance and ethics—identifying biases and data issues that can seriously degrade your systems in production.</p>
+            </div>
+            <div class="service-card">
+                <h3>Retrieval Augmented Generation</h3>
+                <p>Building AI-powered knowledge systems that work with your data wherever it lives—locally or in the cloud—to make your knowledge base more accessible.</p>
+            </div>
+            <div class="service-card">
+                <h3>Analytics & Dashboards</h3>
+                <p>Turning data into actionable intelligence for decision-making, with clear visualisation and exploratory analysis.</p>
+            </div>
+        </div>
+    </section>
 
-    <div class="section" id="links">
-      <h2>Open Source & Professional Links</h2>
-      <p>
-        • <a href="https://github.com/aahepburn" target="_blank">GitHub</a> — Contributions to open-source data science and ML projects.<br/>
-        • <a href="https://www.upwork.com/freelancers/~0163431813d93e76a0" target="_blank">Upwork</a> — Freelance data science and AI consulting.<br/>
-        • <a href="https://www.linkedin.com/in/aahepburn/" target="_blank">LinkedIn</a> — Professional profile and contact information.
-      </p>
-      <p>
-        Some examples of my work: <a href="/dashboard.html" target="_blank">Sales Analysis</a>
-      </p>
-    </div>
+    <!-- Featured Work (NOW SECOND) -->
+    <section class="featured-work" id="work">
+        <h2 class="section-title">Featured Work</h2>
+        <div class="projects-grid fade-in">
+            <div class="project-card">
+                <div class="project-image">Zotero RAG Assistant</div>
+                <div class="project-content">
+                    <h3 class="project-title">Zotero RAG Assistant</h3>
+                    <p class="project-desc">Desktop app for chatting with your Zotero library using LLMs. Get cited answers from your research with semantic search and source transparency.</p>
+                    <div class="project-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">React</span>
+                        <span class="tag">Electron</span>
+                        <span class="tag">ChromaDB</span>
+                    </div>
+                    <a href="https://github.com/aahepburn/Zotero-RAG-Assistant" target="_blank" rel="noopener noreferrer" class="project-link">View on GitHub →</a>
+                </div>
+            </div>
 
-    <div class="contact">
-      <p>Contact Alexander:</p>
-      <p>
-        <a href="mailto:aahepburn[at]proton.me">aahepburn[at]proton.me</a> |
-        <a href="https://www.linkedin.com/in/aahepburn/" target="_blank">LinkedIn</a> |
-        <a href="https://www.upwork.com/freelancers/~0163431813d93e76a0" target="_blank">Upwork</a>
-      </p>
-    </div>
+            <div class="project-card">
+                <div class="project-image">Propaganda Detection</div>
+                <div class="project-content">
+                    <h3 class="project-title">Multi-Task Propaganda Detection</h3>
+                    <p class="project-desc">Research on improving model robustness for propaganda detection through multi-task learning. Addresses distribution shifts in persuasion detection tasks.</p>
+                    <div class="project-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">NLP</span>
+                        <span class="tag">Research</span>
+                    </div>
+                    <a href="https://github.com/aahepburn/Multi-Task-Propaganda-Detection" target="_blank" rel="noopener noreferrer" class="project-link">View on GitHub →</a>
+                </div>
+            </div>
 
-    <div class="footer">
-      © 2025 Alexander Hepburn — Privacy-conscious, responsible AI for real-world impact.
-    </div>
-  </div>
+            <div class="project-card">
+                <div class="project-image">Sales Dashboard</div>
+                <div class="project-content">
+                    <h3 class="project-title">Interactive Sales Dashboard</h3>
+                    <p class="project-desc">Real-time analytics dashboard for tracking sales performance, revenue metrics, and key business indicators.</p>
+                    <div class="project-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">Plotly</span>
+                        <span class="tag">Analytics</span>
+                    </div>
+                    <a href="dashboard.html" class="project-link">View Dashboard →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack -->
+    <section class="tech-stack">
+        <h2 class="section-title">Tech & Methods</h2>
+        <div class="tech-grid fade-in">
+            <span class="tech-pill">Python</span>
+            <span class="tech-pill">PyTorch</span>
+            <span class="tech-pill">PySpark</span>
+            <span class="tech-pill">SQL</span>
+            <span class="tech-pill">AWS</span>
+            <span class="tech-pill">ChromaDB</span>
+            <span class="tech-pill">PostgreSQL</span>
+            <span class="tech-pill">Plotly</span>
+            <span class="tech-pill">Causal Inference</span>
+            <span class="tech-pill">A/B Testing</span>
+            <span class="tech-pill">Research Methodology</span>
+            <span class="tech-pill">Privacy-First Architecture</span>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section" id="contact">
+        <p class="cta-text">
+            I avoid one-size-fits-all approaches. Every project gets the balance between state-of-the-art techniques 
+            and practical, maintainable solutions that fit your constraints.
+        </p>
+        <div class="cta-buttons">
+            <a href="mailto:alexander@quietsignals.lab" class="cta-button">Get in Touch</a>
+            <a href="https://github.com/aahepburn" target="_blank" class="cta-secondary">View on GitHub</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-links">
+            <!-- links as above -->
+        </div>
+        <div class="footer-meta">
+            <p>Quiet Signals Lab · KvK 99556650 · BTW: NLxxxx.xxxx.xxx.xx</p>
+            <p>© 2026 Alexander Hepburn. All rights reserved. <a href="/privacy">Privacy</a> | <a href="/terms">Terms</a> | <a href="/cookies">Cookies</a></p>
+        </div>
+    </footer>
+
+
+    <!-- Scroll animation script -->
+    <script>
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    </script>
 </body>
 </html>
