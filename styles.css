@@ -449,6 +449,83 @@ nav {
     color: var(--accent);
 }
 
+/* ============ BIO SECTION ============ */
+.bio-section {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: var(--spacing-2xl) var(--spacing-lg);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.bio-content {
+    display: grid;
+    grid-template-columns: 280px 1fr 1fr;
+    gap: var(--spacing-xl);
+    align-items: start;
+}
+
+.bio-image {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.bio-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.bio-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.bio-text .section-title {
+    text-align: left;
+    margin-bottom: var(--spacing-sm);
+}
+
+.bio-text p {
+    color: var(--secondary-text);
+    line-height: 1.8;
+    font-size: 0.95rem;
+}
+
+.contact-box {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.contact-box .section-title {
+    text-align: left;
+    margin-bottom: var(--spacing-sm);
+}
+
+.contact-text {
+    color: var(--secondary-text);
+    line-height: 1.8;
+    font-size: 0.95rem;
+}
+
+.contact-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.contact-buttons .cta-button,
+.contact-buttons .cta-secondary {
+    display: block;
+    text-align: center;
+}
+
 /* ============ CTA SECTION ============ */
 .cta-section {
     max-width: var(--max-width);
@@ -575,6 +652,17 @@ footer {
     .hero h1 {
         font-size: 3.5rem;
     }
+
+    .bio-content {
+        grid-template-columns: 1fr 1fr;
+        gap: var(--spacing-lg);
+    }
+
+    .bio-image {
+        grid-column: 1 / -1;
+        max-width: 280px;
+        margin: 0 auto;
+    }
 }
 
 @media (max-width: 768px) {
@@ -614,6 +702,19 @@ footer {
     .cta-button,
     .cta-secondary {
         width: 100%;
+        text-align: center;
+    }
+
+    .bio-content {
+        grid-template-columns: 1fr;
+    }
+
+    .bio-image {
+        max-width: 250px;
+    }
+
+    .bio-text .section-title,
+    .contact-box .section-title {
         text-align: center;
     }
 }

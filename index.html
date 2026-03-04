@@ -61,9 +61,7 @@
         <div class="hero-right">
             <div class="hero-intro">
                 <p>
-                    I specialise in model diagnostics, applied machine learning theory, data visualisation and code-based typesetting. I study why models degrade in production, build RAG systems through rigorous retrieval optimisation, and develop publication-grade analytics using reproducible, code-based workflows. 
-                    <br><br>
-                    Through my company, Quiet Signals Lab, I design transparent and robust tech products for both business and research contexts.
+                   I'm a data scientist and AI engineer based in Amsterdam with a background in information retrieval and applied ML research. <br><br>The interesting problem is rarely which model to use—it's how to structure the problem so the model is actually useful. That means knowing when a language model is the right tool, how to build retrieval systems that retrieve the right thing, and how to diagnose why a model that worked in development stops working in production.
                 </p>
             </div>
         </div>
@@ -99,65 +97,66 @@
         <h2 class="section-title">Services</h2>
         
         <div class="accordion fade-in">
-            <!-- Item 1: Model Diagnostics -->
+            <!-- Item 1: Conversational AI Systems -->
             <div class="accordion-item">
                 <button class="accordion-button" aria-expanded="false">
                     <span class="accordion-icon">+</span>
-                    <span class="accordion-text">Advanced Model Diagnostics: Why your model fails in production</span>
+                    <span class="accordion-text">Conversational AI Systems</span>
                 </button>
                 <div class="accordion-content">
                     <div class="accordion-body">
-                        <p>Your model degrades in production, but why? I systematically audit your model and data to identify failure modes—diagnosing distribution shifts, data quality issues, and what patterns your model actually learned. Through controlled ablation studies, I isolate which factors matter most.</p>
+                        <p>A functional sales or support agent requires two things to work well: a clear model of the conversation it needs to have, and a reliable way to interpret what the user actually means at each step. I work with clients to build both — translating business logic into a structured system and implementing the AI layer that makes it responsive to real language.</p>
 
                         <p><strong>Deliverables:</strong></p>
                         <ul>
-                            <li>Root cause diagnosis with quantified impact analysis</li>
-                            <li>Evidence-based recommendations, ranked by priority</li>
-                            <li>Ablation studies proving which fixes actually work</li>
-                            <li>Documentation of failure modes and monitoring thresholds</li>
+                            <li>Custom agent architecture with configurable business rules</li>
+                            <li>Integration with messaging platforms (Meta, WhatsApp, Telegram)</li>
+                            <li>State management and fallback handling</li>
+                            <li>Human escalation routing</li>
+                            <li>Documentation and deployment support</li>
                         </ul>
                     </div>
                 </div>
             </div>
 
-            <!-- Item 2: Data Visualisation & Automated Reporting -->
+            <!-- Item 2: Retrieval-Augmented Generation -->
             <div class="accordion-item">
                 <button class="accordion-button" aria-expanded="false">
                     <span class="accordion-icon">+</span>
-                    <span class="accordion-text">Data Visualisation & Automated Reporting: Reproducible insights that stay current</span>
+                    <span class="accordion-text">Retrieval-Augmented Generation</span>
                 </button>
                 <div class="accordion-content">
                     <div class="accordion-body">
-                        <p>I design and build automated reporting pipelines using Quarto that transform your data into publication-quality reports and dashboards. Reports are reproducible, version-controlled, and easy to maintain—no locked files, no manual updates. This scales analytics without hiring a full-time team.</p>
-
-                        <p><strong>Deliverables:</strong></p>
-                        <ul>
-                            <li>Reproducible reports in any format (HTML, PDF, interactive)</li>
-                            <li>High-quality graphics and professional typesetting</li>
-                            <li>Open-source, code-driven workflows (no proprietary software)</li>
-                            <li>Efficient Python-powered data transformation and formatting</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Item 3: RAG Systems -->
-            <div class="accordion-item">
-                <button class="accordion-button" aria-expanded="false">
-                    <span class="accordion-icon">+</span>
-                    <span class="accordion-text">Retrieval Augmented Generation: Build a RAG system that doesn&rsquo;t hallucinate</span>
-                </button>
-                <div class="accordion-content">
-                    <div class="accordion-body">
-                        <p>I build RAG systems with proven strategies to minimise hallucination. This means getting retrieval right—sentence-aware chunking, semantic reranking, strict generation constraints—so every answer cites its sources. Backend uses Python (FastAPI) and local or cloud vector storage (ChromaDB), supporting both local models (Ollama) and commercial providers (OpenAI, Mistral).</p>
+                        <p>The part of a RAG system most likely to fail is retrieval. A model can only work with what it's given — if the retrieved context is wrong or poorly ranked, the answer will be too, regardless of the model. I build retrieval pipelines where chunking strategy, embedding selection, and reranking are treated as the core engineering problems. Backend uses Python and FastAPI, with support for local models (Ollama) and commercial providers (OpenAI, Mistral), and vector storage via ChromaDB or pgvector.</p>
 
                         <p><strong>Deliverables:</strong></p>
                         <ul>
                             <li>Production-ready RAG backend with REST API</li>
-                            <li>Vector database setup and document ingestion</li>
-                            <li>Retrieval optimisation (chunking, embedding tuning, reranking)</li>
-                            <li>Hallucination safeguards with source attribution</li>
-                            <li>Documentation and handover for operation</li>
+                            <li>Document ingestion pipeline and vector database setup</li>
+                            <li>Retrieval optimisation: chunking, embedding tuning, reranking</li>
+                            <li>Source attribution and generation constraints</li>
+                            <li>Documentation and handover</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 3: Model Diagnostics -->
+            <div class="accordion-item">
+                <button class="accordion-button" aria-expanded="false">
+                    <span class="accordion-icon">+</span>
+                    <span class="accordion-text">Model Diagnostics</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="accordion-body">
+                        <p>When a model degrades in production, there's usually a specific, isolatable reason — a shift in input distribution, a data quality issue, a pattern that didn't generalise. I run controlled ablation studies to identify and rank contributing factors, so fixes can be prioritised by evidence rather than intuition.</p>
+
+                        <p><strong>Deliverables:</strong></p>
+                        <ul>
+                            <li>Root cause diagnosis with quantified impact analysis</li>
+                            <li>Ablation studies isolating contributing factors</li>
+                            <li>Recommendations ranked by priority</li>
+                            <li>Documented failure modes and monitoring thresholds</li>
                         </ul>
                     </div>
                 </div>
@@ -168,54 +167,55 @@
 
     <!-- Featured Work -->
     <section class="featured-work" id="work">
-        <h2 class="section-title">Featured Work</h2>
+        <h2 class="section-title">Portfolio</h2>
         <div class="projects-grid fade-in">
             <div class="project-card">
                 <div class="project-image">
-                    <img src="assets/zotero_rag.png" alt="Zotero RAG Assistant">
+                    <img src="assets/meta_sales_bot.png" alt="Meta AI Sales Bot for an SMM Agency">
                 </div>
                 <div class="project-content">
-                    <h3 class="project-title">Zotero RAG Assistant</h3>
-                    <p class="project-desc">Desktop app for chatting with your Zotero library using LLMs. Get cited answers from your research with semantic search and source transparency.</p>
+                    <h3 class="project-title">Meta AI Sales Bot for an SMM Agency</h3>
+                    <p class="project-desc">Sales scripts encode something specific: a model of the conversation, and the logic for navigating it based on what the customer says. Translating that into a reliable automated system is mostly an engineering problem — the challenge isn't generating responses, it's making sure the right response is selected consistently.<br><br>This project involved taking a client's sales methodology and restructuring it into a configurable system: dialogue flows, branching logic, objection handling at different stages of the conversation, and fallback behaviour for unexpected inputs. The language model handles intent recognition at each step; the business logic handles everything else. Responses come from the script, not from the model.<br><br>Because the business logic is fully separated from the model layer, the same system can be configured for different clients and verticals without rebuilding anything from scratch — which matters for an agency managing multiple accounts.</p>
+                    <div class="project-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">Meta API</span>
+                        <span class="tag">YAML</span>
+                        <span class="tag">FastAPI</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-image">
+                    <img src="assets/zotero_rag.png" alt="RAG Assistant for Zotero">
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">RAG Assistant for Zotero</h3>
+                    <p class="project-desc">A desktop application for semantic search over Zotero research libraries. Designed for researchers who need to navigate large literature collections and get answers with clear source attribution — not summaries that obscure where the information came from. Supports local LLMs for full data privacy. Open source.</p>
                     <div class="project-tags">
                         <span class="tag">Python</span>
                         <span class="tag">React</span>
                         <span class="tag">Electron</span>
                         <span class="tag">ChromaDB</span>
                     </div>
-                    <a href="https://github.com/aahepburn/Zotero-RAG-Assistant" target="_blank" rel="noopener noreferrer" class="project-link">View on GitHub →</a>
+                    <a href="https://github.com/aahepburn/RAG-Assistant-for-Zotero" target="_blank" rel="noopener noreferrer" class="project-link">View on GitHub →</a>
                 </div>
             </div>
 
             <div class="project-card">
                 <div class="project-image">
-                    <img src="assets/diagnostics.png" alt="Model Diagnostics Addressing Distribution Shifts">
+                    <img src="assets/diagnostics.png" alt="Model Robustness Under Distribution Shift">
                 </div>
                 <div class="project-content">
-                    <h3 class="project-title">Model Diagnostics Addressing Distribution Shifts</h3>
-                    <p class="project-desc">Research on improving model robustness for propaganda detection through multi-task learning. Addresses distribution shifts in persuasion detection tasks.</p>
+                    <h3 class="project-title">Model Robustness Under Distribution Shift (MSc thesis, UvA 2025)</h3>
+                    <p class="project-desc">An empirical study of whether multi-task learning can improve NLP model robustness when input or label distributions shift between training and deployment. The experimental setting was persuasion detection across two domains — Ukraine conflict and climate change — confirmed to be meaningfully different before any modelling began.<br><br>The central finding: multi-task learning helps most in low-resource, class-imbalanced settings, where the auxiliary task provides indirect data augmentation. In stable, data-rich settings, single-task models remain competitive.</p>
                     <div class="project-tags">
                         <span class="tag">Python</span>
+                        <span class="tag">PyTorch</span>
                         <span class="tag">NLP</span>
-                        <span class="tag">Research</span>
+                        <span class="tag">Multi-task Learning</span>
                     </div>
                     <a href="https://github.com/aahepburn/Multi-Task-Propaganda-Detection" target="_blank" rel="noopener noreferrer" class="project-link">View on GitHub →</a>
-                </div>
-            </div>
-
-            <div class="project-card">
-                <div class="project-image">
-                    <img src="assets/dashboard.png" alt="Interactive Sales Dashboard">
-                </div>
-                <div class="project-content">
-                    <h3 class="project-title">Interactive Sales Dashboard</h3>
-                    <p class="project-desc">Real-time analytics dashboard for tracking sales performance, revenue metrics, and key business indicators.</p>
-                    <div class="project-tags">
-                        <span class="tag">Python</span>
-                        <span class="tag">Plotly</span>
-                        <span class="tag">Analytics</span>
-                    </div>
-                    <a href="dashboard.html" class="project-link">View Dashboard →</a>
                 </div>
             </div>
         </div>
@@ -223,32 +223,22 @@
 
     <!-- Tech Stack -->
     <section class="tech-stack">
-        <h2 class="section-title">Tech & Methods</h2>
+        <h2 class="section-title">Stack & Methods</h2>
         <div class="tech-grid fade-in">
             <span class="tech-pill">Python</span>
             <span class="tech-pill">PyTorch</span>
-            <span class="tech-pill">PySpark</span>
+            <span class="tech-pill">FastAPI</span>
             <span class="tech-pill">PostgreSQL</span>
-            <span class="tech-pill">AWS</span>
             <span class="tech-pill">ChromaDB</span>
-            <span class="tech-pill">Plotly</span>
-            <span class="tech-pill">Causal Inference</span>
-            <span class="tech-pill">A/B Testing</span>
-            <span class="tech-pill">Research Methodology</span>
-            <span class="tech-pill">Machine Learning Theory</span>
-            <span class="tech-pill">Privacy-First Architecture</span>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="cta-section" id="contact">
-        <p class="cta-text">
-            I avoid one-size-fits-all approaches. Every project gets the balance between state-of-the-art techniques 
-            and practical, maintainable solutions that fit your constraints.
-        </p>
-        <div class="cta-buttons">
-            <a href="mailto:hello@quietsignalslab.com" class="cta-button">Get in Touch</a>
-            <a href="https://github.com/aahepburn" target="_blank" class="cta-secondary">View on GitHub</a>
+            <span class="tech-pill">AWS</span>
+            <span class="tech-pill">Hybrid search</span>
+            <span class="tech-pill">Semantic reranking</span>
+            <span class="tech-pill">Embedding optimisation</span>
+            <span class="tech-pill">pgvector</span>
+            <span class="tech-pill">Ablation studies</span>
+            <span class="tech-pill">Distribution shift analysis</span>
+            <span class="tech-pill">Hypothesis testing</span>
+            <span class="tech-pill">Causal inference</span>
         </div>
     </section>
 
