@@ -59,6 +59,7 @@ nav {
 }
 
 .nav-brand {
+    font-family: 'Avenir Next', 'Avenir', -apple-system, BlinkMacSystemFont, sans-serif;
     font-weight: 600;
     font-size: 1rem;
     letter-spacing: -0.3px;
@@ -101,6 +102,7 @@ nav {
 }
 
 .hero h1 {
+    font-family: 'Avenir Next', 'Avenir', -apple-system, BlinkMacSystemFont, sans-serif;
     font-size: 4.5rem;
     font-weight: 700;
     line-height: 1;
@@ -182,6 +184,7 @@ nav {
 }
 
 .section-title {
+    font-family: 'Avenir Next', 'Avenir', -apple-system, BlinkMacSystemFont, sans-serif;
     font-size: 2rem;
     font-weight: 700;
     margin-bottom: var(--spacing-xl);
@@ -246,6 +249,7 @@ nav {
     display: flex;
     align-items: flex-start;
     gap: 14px;
+    font-family: 'Avenir Next', 'Avenir', -apple-system, BlinkMacSystemFont, sans-serif;
     font-size: 17px;
     font-weight: 500;
     color: var(--primary-text);
@@ -373,6 +377,7 @@ nav {
 }
 
 .project-title {
+    font-family: 'Avenir Next', 'Avenir', -apple-system, BlinkMacSystemFont, sans-serif;
     font-size: 1.05rem;
     font-weight: 600;
     margin-bottom: var(--spacing-sm);
