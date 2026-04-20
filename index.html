@@ -218,6 +218,45 @@
                     <a href="https://github.com/aahepburn/Multi-Task-Propaganda-Detection" target="_blank" rel="noopener noreferrer" class="project-link">View on GitHub →</a>
                 </div>
             </div>
+
+            <div class="project-card">
+                <div class="project-image" style="background:linear-gradient(135deg,#083d3d 0%,#0b8b8b 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;">
+                    <span style="font-size:2.8rem;line-height:1;">⚖️</span>
+                    <span style="color:rgba(255,255,255,0.85);font-size:0.75rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;">Interactive Demo</span>
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">Legal Information AI Chatbot</h3>
+                    <p class="project-desc">A RAG-powered chatbot that continuously ingests and indexes trusted U.S. legal sources — Cornell LII, Justia, FindLaw, United States Courts — and answers natural-language queries with source citations and provenance-tracked chunks.<br><br>Built on Contractex: URLLoader handles ETag-gated incremental sync; SemanticChunker produces 512-token windows; ProvenanceTracker attaches SourceSpan records to every response; AuditLogger records the full pipeline event trail. Informational responses only, with a mandatory disclaimer on every answer.</p>
+                    <div class="project-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">Contractex</span>
+                        <span class="tag">RAG</span>
+                        <span class="tag">pgvector</span>
+                        <span class="tag">FastAPI</span>
+                    </div>
+                    <a href="/legal-chatbot-demo.html" class="project-link">View Live Demo →</a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-image" style="background:linear-gradient(135deg,#1a2744 0%,#2563eb 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;">
+                    <span style="font-size:2.8rem;line-height:1;">📄</span>
+                    <span style="color:rgba(255,255,255,0.85);font-size:0.75rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;">Interactive Demo</span>
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">Immigration Document Automation</h3>
+                    <p class="project-desc">An end-to-end document processing pipeline for immigration law firms: OCR ingestion of passports, NIE certificates, and birth certificates; structured LLM extraction of typed fields; per-field confidence scoring with automatic routing (auto-accept / human review / auto-reject); provenance tracking with character-level source spans; and a full audit trail for GDPR-compliant processing logs.<br><br>Built on Contractex's LegalDocument model, ConfidenceRouter, ProvenanceTracker, and AuditLogger. Designed to push structured output directly into CRM or PDF filling workflows.</p>
+                    <div class="project-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">Contractex</span>
+                        <span class="tag">OCR</span>
+                        <span class="tag">LLM Extraction</span>
+                        <span class="tag">ConfidenceRouter</span>
+                    </div>
+                    <a href="/immigration-doc-demo.html" class="project-link">View Live Demo →</a>
+                </div>
+            </div>
+
         </div>
     </section>
 

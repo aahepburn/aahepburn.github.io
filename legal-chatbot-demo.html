@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Interactive demo: RAG-powered legal information chatbot built on the Contractex library. Retrieves and cites trusted U.S. legal sources with full provenance tracking.">
+    <title>Legal Information AI Chatbot — Demo | Quiet Signals Lab</title>
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* ===== DEMO HERO ===== */
+        .demo-hero {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: var(--spacing-2xl) var(--spacing-lg) var(--spacing-xl);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .demo-breadcrumb {
+            font-size: 0.82rem;
+            color: var(--secondary-text);
+            margin-bottom: var(--spacing-md);
+        }
+        .demo-breadcrumb a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        .demo-breadcrumb a:hover { text-decoration: underline; }
+        .demo-title {
+            font-family: 'Avenir Next', 'Avenir', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 0.75rem;
+            color: var(--primary-text);
+        }
+        .demo-subtitle {
+            font-size: 0.97rem;
+            color: var(--secondary-text);
+            max-width: 720px;
+            line-height: 1.75;
+            margin-bottom: var(--spacing-lg);
+        }
+        .demo-subtitle strong { color: var(--primary-text); }
+        .demo-tag-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: var(--spacing-md);
+        }
+        .disclaimer-banner {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            background: #fffbeb;
+            border: 1px solid #fcd34d;
+            border-radius: 8px;
+            padding: 13px 16px;
+            font-size: 0.85rem;
+            color: #78350f;
+            max-width: 760px;
+            line-height: 1.55;
+        }
+        .disclaimer-icon { font-size: 1rem; flex-shrink: 0; margin-top: 2px; }
+
+        /* ===== MAIN LAYOUT ===== */
+        .demo-main {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: var(--spacing-xl) var(--spacing-lg);
+            display: grid;
+            grid-template-columns: 268px 1fr;
+            gap: var(--spacing-xl);
+            align-items: start;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sources-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-lg);
+        }
+        .panel-label {
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.1px;
+            color: var(--secondary-text);
+            margin-bottom: 8px;
+        }
+        .source-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 11px 13px;
+            background: var(--light-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 7px;
+        }
+        .source-card:last-of-type { margin-bottom: 0; }
+        .sync-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #22c55e;
+            flex-shrink: 0;
+            margin-top: 4px;
+            animation: pulse-dot 2.5s ease-in-out infinite;
+        }
+        @keyframes pulse-dot {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0.4); }
+            50% { box-shadow: 0 0 0 5px rgba(34,197,94,0); }
+        }
+        .source-name { font-size: 0.83rem; font-weight: 600; color: var(--primary-text); }
+        .source-url { font-size: 0.74rem; color: var(--accent); display: block; margin-top: 1px; }
+        .source-count { font-size: 0.72rem; color: var(--secondary-text); margin-top: 2px; }
+
+        .pipeline-box {
+            background: var(--light-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 14px;
+        }
+        .pipe-step {
+            font-size: 0.77rem;
+            color: var(--secondary-text);
+            padding: 3px 0;
+            line-height: 1.5;
+        }
+        .pipe-step.highlight { color: var(--accent); font-weight: 600; }
+        .pipe-sub {
+            font-size: 0.71rem;
+            color: var(--secondary-text);
+            padding-left: 14px;
+            opacity: 0.85;
+        }
+
+        .stats-box { }
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.77rem;
+            color: var(--secondary-text);
+            padding: 4px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .stat-row:last-child { border-bottom: none; }
+        .stat-row strong { color: var(--primary-text); font-weight: 600; }
+
+        /* ===== CHAT ===== */
+        .chat-wrap {
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-window {
+            display: flex;
+            flex-direction: column;
+            height: 580px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            background: white;
+        }
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            scroll-behavior: smooth;
+        }
+        .chat-messages::-webkit-scrollbar { width: 5px; }
+        .chat-messages::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 3px; }
+
+        /* Welcome state */
+        .chat-welcome {
+            text-align: center;
+            padding: 24px 16px;
+            color: var(--secondary-text);
+        }
+        .chat-welcome h3 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--primary-text);
+            margin-bottom: 8px;
+        }
+        .chat-welcome p { font-size: 0.88rem; line-height: 1.65; margin-bottom: 20px; }
+        .suggested-qs {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            text-align: left;
+        }
+        .suggest-btn {
+            width: 100%;
+            padding: 10px 14px;
+            background: var(--light-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.855rem;
+            font-family: inherit;
+            color: var(--primary-text);
+            cursor: pointer;
+            text-align: left;
+            transition: border-color 0.15s, color 0.15s;
+            line-height: 1.45;
+        }
+        .suggest-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+        /* Messages */
+        .msg { display: flex; gap: 11px; }
+        .msg-user { flex-direction: row-reverse; }
+        .msg-avatar {
+            width: 30px; height: 30px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: white;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.6rem; font-weight: 700;
+            flex-shrink: 0;
+        }
+        .msg-user .msg-avatar {
+            background: var(--light-bg);
+            border: 1px solid var(--border-color);
+            color: var(--secondary-text);
+        }
+        .msg-body { max-width: 87%; }
+        .msg-bubble {
+            padding: 11px 15px;
+            border-radius: 12px;
+            font-size: 0.88rem;
+            line-height: 1.65;
+        }
+        .msg-user .msg-bubble {
+            background: var(--accent);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+        .msg-assistant .msg-bubble {
+            background: var(--light-bg);
+            border: 1px solid var(--border-color);
+            color: var(--primary-text);
+            border-bottom-left-radius: 4px;
+        }
+        .msg-assistant .msg-bubble h4 {
+            font-size: 0.88rem;
+            font-weight: 700;
+            margin: 12px 0 3px;
+            color: var(--primary-text);
+        }
+        .msg-assistant .msg-bubble h4:first-child { margin-top: 0; }
+        .msg-assistant .msg-bubble p { margin: 5px 0; }
+        .msg-assistant .msg-bubble ul { margin: 5px 0; padding-left: 18px; }
+        .msg-assistant .msg-bubble li { margin-bottom: 3px; }
+        .msg-assistant .msg-bubble strong { font-weight: 600; }
+        .msg-assistant .msg-bubble em { font-style: italic; }
+
+        /* Sources block */
+        .msg-sources {
+            margin-top: 10px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 10px;
+        }
+        .sources-hdr {
+            font-size: 0.69rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.9px;
+            color: var(--secondary-text);
+            margin-bottom: 7px;
+        }
+        .cite-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 8px 10px;
+            margin-bottom: 5px;
+            font-size: 0.79rem;
+        }
+        .cite-name { font-weight: 600; color: var(--primary-text); margin-bottom: 1px; }
+        .cite-url { color: var(--accent); font-size: 0.73rem; margin-bottom: 4px; }
+        .cite-snippet { color: var(--secondary-text); font-style: italic; line-height: 1.5; font-size: 0.77rem; }
+        .msg-meta {
+            font-size: 0.7rem;
+            color: var(--secondary-text);
+            margin-top: 6px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        /* Typing indicator */
+        .typing-bubble {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 12px 14px;
+            background: var(--light-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            border-bottom-left-radius: 4px;
+            width: fit-content;
+        }
+        .tdot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--secondary-text);
+            animation: tdot-anim 1.2s infinite;
+            opacity: 0.4;
+        }
+        .tdot:nth-child(2) { animation-delay: 0.2s; }
+        .tdot:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes tdot-anim {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+            30% { transform: translateY(-4px); opacity: 1; }
+        }
+
+        /* Input bar */
+        .chat-input-bar {
+            border-top: 1px solid var(--border-color);
+            padding: 11px 14px;
+            display: flex;
+            gap: 9px;
+            background: white;
+        }
+        .chat-textarea {
+            flex: 1;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 9px 13px;
+            font-family: inherit;
+            font-size: 0.88rem;
+            color: var(--primary-text);
+            outline: none;
+            resize: none;
+            line-height: 1.5;
+            max-height: 96px;
+            overflow-y: auto;
+        }
+        .chat-textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(11,139,139,0.08); }
+        .chat-textarea::placeholder { color: #aaa; }
+        .send-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 9px 18px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.2s;
+            flex-shrink: 0;
+            align-self: flex-end;
+        }
+        .send-btn:hover { background: #076e6e; }
+        .send-btn:disabled { background: #e0e0e0; color: #aaa; cursor: not-allowed; }
+
+        /* ===== ARCHITECTURE SECTION ===== */
+        .arch-section {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: var(--spacing-xl) var(--spacing-lg);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .arch-section h2 {
+            font-family: 'Avenir Next','Avenir', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            margin-bottom: var(--spacing-lg);
+        }
+        .pipeline-flow {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+            padding: 18px 20px;
+            background: var(--light-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            margin-bottom: var(--spacing-lg);
+        }
+        .pnode {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 7px;
+            padding: 7px 13px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--primary-text);
+            line-height: 1.4;
+            text-align: center;
+        }
+        .pnode small { display: block; font-weight: 400; color: var(--secondary-text); font-size: 0.68rem; margin-top: 1px; }
+        .pnode.accent { background: var(--accent); color: white; border-color: var(--accent); }
+        .pnode.accent small { color: rgba(255,255,255,0.75); }
+        .parrow { color: var(--secondary-text); font-size: 0.9rem; }
+        .arch-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: var(--spacing-md);
+        }
+        .arch-card {
+            padding: 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+        }
+        .arch-card h4 {
+            font-size: 0.84rem;
+            font-weight: 700;
+            color: var(--primary-text);
+            margin-bottom: 6px;
+        }
+        .arch-card p { font-size: 0.79rem; color: var(--secondary-text); line-height: 1.65; }
+        .arch-card code {
+            font-family: 'Menlo','Monaco','Courier New', monospace;
+            font-size: 0.73rem;
+            background: var(--light-bg);
+            padding: 1px 4px;
+            border-radius: 3px;
+            color: var(--accent);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 820px) {
+            .demo-main { grid-template-columns: 1fr; }
+            .sources-sidebar { display: none; }
+            .pipeline-flow { flex-direction: column; align-items: flex-start; }
+            .parrow { transform: rotate(90deg); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+    <nav>
+        <a href="/" class="nav-brand" style="text-decoration:none;color:inherit;">Quiet Signals Lab</a>
+        <ul class="nav-links">
+            <li><a href="/#services">Services</a></li>
+            <li><a href="/#work">Portfolio</a></li>
+            <li><a href="mailto:hello@quietsignalslab.com">Contact</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- ===== DEMO HERO ===== -->
+<section class="demo-hero">
+    <div class="demo-breadcrumb">
+        <a href="/">← Quiet Signals Lab</a> / Demo
+    </div>
+    <h1 class="demo-title">Legal Information AI Chatbot</h1>
+    <p class="demo-subtitle">
+        A RAG-powered chatbot that continuously ingests, indexes, and answers queries from
+        trusted U.S. legal sources — Cornell LII, Justia, FindLaw, and United States Courts.
+        Built on <strong>Contractex</strong>, an open-source legal AI library.
+        Every response includes source citations and provenance-tracked chunks.
+    </p>
+    <div class="demo-tag-row">
+        <span class="tech-pill">Python</span>
+        <span class="tech-pill">Contractex</span>
+        <span class="tech-pill">RAG</span>
+        <span class="tech-pill">pgvector</span>
+        <span class="tech-pill">FastAPI</span>
+        <span class="tech-pill">URLLoader</span>
+        <span class="tech-pill">ProvenanceTracker</span>
+        <span class="tech-pill">AuditLogger</span>
+    </div>
+    <div class="disclaimer-banner">
+        <span class="disclaimer-icon">⚠️</span>
+        <div>
+            <strong>Legal information only — not legal advice.</strong>
+            This system provides informational content drawn from public legal sources.
+            No attorney-client relationship is formed. Always consult a licensed attorney
+            for advice specific to your situation.
+        </div>
+    </div>
+</section>
+
+<!-- ===== MAIN DEMO ===== -->
+<div class="demo-main">
+
+    <!-- SIDEBAR -->
+    <aside class="sources-sidebar">
+
+        <div>
+            <div class="panel-label">Data Sources</div>
+            <div class="source-card">
+                <div class="sync-dot"></div>
+                <div>
+                    <div class="source-name">Cornell Law School LII</div>
+                    <span class="source-url">law.cornell.edu</span>
+                    <div class="source-count">12,847 indexed chunks</div>
+                </div>
+            </div>
+            <div class="source-card">
+                <div class="sync-dot"></div>
+                <div>
+                    <div class="source-name">Justia</div>
+                    <span class="source-url">justia.com</span>
+                    <div class="source-count">8,203 indexed chunks</div>
+                </div>
+            </div>
+            <div class="source-card">
+                <div class="sync-dot"></div>
+                <div>
+                    <div class="source-name">FindLaw</div>
+                    <span class="source-url">findlaw.com</span>
+                    <div class="source-count">15,621 indexed chunks</div>
+                </div>
+            </div>
+            <div class="source-card">
+                <div class="sync-dot"></div>
+                <div>
+                    <div class="source-name">United States Courts</div>
+                    <span class="source-url">uscourts.gov</span>
+                    <div class="source-count">3,892 indexed chunks</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="pipeline-box">
+            <div class="panel-label">Contractex Pipeline</div>
+            <div class="pipe-step highlight">URLLoader</div>
+            <div class="pipe-sub">↓ ETag / Last-Modified detection</div>
+            <div class="pipe-step highlight">SemanticChunker</div>
+            <div class="pipe-sub">↓ 512-token sliding window</div>
+            <div class="pipe-step highlight">Embedder → pgvector</div>
+            <div class="pipe-sub">↓ text-embedding-3-small (1536-d)</div>
+            <div class="pipe-step highlight">LLM (GPT-4o)</div>
+            <div class="pipe-sub">↓ informational-only system prompt</div>
+            <div class="pipe-step highlight">ProvenanceTracker</div>
+            <div class="pipe-sub">↓ SourceSpan citation attachment</div>
+            <div class="pipe-step highlight">AuditLogger</div>
+        </div>
+
+        <div class="stats-box">
+            <div class="panel-label">Index Stats</div>
+            <div class="stat-row"><span>Total chunks</span><strong>40,563</strong></div>
+            <div class="stat-row"><span>Embedding dims</span><strong>1,536</strong></div>
+            <div class="stat-row"><span>Avg retrieval</span><strong>~210 ms</strong></div>
+            <div class="stat-row"><span>Last full sync</span><strong>Today 06:00 UTC</strong></div>
+        </div>
+
+    </aside>
+
+    <!-- CHAT -->
+    <div class="chat-wrap">
+        <div class="chat-window">
+            <div class="chat-messages" id="chatMessages">
+                <div class="chat-welcome" id="chatWelcome">
+                    <h3>Ask a U.S. legal question</h3>
+                    <p>This chatbot retrieves information from 40,000+ indexed chunks of U.S. legal content and returns cited answers. Select a suggestion or type your own question.</p>
+                    <div class="suggested-qs" id="suggestedQs">
+                        <button class="suggest-btn" onclick="askSuggested(this)">What are the essential elements of a valid contract?</button>
+                        <button class="suggest-btn" onclick="askSuggested(this)">What is at-will employment and what exceptions exist?</button>
+                        <button class="suggest-btn" onclick="askSuggested(this)">How does an LLC differ from a corporation?</button>
+                        <button class="suggest-btn" onclick="askSuggested(this)">What constitutes trademark infringement?</button>
+                        <button class="suggest-btn" onclick="askSuggested(this)">What is the statute of limitations for breach of contract?</button>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-input-bar">
+                <textarea
+                    class="chat-textarea"
+                    id="chatInput"
+                    placeholder="Ask a legal question…"
+                    rows="1"
+                    onkeydown="handleKey(event)"
+                    oninput="autoResize(this)"></textarea>
+                <button class="send-btn" id="sendBtn" onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ===== ARCHITECTURE ===== -->
+<section class="arch-section">
+    <h2>How It Works</h2>
+
+    <div class="pipeline-flow">
+        <div class="pnode">Data Sources<small>LII · Justia · FindLaw · US Courts</small></div>
+        <span class="parrow">→</span>
+        <div class="pnode accent">URLLoader<small>ETag / Last-Modified</small></div>
+        <span class="parrow">→</span>
+        <div class="pnode">HTML Stripper<small>stdlib parser</small></div>
+        <span class="parrow">→</span>
+        <div class="pnode accent">SemanticChunker<small>512-token overlap</small></div>
+        <span class="parrow">→</span>
+        <div class="pnode">Embedder<small>text-embedding-3-small</small></div>
+        <span class="parrow">→</span>
+        <div class="pnode accent">pgvector<small>cosine similarity</small></div>
+        <span class="parrow">→</span>
+        <div class="pnode">LLM<small>GPT-4o / Anthropic</small></div>
+        <span class="parrow">→</span>
+        <div class="pnode accent">ProvenanceTracker<small>SourceSpan citations</small></div>
+    </div>
+
+    <div class="arch-cards">
+        <div class="arch-card">
+            <h4>Ingestion — <code>URLLoader</code></h4>
+            <p>Fetches each source URL with conditional GET using <code>ETag</code> and <code>Last-Modified</code> headers — unchanged pages are skipped entirely. Exponential-backoff retry handles transient failures. PDF URLs are automatically delegated to PyMuPDF.</p>
+        </div>
+        <div class="arch-card">
+            <h4>Chunking — <code>SemanticChunker</code></h4>
+            <p>Splits legal text into 512-token windows with 64-token overlap, preserving sentence boundaries. <code>ClauseAwareChunker</code> optionally segments by clause headers for improved precision on statutory and regulatory text.</p>
+        </div>
+        <div class="arch-card">
+            <h4>Retrieval — <code>pgvector</code></h4>
+            <p>User queries are embedded and compared against stored vectors using cosine similarity. Top-k chunks are passed to the LLM with a system prompt that enforces informational-only responses and mandates citation of source URLs.</p>
+        </div>
+        <div class="arch-card">
+            <h4>Citations — <code>ProvenanceTracker</code></h4>
+            <p>Attaches each retrieved chunk to the response via <code>SourceSpan</code> records, preserving exact page, character offsets, and source URL. Citations are verifiable against the content hash stored at ingestion time.</p>
+        </div>
+        <div class="arch-card">
+            <h4>Sync Scheduling</h4>
+            <p>A daily cron job re-runs <code>URLLoader</code> against every source. Content hashing means only modified pages trigger re-chunking and re-embedding — infrastructure cost scales with actual legal content changes, not page requests.</p>
+        </div>
+        <div class="arch-card">
+            <h4>Audit — <code>AuditLogger</code></h4>
+            <p>Records every ingestion, retrieval, and generation event with UUID, UTC timestamp, and field list. Backends: append-only JSONL for development, PostgreSQL for production. Backend failures are isolated and never interrupt response delivery.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+    <div class="footer-meta">
+        <p>Quiet Signals Lab · <a href="/">quietsignalslab.com</a></p>
+        <p>Demo built on the <a href="https://github.com/Quiet-Signals-Lab/Contractex-Legal-Tech-Library" target="_blank" rel="noopener noreferrer">Contractex</a> open-source library.</p>
+        <p>© 2026 Alexander Hepburn. All rights reserved.</p>
+    </div>
+</footer>
+
+<script>
+// =====================================================================
+// Q&A Database
+// =====================================================================
+const QA = [
+    {
+        kw: ['essential elements', 'valid contract', 'elements of a contract', 'contract formation',
+             'elements contract', 'form a contract', 'contract require', 'what makes a contract'],
+        answer: `<h4>Offer</h4>
+<p>A clear, definite proposal made by one party (the offeror) expressing willingness to be bound by specified terms. The offer must be communicated to the offeree and remain open until accepted, rejected, or withdrawn.</p>
+<h4>Acceptance</h4>
+<p>An unambiguous agreement to the exact terms of the offer, communicated to the offeror. Under common law's "mirror image" rule, any modification constitutes a counter-offer, not acceptance. Note: <strong>UCC § 2-207</strong> relaxes this for merchants trading goods.</p>
+<h4>Consideration</h4>
+<p>Something of legal value exchanged by both parties — money, services, a promise to act, or a promise to refrain from acting. Courts examine only the <em>existence</em> of consideration, not its adequacy. A gratuitous promise unsupported by consideration is unenforceable.</p>
+<h4>Capacity</h4>
+<p>All parties must have legal capacity to contract. Contracts involving minors (under 18), persons adjudicated mentally incompetent, or those acting under duress may be <strong>voidable</strong>.</p>
+<h4>Lawful Purpose</h4>
+<p>The contract's subject matter must be legal. Contracts requiring illegal conduct are void as against public policy.</p>`,
+        sources: [
+            { name: 'Cornell Law School LII', url: 'law.cornell.edu/wex/contract', snippet: '"A contract is a promise or set of promises for the breach of which the law gives a remedy, or the performance of which the law in some way recognizes as a duty." — Restatement (Second) of Contracts § 1' },
+            { name: 'FindLaw', url: 'findlaw.com/contract-law/what-is-a-contract.html', snippet: '"For a contract to be valid and recognized by the common law, it must include certain elements: offer, acceptance, consideration, and mutuality of obligation."' },
+            { name: 'Justia', url: 'justia.com/contracts', snippet: '"Consideration is required to make a contract legally binding. In a bilateral contract, each party\'s promise is the consideration for the other\'s promise."' }
+        ],
+        ms: 214, chunks: 8
+    },
+    {
+        kw: ['at-will', 'at will', 'employment termination', 'fired without cause', 'wrongful termination',
+             'employer fire', 'dismissed', 'layoff rights'],
+        answer: `<p>At-will employment is the doctrine under which either party may terminate the employment relationship at any time, for any lawful reason or no reason, without prior notice. It is the default rule in <strong>49 U.S. states</strong>; Montana applies a "good cause" standard after a probationary period.</p>
+<h4>Key Exceptions Recognized by Courts</h4>
+<p><strong>1. Public Policy Exception</strong><br>An employer cannot terminate an employee for exercising a statutory right — e.g., filing a workers' compensation claim, serving jury duty, or whistleblowing under protected statutes. Recognized in most states.</p>
+<p><strong>2. Implied Contract Exception</strong><br>Representations in employee handbooks, offer letters, or verbal promises may create an implied contract limiting termination to "for cause." Recognized in approximately 40 states.</p>
+<p><strong>3. Covenant of Good Faith and Fair Dealing</strong><br>A minority of states (including California) imply a covenant prohibiting terminations motivated by a desire to deprive the employee of accrued benefits.</p>
+<p><strong>4. Federal Anti-Discrimination Laws</strong><br>Title VII, the ADA, ADEA, and equivalent state laws prohibit termination based on protected characteristics (race, sex, age, disability, religion, national origin), regardless of at-will status.</p>`,
+        sources: [
+            { name: 'Cornell Law School LII', url: 'law.cornell.edu/wex/at-will_employment', snippet: '"At-will employment is a term used in U.S. labor law for contractual relationships in which an employee can be dismissed by an employer for any reason (that is, without having to establish \'just cause\' for termination)..."' },
+            { name: 'United States Courts', url: 'uscourts.gov/educational-resources', snippet: '"Federal law provides significant protections to employees even in at-will states, prohibiting discrimination based on protected class characteristics."' },
+            { name: 'FindLaw', url: 'findlaw.com/employment/losing-a-job/at-will-employment-overview.html', snippet: '"Exceptions to at-will employment have developed through case law in most states, limiting the circumstances under which an employer may legally discharge an employee."' }
+        ],
+        ms: 187, chunks: 11
+    },
+    {
+        kw: ['llc', 'corporation', 'incorporate', 'business structure', 'limited liability company',
+             'llc vs corp', 'company or corporation', 'c-corp', 's-corp', 'entity type'],
+        answer: `<p>LLCs and corporations both provide personal liability protection but differ significantly in structure, taxation, and administrative requirements.</p>
+<h4>Formation</h4>
+<p>Both require state filing. An LLC files <strong>Articles of Organization</strong>; a corporation files <strong>Articles of Incorporation</strong>. LLCs generally have lower formation costs and complexity.</p>
+<h4>Management Structure</h4>
+<p>LLCs are managed directly by members (owners) or by appointed managers per the operating agreement. Corporations are managed by a <strong>board of directors</strong> elected by shareholders, with officers handling day-to-day operations.</p>
+<h4>Taxation</h4>
+<p>LLCs are <strong>pass-through entities</strong> by default — profits and losses flow to members' personal returns, avoiding entity-level tax. Corporations face "double taxation": corporate income tax at the entity level, then individual tax on dividends. An S-corporation election achieves pass-through treatment for eligible corporations (≤100 shareholders, one class of stock).</p>
+<h4>Formalities</h4>
+<p>Corporations must hold annual meetings, maintain minutes, and issue stock certificates. LLCs have minimal formal requirements, though a well-drafted <strong>operating agreement</strong> is essential for multi-member entities.</p>
+<h4>Investor Suitability</h4>
+<p>C-corporations are the standard structure for venture-backed startups because they can issue multiple stock classes and accommodate complex equity arrangements that LLCs typically cannot.</p>`,
+        sources: [
+            { name: 'Cornell Law School LII', url: 'law.cornell.edu/wex/limited_liability_company', snippet: '"A limited liability company (LLC) is a business structure in the U.S. that protects its owners from personal responsibility for its debts or liabilities."' },
+            { name: 'Justia', url: 'justia.com/business-formation/llcs-and-corporations', snippet: '"The primary advantage of both LLCs and corporations is the shield from personal liability for business debts. The choice between them affects taxation, management flexibility, and investor suitability."' },
+            { name: 'FindLaw', url: 'findlaw.com/business-operations/business-structures-overview.html', snippet: '"Corporations and LLCs both provide liability protection but differ significantly in tax treatment, management requirements, and suitability for outside investment."' }
+        ],
+        ms: 231, chunks: 9
+    },
+    {
+        kw: ['trademark', 'infringement', 'intellectual property', 'brand protection', 'mark',
+             'lanham act', 'likelihood of confusion', 'trade mark'],
+        answer: `<p>Trademark infringement under the <strong>Lanham Act (15 U.S.C. § 1114)</strong> occurs when a party uses a mark in commerce that is <em>likely to cause consumer confusion</em> about the source, sponsorship, or affiliation of goods or services, without the trademark owner's consent.</p>
+<h4>Likelihood of Confusion — Polaroid Factors</h4>
+<p>Courts weigh multiple factors; no single factor is determinative:</p>
+<ul>
+<li>Strength of the plaintiff's mark</li>
+<li>Similarity of the marks in sight, sound, and meaning</li>
+<li>Proximity of the parties' goods or services</li>
+<li>Evidence of actual consumer confusion</li>
+<li>Channels of trade and marketing similarity</li>
+<li>Sophistication of likely purchasers</li>
+<li>Defendant's intent in adopting the mark</li>
+</ul>
+<h4>Dilution (Famous Marks)</h4>
+<p>Federal law separately prohibits <strong>dilution</strong> of famous marks — by <em>blurring</em> (association impairing distinctiveness) and <em>tarnishment</em> (association harming reputation) — regardless of likelihood of confusion.</p>
+<h4>Common Defenses</h4>
+<ul>
+<li><strong>Descriptive fair use:</strong> Using the mark to describe one's own goods or services</li>
+<li><strong>Nominative fair use:</strong> Referring to the plaintiff's brand to identify the plaintiff's goods</li>
+<li><strong>Prior use in a geographic area</strong></li>
+<li><strong>Non-commercial use</strong></li>
+</ul>`,
+        sources: [
+            { name: 'Cornell Law School LII', url: 'law.cornell.edu/wex/trademark_infringement', snippet: '"Trademark infringement is a violation of the exclusive rights granted to the owner of a trademark. Infringement may occur when one party uses a trademark that is identical or confusingly similar to a trademark owned by another party..."' },
+            { name: 'United States Courts', url: 'uscourts.gov/statistics-reports/intellectual-property-cases', snippet: '"Federal courts have exclusive jurisdiction over most trademark claims brought under the Lanham Act. The likelihood of confusion standard is applied to determine infringement."' },
+            { name: 'FindLaw', url: 'findlaw.com/intellectual-property/trademarks/trademark-infringement.html', snippet: '"The likelihood of confusion test is the primary standard for determining trademark infringement in the United States. Courts apply a multi-factor balancing test."' }
+        ],
+        ms: 198, chunks: 10
+    },
+    {
+        kw: ['statute of limitations', 'time limit', 'how long to sue', 'breach of contract deadline',
+             'filing deadline', 'limitations period', 'time to file', 'sol'],
+        answer: `<p>The statute of limitations for breach of contract sets the maximum period after a breach during which a plaintiff may file suit. The period varies by state and contract type.</p>
+<h4>General Ranges</h4>
+<ul>
+<li><strong>Written contracts:</strong> typically 3–6 years (some states up to 10 years)</li>
+<li><strong>Oral contracts:</strong> typically 2–4 years</li>
+<li><strong>UCC contracts (sale of goods):</strong> 4 years under <strong>UCC § 2-725</strong> — parties may reduce to 1 year by agreement; they cannot extend beyond 4</li>
+</ul>
+<h4>State Examples</h4>
+<ul>
+<li><strong>California:</strong> 4 years (written), 2 years (oral)</li>
+<li><strong>New York:</strong> 6 years (written or oral)</li>
+<li><strong>Texas:</strong> 4 years (written or oral)</li>
+<li><strong>Florida:</strong> 5 years (written), 4 years (oral)</li>
+</ul>
+<h4>When Does the Clock Start?</h4>
+<p>The period generally begins <em>when the breach occurs</em>, not when discovered. Exceptions:</p>
+<ul>
+<li>The <strong>discovery rule</strong> delays accrual in some jurisdictions until the plaintiff knew or reasonably should have known of the breach</li>
+<li><strong>Fraudulent concealment</strong> by the defendant may toll (pause) the clock</li>
+<li>Written acknowledgment or partial payment may restart the clock in some states</li>
+</ul>`,
+        sources: [
+            { name: 'Cornell Law School LII', url: 'law.cornell.edu/wex/statute_of_limitations', snippet: '"A statute of limitations is a law that sets the maximum time after an event within which legal proceedings may be initiated. When the period of time specified in a statute of limitations passes, a claim might no longer be filed."' },
+            { name: 'Justia', url: 'justia.com/civil-and-criminal-statute-of-limitations-by-state', snippet: '"Each state has its own statute of limitations for breach of contract actions, ranging from two to ten years depending on the nature of the contract and the state."' },
+            { name: 'United States Courts', url: 'uscourts.gov/forms-rules/federal-rules-civil-procedure', snippet: '"Federal courts apply state statutes of limitations for state-law claims brought in diversity jurisdiction, following the forum state\'s limitations period."' }
+        ],
+        ms: 203, chunks: 7
+    }
+];
+
+const DEFAULT = {
+    answer: `<p>Based on the indexed U.S. legal sources, I can provide some general information on this topic, though specifics vary significantly by jurisdiction.</p>
+<p>U.S. law is organized across multiple bodies — federal statutes, federal common law, state statutes, and state common law — and the applicable rules depend on the type of legal issue, the parties, and the jurisdiction.</p>
+<p>For more precise guidance, the following authoritative sources are indexed in this system:</p>
+<ul>
+<li><strong>Cornell Law School LII</strong> (law.cornell.edu) — comprehensive legal encyclopedia and statute text</li>
+<li><strong>Justia</strong> (justia.com) — searchable case law, statutes, and regulations</li>
+<li><strong>FindLaw</strong> (findlaw.com) — jurisdiction-specific legal guides and attorney resources</li>
+<li><strong>United States Courts</strong> (uscourts.gov) — federal court resources and procedural rules</li>
+</ul>
+<p>Please consult a licensed attorney for advice specific to your situation.</p>`,
+    sources: [
+        { name: 'Cornell Law School LII', url: 'law.cornell.edu/wex', snippet: '"The Legal Information Institute at Cornell Law School provides free access to U.S. law organized by topic and jurisdiction."' },
+        { name: 'Justia', url: 'justia.com', snippet: '"Justia provides free case law, codes, regulations, and legal information from government and court sources."' },
+        { name: 'FindLaw', url: 'findlaw.com', snippet: '"FindLaw provides legal information and attorney directories across all practice areas and U.S. jurisdictions."' }
+    ],
+    ms: 176, chunks: 5
+};
+
+// =====================================================================
+// UI Logic
+// =====================================================================
+let busy = false;
+
+function findResponse(q) {
+    const lq = q.toLowerCase();
+    for (const item of QA) {
+        for (const kw of item.kw) {
+            if (lq.includes(kw)) return item;
+        }
+    }
+    return null;
+}
+
+function escHtml(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function appendUserMsg(text) {
+    const c = document.getElementById('chatMessages');
+    const w = document.getElementById('chatWelcome');
+    if (w) w.remove();
+    const d = document.createElement('div');
+    d.className = 'msg msg-user';
+    d.innerHTML = `<div class="msg-avatar">You</div>
+<div class="msg-body"><div class="msg-bubble">${escHtml(text)}</div></div>`;
+    c.appendChild(d);
+    c.scrollTop = c.scrollHeight;
+}
+
+function showTyping() {
+    const c = document.getElementById('chatMessages');
+    const d = document.createElement('div');
+    d.className = 'msg msg-assistant';
+    d.id = 'typingMsg';
+    d.innerHTML = `<div class="msg-avatar">QSL</div>
+<div class="msg-body"><div class="typing-bubble">
+    <div class="tdot"></div><div class="tdot"></div><div class="tdot"></div>
+</div></div>`;
+    c.appendChild(d);
+    c.scrollTop = c.scrollHeight;
+}
+
+function hideTyping() {
+    const t = document.getElementById('typingMsg');
+    if (t) t.remove();
+}
+
+function appendAssistantMsg(resp) {
+    const c = document.getElementById('chatMessages');
+    const srcHtml = resp.sources.map(s => `
+<div class="cite-card">
+    <div class="cite-name">${s.name}</div>
+    <div class="cite-url">${s.url}</div>
+    <div class="cite-snippet">${s.snippet}</div>
+</div>`).join('');
+    const d = document.createElement('div');
+    d.className = 'msg msg-assistant';
+    d.innerHTML = `<div class="msg-avatar">QSL</div>
+<div class="msg-body">
+<div class="msg-bubble">
+    ${resp.answer}
+    <div class="msg-sources">
+        <div class="sources-hdr">Retrieved Sources (${resp.chunks} chunks · ${resp.ms} ms)</div>
+        ${srcHtml}
+    </div>
+</div>
+<div class="msg-meta">
+    <span>⚠️ Legal information only — not legal advice</span>
+</div>
+</div>`;
+    c.appendChild(d);
+    c.scrollTop = c.scrollHeight;
+}
+
+async function sendMessage() {
+    if (busy) return;
+    const inp = document.getElementById('chatInput');
+    const text = inp.value.trim();
+    if (!text) return;
+    inp.value = '';
+    autoResize(inp);
+    busy = true;
+    document.getElementById('sendBtn').disabled = true;
+
+    appendUserMsg(text);
+    showTyping();
+
+    const delay = 800 + Math.random() * 700;
+    await new Promise(r => setTimeout(r, delay));
+
+    hideTyping();
+    const resp = findResponse(text) || DEFAULT;
+    appendAssistantMsg(resp);
+
+    busy = false;
+    document.getElementById('sendBtn').disabled = false;
+    inp.focus();
+}
+
+function askSuggested(btn) {
+    const t = btn.textContent;
+    document.getElementById('chatInput').value = t;
+    sendMessage();
+}
+
+function handleKey(e) {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+}
+
+function autoResize(el) {
+    el.style.height = 'auto';
+    el.style.height = Math.min(el.scrollHeight, 96) + 'px';
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Interactive demo: AI-powered document automation for immigration law — OCR, structured extraction, confidence routing, and audit logging built on the Contractex library.">
+    <title>Immigration Document Automation — Demo | Quiet Signals Lab</title>
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* ===== DEMO HERO ===== */
+        .demo-hero {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: var(--spacing-2xl) var(--spacing-lg) var(--spacing-xl);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .demo-breadcrumb {
+            font-size: 0.82rem;
+            color: var(--secondary-text);
+            margin-bottom: var(--spacing-md);
+        }
+        .demo-breadcrumb a { color: var(--accent); text-decoration: none; }
+        .demo-breadcrumb a:hover { text-decoration: underline; }
+        .demo-title {
+            font-family: 'Avenir Next', 'Avenir', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 0.75rem;
+        }
+        .demo-subtitle {
+            font-size: 0.97rem;
+            color: var(--secondary-text);
+            max-width: 720px;
+            line-height: 1.75;
+            margin-bottom: var(--spacing-lg);
+        }
+        .demo-subtitle strong { color: var(--primary-text); }
+        .demo-tag-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        /* ===== MAIN DEMO LAYOUT ===== */
+        .demo-main {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: var(--spacing-xl) var(--spacing-lg);
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: var(--spacing-xl);
+            align-items: start;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        /* ===== LEFT: DOCUMENT SELECTOR ===== */
+        .doc-panel {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+        .panel-label {
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.1px;
+            color: var(--secondary-text);
+            margin-bottom: 4px;
+        }
+        .doc-card {
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 14px 15px;
+            cursor: pointer;
+            transition: border-color 0.18s, box-shadow 0.18s;
+            background: white;
+        }
+        .doc-card:hover { border-color: var(--accent); }
+        .doc-card.active {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(11,139,139,0.12);
+        }
+        .doc-card-top {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        .doc-flag { font-size: 1.5rem; line-height: 1; flex-shrink: 0; }
+        .doc-card-name { font-size: 0.88rem; font-weight: 700; color: var(--primary-text); }
+        .doc-card-sub { font-size: 0.74rem; color: var(--secondary-text); margin-top: 1px; }
+        .quality-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .quality-bar {
+            flex: 1;
+            height: 4px;
+            background: #f0f0f0;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .quality-fill {
+            height: 100%;
+            border-radius: 2px;
+        }
+        .quality-label { font-size: 0.72rem; color: var(--secondary-text); white-space: nowrap; }
+        .quality-score { font-size: 0.72rem; font-weight: 600; white-space: nowrap; }
+
+        .process-btn {
+            width: 100%;
+            padding: 11px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .process-btn:hover { background: #076e6e; }
+        .process-btn:disabled { background: #e0e0e0; color: #aaa; cursor: not-allowed; }
+
+        .pipeline-meta {
+            background: var(--light-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 13px;
+        }
+        .meta-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.77rem;
+            color: var(--secondary-text);
+            padding: 3px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .meta-row:last-child { border-bottom: none; }
+        .meta-row strong { color: var(--primary-text); font-weight: 600; }
+
+        /* ===== RIGHT: RESULTS PANEL ===== */
+        .results-panel {
+            min-height: 500px;
+        }
+        .results-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 420px;
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            color: var(--secondary-text);
+            text-align: center;
+            gap: 12px;
+        }
+        .results-empty .empty-icon { font-size: 2.5rem; }
+        .results-empty p { font-size: 0.9rem; max-width: 280px; line-height: 1.6; }
+
+        /* Tabs */
+        .tabs-bar {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: var(--spacing-md);
+            gap: 0;
+        }
+        .tab-btn {
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            font-family: inherit;
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: var(--secondary-text);
+            cursor: pointer;
+            transition: color 0.15s, border-color 0.15s;
+            margin-bottom: -1px;
+        }
+        .tab-btn:hover { color: var(--primary-text); }
+        .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+
+        .tab-pane { display: none; }
+        .tab-pane.active { display: block; }
+
+        /* ===== EXTRACTION TABLE ===== */
+        .doc-summary-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: var(--light-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: var(--spacing-md);
+            font-size: 0.85rem;
+        }
+        .doc-summary-flag { font-size: 1.5rem; }
+        .doc-summary-name { font-weight: 700; color: var(--primary-text); }
+        .doc-summary-sub { font-size: 0.75rem; color: var(--secondary-text); margin-top: 1px; }
+        .doc-summary-time {
+            margin-left: auto;
+            font-size: 0.75rem;
+            color: var(--secondary-text);
+            font-family: 'Menlo','Monaco','Courier New', monospace;
+        }
+
+        .extraction-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.82rem;
+        }
+        .extraction-table th {
+            text-align: left;
+            padding: 8px 10px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--secondary-text);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .extraction-table td {
+            padding: 9px 10px;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
+        }
+        .extraction-table tr:last-child td { border-bottom: none; }
+        .field-label { font-weight: 600; color: var(--primary-text); display: block; }
+        .field-es { font-size: 0.73rem; color: var(--secondary-text); margin-top: 1px; }
+        .field-value {
+            font-family: 'Menlo','Monaco','Courier New', monospace;
+            font-size: 0.8rem;
+            color: var(--primary-text);
+        }
+        .conf-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            min-width: 80px;
+        }
+        .conf-pct { font-size: 0.77rem; font-weight: 600; color: var(--primary-text); }
+        .conf-bar {
+            height: 4px;
+            background: #f0f0f0;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .conf-fill {
+            height: 100%;
+            border-radius: 2px;
+            transition: width 0.6s ease;
+        }
+        .conf-fill.high { background: #22c55e; }
+        .conf-fill.medium { background: #f59e0b; }
+        .conf-fill.low { background: #ef4444; }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 9px;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+        .badge.accept { background: #dcfce7; color: #166534; }
+        .badge.review { background: #fef3c7; color: #92400e; }
+        .badge.reject { background: #fee2e2; color: #991b1b; }
+        .critical-star { color: var(--accent); font-size: 0.7rem; margin-left: 3px; }
+        .review-note { font-size: 0.7rem; color: #92400e; margin-top: 2px; }
+        .reject-note { font-size: 0.7rem; color: #991b1b; margin-top: 2px; }
+
+        .routing-summary {
+            display: flex;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-md);
+            padding: 12px 16px;
+            background: var(--light-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+        }
+        .routing-stat { text-align: center; }
+        .routing-stat .n { font-size: 1.5rem; font-weight: 700; }
+        .routing-stat .lbl { font-size: 0.72rem; color: var(--secondary-text); }
+        .routing-stat.accept .n { color: #166534; }
+        .routing-stat.review .n { color: #92400e; }
+        .routing-stat.reject .n { color: #991b1b; }
+
+        /* ===== PROVENANCE TAB ===== */
+        .provenance-intro {
+            font-size: 0.85rem;
+            color: var(--secondary-text);
+            margin-bottom: var(--spacing-md);
+            line-height: 1.6;
+        }
+        .doc-text-block {
+            font-family: 'Menlo','Monaco','Courier New', monospace;
+            font-size: 0.78rem;
+            line-height: 1.85;
+            padding: 18px 20px;
+            background: #fafafa;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            white-space: pre-wrap;
+            word-break: break-word;
+            margin-bottom: var(--spacing-md);
+        }
+        mark {
+            background: rgba(11,139,139,0.15);
+            color: var(--primary-text);
+            border-radius: 2px;
+            padding: 1px 0;
+            border-bottom: 2px solid var(--accent);
+        }
+        mark.review-mark {
+            background: rgba(245,158,11,0.15);
+            border-bottom-color: #f59e0b;
+        }
+        mark.reject-mark {
+            background: rgba(239,68,68,0.1);
+            border-bottom-color: #ef4444;
+        }
+        .prov-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: var(--spacing-md);
+            font-size: 0.78rem;
+        }
+        .legend-item { display: flex; align-items: center; gap: 5px; }
+        .legend-dot {
+            width: 10px; height: 10px;
+            border-radius: 2px;
+        }
+        .legend-dot.accept-dot { background: rgba(11,139,139,0.3); border-bottom: 2px solid var(--accent); }
+        .legend-dot.review-dot { background: rgba(245,158,11,0.3); border-bottom: 2px solid #f59e0b; }
+        .legend-dot.reject-dot { background: rgba(239,68,68,0.2); border-bottom: 2px solid #ef4444; }
+
+        /* ===== AUDIT LOG ===== */
+        .audit-intro { font-size: 0.85rem; color: var(--secondary-text); margin-bottom: var(--spacing-md); line-height: 1.6; }
+        .audit-timeline { display: flex; flex-direction: column; gap: 0; }
+        .audit-item {
+            display: flex;
+            gap: 14px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .audit-item:last-child { border-bottom: none; }
+        .audit-time {
+            font-family: 'Menlo','Monaco','Courier New', monospace;
+            font-size: 0.75rem;
+            color: var(--secondary-text);
+            flex-shrink: 0;
+            padding-top: 1px;
+            min-width: 96px;
+        }
+        .audit-dot-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        .audit-dot {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 3px;
+        }
+        .audit-line {
+            width: 1px;
+            flex: 1;
+            background: var(--border-color);
+            margin: 3px 0 0;
+            min-height: 20px;
+        }
+        .audit-item:last-child .audit-line { display: none; }
+        .audit-event-name {
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+        .audit-detail { font-size: 0.82rem; color: var(--secondary-text); line-height: 1.5; }
+        .audit-uuid { font-size: 0.69rem; color: #bbb; font-family: 'Menlo','Monaco','Courier New', monospace; margin-top: 2px; }
+
+        /* event colors */
+        .ev-ingested .audit-dot { background: #6366f1; }
+        .ev-ingested .audit-event-name { color: #6366f1; }
+        .ev-extracted .audit-dot { background: var(--accent); }
+        .ev-extracted .audit-event-name { color: var(--accent); }
+        .ev-routed .audit-dot { background: #22c55e; }
+        .ev-routed .audit-event-name { color: #166534; }
+        .ev-review_requested .audit-dot { background: #f59e0b; }
+        .ev-review_requested .audit-event-name { color: #92400e; }
+        .ev-error .audit-dot { background: #ef4444; }
+        .ev-error .audit-event-name { color: #991b1b; }
+        .ev-complete .audit-dot { background: var(--primary-text); }
+        .ev-complete .audit-event-name { color: var(--primary-text); }
+
+        /* ===== ARCHITECTURE ===== */
+        .arch-section {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: var(--spacing-xl) var(--spacing-lg);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .arch-section h2 {
+            font-family: 'Avenir Next','Avenir', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            margin-bottom: var(--spacing-lg);
+        }
+        .pipeline-flow {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+            padding: 18px 20px;
+            background: var(--light-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            margin-bottom: var(--spacing-lg);
+        }
+        .pnode {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 7px;
+            padding: 7px 13px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--primary-text);
+            line-height: 1.4;
+            text-align: center;
+        }
+        .pnode small { display: block; font-weight: 400; color: var(--secondary-text); font-size: 0.68rem; margin-top: 1px; }
+        .pnode.accent { background: var(--accent); color: white; border-color: var(--accent); }
+        .pnode.accent small { color: rgba(255,255,255,0.75); }
+        .parrow { color: var(--secondary-text); font-size: 0.9rem; }
+        .arch-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: var(--spacing-md);
+        }
+        .arch-card {
+            padding: 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+        }
+        .arch-card h4 { font-size: 0.84rem; font-weight: 700; color: var(--primary-text); margin-bottom: 6px; }
+        .arch-card p { font-size: 0.79rem; color: var(--secondary-text); line-height: 1.65; }
+        .arch-card code {
+            font-family: 'Menlo','Monaco','Courier New', monospace;
+            font-size: 0.73rem;
+            background: var(--light-bg);
+            padding: 1px 4px;
+            border-radius: 3px;
+            color: var(--accent);
+        }
+
+        /* Loading spinner */
+        .spinner {
+            display: inline-block;
+            width: 14px; height: 14px;
+            border: 2px solid rgba(255,255,255,0.4);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 820px) {
+            .demo-main { grid-template-columns: 1fr; }
+            .pipeline-flow { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+    <nav>
+        <a href="/" class="nav-brand" style="text-decoration:none;color:inherit;">Quiet Signals Lab</a>
+        <ul class="nav-links">
+            <li><a href="/#services">Services</a></li>
+            <li><a href="/#work">Portfolio</a></li>
+            <li><a href="mailto:hello@quietsignalslab.com">Contact</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- ===== DEMO HERO ===== -->
+<section class="demo-hero">
+    <div class="demo-breadcrumb">
+        <a href="/">← Quiet Signals Lab</a> / Demo
+    </div>
+    <h1 class="demo-title">Immigration Document Automation</h1>
+    <p class="demo-subtitle">
+        An end-to-end document processing pipeline for immigration law firms: OCR ingestion of passports,
+        national IDs, and certificates; structured field extraction via LLM; per-field confidence scoring
+        with automatic routing (auto-accept, human review, auto-reject); provenance tracking; and a full
+        audit trail. Built on <strong>Contractex</strong>. Select a sample document below to see the pipeline in action.
+    </p>
+    <div class="demo-tag-row">
+        <span class="tech-pill">Python</span>
+        <span class="tech-pill">Contractex</span>
+        <span class="tech-pill">OCR / PyMuPDF</span>
+        <span class="tech-pill">LLM Extraction</span>
+        <span class="tech-pill">ConfidenceRouter</span>
+        <span class="tech-pill">ProvenanceTracker</span>
+        <span class="tech-pill">AuditLogger</span>
+        <span class="tech-pill">LegalDocument</span>
+    </div>
+</section>
+
+<!-- ===== MAIN DEMO ===== -->
+<div class="demo-main">
+
+    <!-- LEFT: DOC SELECTOR -->
+    <div class="doc-panel">
+
+        <div>
+            <div class="panel-label">Sample Documents</div>
+
+            <div class="doc-card active" data-doc="passport" onclick="selectDoc(this)">
+                <div class="doc-card-top">
+                    <div class="doc-flag">🇪🇸</div>
+                    <div>
+                        <div class="doc-card-name">Spanish Passport</div>
+                        <div class="doc-card-sub">Pasaporte Español</div>
+                    </div>
+                </div>
+                <div class="quality-row">
+                    <div class="quality-bar"><div class="quality-fill" style="width:97%;background:#22c55e;"></div></div>
+                    <span class="quality-label">Image quality</span>
+                    <span class="quality-score" style="color:#166534;">0.97</span>
+                </div>
+            </div>
+
+            <div class="doc-card" data-doc="nie" onclick="selectDoc(this)" style="margin-top:8px;">
+                <div class="doc-card-top">
+                    <div class="doc-flag">🇮🇹</div>
+                    <div>
+                        <div class="doc-card-name">NIE Certificate</div>
+                        <div class="doc-card-sub">Certificado de Registro UE</div>
+                    </div>
+                </div>
+                <div class="quality-row">
+                    <div class="quality-bar"><div class="quality-fill" style="width:83%;background:#f59e0b;"></div></div>
+                    <span class="quality-label">Image quality</span>
+                    <span class="quality-score" style="color:#92400e;">0.83</span>
+                </div>
+            </div>
+
+            <div class="doc-card" data-doc="birth" onclick="selectDoc(this)" style="margin-top:8px;">
+                <div class="doc-card-top">
+                    <div class="doc-flag">🇮🇹</div>
+                    <div>
+                        <div class="doc-card-name">Birth Certificate</div>
+                        <div class="doc-card-sub">Acta de Nacimiento (trad.)</div>
+                    </div>
+                </div>
+                <div class="quality-row">
+                    <div class="quality-bar"><div class="quality-fill" style="width:64%;background:#ef4444;"></div></div>
+                    <span class="quality-label">Image quality</span>
+                    <span class="quality-score" style="color:#991b1b;">0.64</span>
+                </div>
+            </div>
+        </div>
+
+        <button class="process-btn" id="processBtn" onclick="processDocument()">Process Document</button>
+
+        <div class="pipeline-meta" id="pipelineMeta" style="display:none;">
+            <div class="panel-label">Pipeline Output</div>
+            <div class="meta-row"><span>DocType</span><strong id="metaDocType">—</strong></div>
+            <div class="meta-row"><span>Fields extracted</span><strong id="metaFields">—</strong></div>
+            <div class="meta-row"><span>Avg confidence</span><strong id="metaConf">—</strong></div>
+            <div class="meta-row"><span>Processing time</span><strong id="metaTime">—</strong></div>
+            <div class="meta-row"><span>AUTO_ACCEPT</span><strong id="metaAccept" style="color:#166534;">—</strong></div>
+            <div class="meta-row"><span>HUMAN_REVIEW</span><strong id="metaReview" style="color:#92400e;">—</strong></div>
+            <div class="meta-row"><span>AUTO_REJECT</span><strong id="metaReject" style="color:#991b1b;">—</strong></div>
+        </div>
+
+    </div>
+
+    <!-- RIGHT: RESULTS -->
+    <div class="results-panel">
+
+        <div class="results-empty" id="resultsEmpty">
+            <div class="empty-icon">📄</div>
+            <p>Select a document on the left and click <strong>Process Document</strong> to run the extraction pipeline.</p>
+        </div>
+
+        <div id="resultsContent" style="display:none;">
+
+            <div class="doc-summary-row" id="docSummaryRow">
+                <div class="doc-summary-flag" id="sumFlag">🇪🇸</div>
+                <div>
+                    <div class="doc-summary-name" id="sumName">Spanish Passport</div>
+                    <div class="doc-summary-sub" id="sumSub">identity_doc · Contractex v0.2.0</div>
+                </div>
+                <div class="doc-summary-time" id="sumTime">1.2s · 97% avg confidence</div>
+            </div>
+
+            <div class="tabs-bar">
+                <button class="tab-btn active" onclick="switchTab(this,'extraction')">Extraction</button>
+                <button class="tab-btn" onclick="switchTab(this,'provenance')">Provenance</button>
+                <button class="tab-btn" onclick="switchTab(this,'audit')">Audit Log</button>
+            </div>
+
+            <!-- EXTRACTION TAB -->
+            <div class="tab-pane active" id="tab-extraction">
+                <table class="extraction-table" id="extractionTable">
+                    <thead>
+                        <tr>
+                            <th>Field</th>
+                            <th>Extracted Value</th>
+                            <th>Confidence</th>
+                            <th>Routing</th>
+                        </tr>
+                    </thead>
+                    <tbody id="extractionBody"></tbody>
+                </table>
+                <div class="routing-summary" id="routingSummary"></div>
+            </div>
+
+            <!-- PROVENANCE TAB -->
+            <div class="tab-pane" id="tab-provenance">
+                <p class="provenance-intro">
+                    <code style="font-size:0.8rem;color:var(--accent);">ProvenanceTracker</code>
+                    registers each extracted value back to its exact location in the source document
+                    using deterministic chunk IDs and character offsets.
+                    Highlighted spans show where each field was found.
+                </p>
+                <div class="prov-legend">
+                    <div class="legend-item"><div class="legend-dot accept-dot"></div><span>AUTO_ACCEPT</span></div>
+                    <div class="legend-item"><div class="legend-dot review-dot"></div><span>HUMAN_REVIEW</span></div>
+                    <div class="legend-item"><div class="legend-dot reject-dot"></div><span>AUTO_REJECT</span></div>
+                </div>
+                <div class="doc-text-block" id="provText"></div>
+            </div>
+
+            <!-- AUDIT LOG TAB -->
+            <div class="tab-pane" id="tab-audit">
+                <p class="audit-intro">
+                    <code style="font-size:0.8rem;color:var(--accent);">AuditLogger</code>
+                    records every pipeline event with a UUID, UTC timestamp, event type, and detail.
+                    Backend failures are isolated — they never interrupt extraction or routing.
+                </p>
+                <div class="audit-timeline" id="auditTimeline"></div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- ===== ARCHITECTURE ===== -->
+<section class="arch-section">
+    <h2>How It Works</h2>
+
+    <div class="pipeline-flow">
+        <div class="pnode">PDF / Image<small>Scan · Photo · Native PDF</small></div>
+        <span class="parrow">→</span>
+        <div class="pnode accent">PyMuPDF + OCR<small>Tesseract fallback</small></div>
+        <span class="parrow">→</span>
+        <div class="pnode accent">LegalDocument<small>DocType.identity_doc</small></div>
+        <span class="parrow">→</span>
+        <div class="pnode">LLM Extractor<small>GPT-4o / Claude</small></div>
+        <span class="parrow">→</span>
+        <div class="pnode accent">ConfidenceRouter<small>per-field thresholds</small></div>
+        <span class="parrow">→</span>
+        <div class="pnode accent">ProvenanceTracker<small>SourceSpan</small></div>
+        <span class="parrow">→</span>
+        <div class="pnode accent">AuditLogger<small>JSONL / PostgreSQL</small></div>
+        <span class="parrow">→</span>
+        <div class="pnode">Output<small>CRM / PDF fill</small></div>
+    </div>
+
+    <div class="arch-cards">
+        <div class="arch-card">
+            <h4>Document Loading</h4>
+            <p><code>SourceAdapter</code> handles ingestion from uploads, cloud storage, or watched folders. <code>PDFLoader</code> delegates native PDFs to PyMuPDF; scanned images fall back to Tesseract OCR. Quality scoring gates further processing on configurable confidence floors.</p>
+        </div>
+        <div class="arch-card">
+            <h4>LegalDocument Model</h4>
+            <p><code>LegalDocument</code> carries a <code>DocType</code> enum (<code>identity_doc</code>, <code>government_form</code>, <code>statute</code>, …), jurisdiction, hierarchy path, and a dictionary of extracted fields with per-field confidence scores and provenance references.</p>
+        </div>
+        <div class="arch-card">
+            <h4>LLM Field Extraction</h4>
+            <p>A structured extraction prompt instructs the LLM to return field values as a typed JSON object. The prompt schema is defined per document type and is provider-agnostic — the same extraction schema works with GPT-4o, Claude, or a local Mistral model.</p>
+        </div>
+        <div class="arch-card">
+            <h4>ConfidenceRouter</h4>
+            <p>Routes each extracted field to <strong>AUTO_ACCEPT</strong>, <strong>HUMAN_REVIEW</strong>, or <strong>AUTO_REJECT</strong> based on configurable thresholds. High-stakes fields (<code>passport_number</code>, <code>nie_number</code>) carry tighter per-field overrides. The review queue is sorted ascending by confidence — worst items first for reviewers.</p>
+        </div>
+        <div class="arch-card">
+            <h4>ProvenanceTracker</h4>
+            <p>Registers each extracted value back to its source chunk via <code>SourceSpan</code> (chunk ID, page, character offsets, snippet). Exact substring search is tried first; a Jaccard token-overlap fallback handles OCR noise. Coverage reports identify fields with no provenance for prioritised human review.</p>
+        </div>
+        <div class="arch-card">
+            <h4>Output Integrations</h4>
+            <p>Extracted, routed, and provenanced data can be pushed directly to a CRM, used to fill PDF templates via a PDF automation layer, or returned as a typed API response. The <code>AuditLogger</code> records the full pipeline event trail for GDPR-compliant processing logs.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+    <div class="footer-meta">
+        <p>Quiet Signals Lab · <a href="/">quietsignalslab.com</a></p>
+        <p>Demo built on the <a href="https://github.com/Quiet-Signals-Lab/Contractex-Legal-Tech-Library" target="_blank" rel="noopener noreferrer">Contractex</a> open-source library.</p>
+        <p>© 2026 Alexander Hepburn. All rights reserved.</p>
+    </div>
+</footer>
+
+<script>
+// =====================================================================
+// Document Data
+// =====================================================================
+const DOCS = {
+    passport: {
+        flag: '🇪🇸',
+        name: 'Spanish Passport',
+        sub: 'Pasaporte Español',
+        doctype: 'identity_doc',
+        processingTime: '1.2s',
+        fields: [
+            { en: 'Document Type',    es: 'Tipo de Documento',           value: 'PASAPORTE',                confidence: 0.99, routing: 'ACCEPT', critical: false },
+            { en: 'Passport Number',  es: 'Número de Pasaporte',          value: 'PAB123456',                confidence: 0.99, routing: 'ACCEPT', critical: true  },
+            { en: 'Surname',          es: 'Apellidos',                    value: 'GARCÍA MARTÍNEZ',          confidence: 0.98, routing: 'ACCEPT', critical: false },
+            { en: 'Given Names',      es: 'Nombre',                       value: 'ELENA',                    confidence: 0.98, routing: 'ACCEPT', critical: false },
+            { en: 'Sex',              es: 'Sexo',                         value: 'F',                        confidence: 0.99, routing: 'ACCEPT', critical: false },
+            { en: 'Nationality',      es: 'Nacionalidad',                 value: 'ESPAÑOLA',                 confidence: 0.97, routing: 'ACCEPT', critical: false },
+            { en: 'Date of Birth',    es: 'Fecha de Nacimiento',          value: '15 MAR 1985',              confidence: 0.96, routing: 'ACCEPT', critical: false },
+            { en: 'Place of Birth',   es: 'Lugar de Nacimiento',          value: 'MADRID',                   confidence: 0.94, routing: 'ACCEPT', critical: false },
+            { en: 'Date of Issue',    es: 'Fecha de Expedición',          value: '10 JUN 2019',              confidence: 0.95, routing: 'ACCEPT', critical: false },
+            { en: 'Date of Expiry',   es: 'Fecha de Caducidad',           value: '09 JUN 2029',              confidence: 0.97, routing: 'ACCEPT', critical: false },
+            { en: 'Issuing Authority',es: 'Autoridad Expedidora',         value: 'MINISTERIO DEL INTERIOR',  confidence: 0.93, routing: 'ACCEPT', critical: false },
+            { en: 'MRZ Line 1',       es: 'Zona Lectura Mecánica 1',      value: 'PAESP GARCIA<<MARTINEZ<<ELENA<<<', confidence: 0.98, routing: 'ACCEPT', critical: false },
+        ],
+        audit: [
+            { ev: 'ingested',         t: '09:14:32.001', detail: 'PDF loaded — 2 pages, 847 KB' },
+            { ev: 'extracted',        t: '09:14:32.418', detail: 'OCR complete — avg confidence 0.97 (high quality)' },
+            { ev: 'extracted',        t: '09:14:32.891', detail: '12 fields extracted via GPT-4o structured output' },
+            { ev: 'routed',           t: '09:14:33.012', detail: 'All 12 fields → AUTO_ACCEPT' },
+            { ev: 'complete',         t: '09:14:33.019', detail: 'Document ready — queued for CRM push' },
+        ],
+        provText: `PASAPORTE              ESPAÑA
+──────────────────────────────────────────────────
+Núm. Pasaporte / Passport No.
+<mark>PAB123456</mark>
+
+Apellidos / Surname                Nombre / Given Names
+<mark>GARCÍA MARTÍNEZ</mark>                   <mark>ELENA</mark>
+
+Sexo / Sex     Nacionalidad / Nationality
+<mark>F</mark>              <mark>ESPAÑOLA</mark>
+
+Fecha de nacimiento / Date of birth
+<mark>15 MAR 1985</mark>
+
+Lugar de nacimiento / Place of birth
+<mark>MADRID</mark>
+
+──────────────────────────────────────── p.2 ────
+Fecha de expedición / Date of issue    Fecha de caducidad / Expiry date
+<mark>10 JUN 2019</mark>                           <mark>09 JUN 2029</mark>
+
+Autoridad expedidora / Issuing authority
+<mark>MINISTERIO DEL INTERIOR</mark>
+
+MRZ ─────────────────────────────────────────────
+<mark>PAESP GARCIA&lt;&lt;MARTINEZ&lt;&lt;ELENA&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</mark>
+PAB1234563ESP8503152F2906098&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;06`
+    },
+
+    nie: {
+        flag: '🇮🇹',
+        name: 'NIE Certificate',
+        sub: 'Certificado de Registro de Ciudadano de la UE',
+        doctype: 'identity_doc',
+        processingTime: '1.4s',
+        fields: [
+            { en: 'Document Type',    es: 'Tipo de Documento',           value: 'CERTIFICADO DE REGISTRO', confidence: 0.94, routing: 'ACCEPT',  critical: false },
+            { en: 'NIE Number',       es: 'Número NIE',                  value: 'X-1234567-B',              confidence: 0.88, routing: 'REVIEW',  critical: true,  note: 'Critical field — threshold 0.95' },
+            { en: 'Surname',          es: 'Apellidos',                   value: 'ROSSI',                    confidence: 0.96, routing: 'ACCEPT',  critical: false },
+            { en: 'Given Names',      es: 'Nombre',                      value: 'MARCO ANTONIO',            confidence: 0.91, routing: 'ACCEPT',  critical: false },
+            { en: 'Nationality',      es: 'Nacionalidad',                value: 'ITALIANA',                 confidence: 0.89, routing: 'ACCEPT',  critical: false },
+            { en: 'Date of Birth',    es: 'Fecha de Nacimiento',         value: '22 SEP 1990',              confidence: 0.87, routing: 'ACCEPT',  critical: false },
+            { en: 'Address',          es: 'Domicilio',                   value: 'C/ MAYOR, 15, 3º DCHA, BARCELONA', confidence: 0.71, routing: 'REVIEW', critical: false, note: 'Low confidence — scan degradation' },
+            { en: 'Municipality',     es: 'Municipio',                   value: 'BARCELONA',                confidence: 0.83, routing: 'ACCEPT',  critical: false },
+            { en: 'Date of Issue',    es: 'Fecha de Expedición',         value: '15 ENE 2023',              confidence: 0.88, routing: 'ACCEPT',  critical: false },
+            { en: 'Issuing Office',   es: 'Oficina Expedidora',          value: 'COMISARÍA DE BARCELONA',   confidence: 0.74, routing: 'REVIEW',  critical: false, note: 'Low confidence — partial occlusion' },
+        ],
+        audit: [
+            { ev: 'ingested',         t: '09:22:11.003', detail: 'PDF loaded — 1 page, 412 KB' },
+            { ev: 'extracted',        t: '09:22:11.509', detail: 'OCR complete — avg confidence 0.83 (medium quality)' },
+            { ev: 'extracted',        t: '09:22:12.134', detail: '10 fields extracted via GPT-4o structured output' },
+            { ev: 'routed',           t: '09:22:12.201', detail: '7 fields → AUTO_ACCEPT · 3 fields → HUMAN_REVIEW' },
+            { ev: 'review_requested', t: '09:22:12.208', detail: 'nie_number, address, issuing_office queued for review' },
+            { ev: 'complete',         t: '09:22:12.215', detail: 'Partial document — 3 fields pending human verification' },
+        ],
+        provText: `CERTIFICADO DE REGISTRO DE CIUDADANO DE LA UNIÓN
+──────────────────────────────────────────────────
+Número de identificación de extranjero (NIE):
+<mark class="review-mark">X-1234567-B</mark>  ⚠ HUMAN_REVIEW — critical field
+
+Apellidos / Cognome:               Nombre / Nome:
+<mark>ROSSI</mark>                             <mark>MARCO ANTONIO</mark>
+
+Fecha de nacimiento / Data di nascita:
+<mark>22 SEP 1990</mark>
+
+Nacionalidad / Nazionalità:
+<mark>ITALIANA</mark>
+
+──────────────────────────────────────────────────
+Domicilio en España / Domicilio in Spagna:
+<mark class="review-mark">C/ MAYOR, 15, 3º DCHA, BARCELONA</mark>  ⚠ HUMAN_REVIEW
+
+Municipio / Comune:
+<mark>BARCELONA</mark>
+
+Fecha de expedición / Data di rilascio:
+<mark>15 ENE 2023</mark>
+
+Oficina expedidora:
+<mark class="review-mark">COMISARÍA DE BARCELONA</mark>  ⚠ HUMAN_REVIEW`
+    },
+
+    birth: {
+        flag: '🇮🇹',
+        name: 'Birth Certificate',
+        sub: 'Acta de Nacimiento (traducción jurada)',
+        doctype: 'government_form',
+        processingTime: '2.1s',
+        fields: [
+            { en: 'Document Type',        es: 'Tipo de Documento',      value: 'ACTA DE NACIMIENTO',       confidence: 0.88, routing: 'ACCEPT', critical: false },
+            { en: 'Full Name',            es: 'Nombre Completo',        value: 'SOFIA BIANCHI',            confidence: 0.82, routing: 'ACCEPT', critical: false },
+            { en: "Father's Name",        es: 'Nombre del Padre',       value: 'GIUSEPPE BIANCHI',         confidence: 0.76, routing: 'ACCEPT', critical: false },
+            { en: "Mother's Name",        es: 'Nombre de la Madre',     value: 'MARIA CONTI',              confidence: 0.72, routing: 'REVIEW', critical: false, note: 'Low confidence — ink bleed on scan' },
+            { en: 'Date of Birth',        es: 'Fecha de Nacimiento',    value: '03 AGO 1998',              confidence: 0.78, routing: 'ACCEPT', critical: false },
+            { en: 'Place of Birth',       es: 'Lugar de Nacimiento',    value: 'MILANO, ITALIA',           confidence: 0.71, routing: 'REVIEW', critical: false, note: 'Ambiguous — OCR token boundary' },
+            { en: 'Registration Number',  es: 'Número de Registro',     value: '2847/98',                  confidence: 0.62, routing: 'REJECT', critical: false, note: 'Below minimum threshold (0.70)' },
+            { en: 'Civil Registry',       es: 'Registro Civil',         value: 'COMUNE DI MILANO',         confidence: 0.65, routing: 'REJECT', critical: false, note: 'Below minimum threshold (0.70)' },
+            { en: 'Translator Signature', es: 'Firma del Traductor',    value: '[illegible]',              confidence: 0.38, routing: 'REJECT', critical: false, note: 'Signature area severely degraded' },
+        ],
+        audit: [
+            { ev: 'ingested',         t: '10:05:44.007', detail: 'Scanned image loaded — 2 pages, 1.8 MB, 200 dpi' },
+            { ev: 'extracted',        t: '10:05:44.891', detail: 'OCR complete — avg confidence 0.64 (low quality scan)' },
+            { ev: 'extracted',        t: '10:05:45.712', detail: '9 fields extracted via GPT-4o structured output' },
+            { ev: 'routed',           t: '10:05:45.789', detail: '4 fields → AUTO_ACCEPT · 2 fields → HUMAN_REVIEW · 3 fields → AUTO_REJECT' },
+            { ev: 'review_requested', t: '10:05:45.795', detail: 'mother_name, place_of_birth queued for review' },
+            { ev: 'error',            t: '10:05:45.798', detail: 'registration_number, civil_registry, translator_signature rejected — manual entry required' },
+            { ev: 'complete',         t: '10:05:45.802', detail: 'Partial document — manual intervention required for 5 fields' },
+        ],
+        provText: `ACTA DE NACIMIENTO / ATTO DI NASCITA
+[Traducción jurada al español]
+──────────────────────────────────────────────────
+Nombre completo / Nome completo:
+<mark>SOFIA BIANCHI</mark>
+
+Padre / Padre:                     Madre / Madre:
+<mark>GIUSEPPE BIANCHI</mark>                  <mark class="review-mark">MARIA CONTI</mark>  ⚠ HUMAN_REVIEW
+
+Fecha de nacimiento / Data di nascita:
+<mark>03 AGO 1998</mark>
+
+Lugar de nacimiento / Luogo di nascita:
+<mark class="review-mark">MILANO, ITALIA</mark>  ⚠ HUMAN_REVIEW
+
+──────────────────────────────────────────────────
+Número de registro / Numero di registro:
+<mark class="reject-mark">2847/98</mark>  ✕ AUTO_REJECT (confidence 0.62)
+
+Registro civil / Ufficio di Stato Civile:
+<mark class="reject-mark">COMUNE DI MILANO</mark>  ✕ AUTO_REJECT (confidence 0.65)
+
+──────────────────────────────────────────────────
+Firma del traductor jurado:
+<mark class="reject-mark">[illegible]</mark>  ✕ AUTO_REJECT (confidence 0.38 — area severely degraded)`
+    }
+};
+
+// =====================================================================
+// State
+// =====================================================================
+let selectedDoc = 'passport';
+
+function selectDoc(el) {
+    document.querySelectorAll('.doc-card').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    selectedDoc = el.dataset.doc;
+}
+
+// =====================================================================
+// Processing
+// =====================================================================
+async function processDocument() {
+    const btn = document.getElementById('processBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>Processing…';
+
+    await new Promise(r => setTimeout(r, 1600 + Math.random() * 800));
+
+    renderResults(DOCS[selectedDoc]);
+
+    btn.disabled = false;
+    btn.textContent = 'Process Document';
+}
+
+function routingClass(r) {
+    if (r === 'ACCEPT') return 'accept';
+    if (r === 'REVIEW') return 'review';
+    return 'reject';
+}
+function routingLabel(r) {
+    if (r === 'ACCEPT') return 'AUTO_ACCEPT';
+    if (r === 'REVIEW') return 'HUMAN_REVIEW';
+    return 'AUTO_REJECT';
+}
+function confClass(c) {
+    if (c >= 0.90) return 'high';
+    if (c >= 0.70) return 'medium';
+    return 'low';
+}
+function randUuid() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+        const r = Math.random() * 16 | 0;
+        return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+}
+
+function renderResults(doc) {
+    // Show panel
+    document.getElementById('resultsEmpty').style.display = 'none';
+    document.getElementById('resultsContent').style.display = 'block';
+    document.getElementById('pipelineMeta').style.display = 'block';
+
+    // Summary row
+    document.getElementById('sumFlag').textContent = doc.flag;
+    document.getElementById('sumName').textContent = doc.name;
+    document.getElementById('sumSub').textContent = `${doc.doctype} · Contractex v0.2.0`;
+    const avgConf = doc.fields.reduce((a, f) => a + f.confidence, 0) / doc.fields.length;
+    document.getElementById('sumTime').textContent = `${doc.processingTime} · ${(avgConf * 100).toFixed(0)}% avg confidence`;
+
+    // Pipeline meta sidebar
+    document.getElementById('metaDocType').textContent = doc.doctype;
+    document.getElementById('metaFields').textContent = doc.fields.length;
+    document.getElementById('metaConf').textContent = (avgConf).toFixed(2);
+    document.getElementById('metaTime').textContent = doc.processingTime;
+    const nAccept = doc.fields.filter(f => f.routing === 'ACCEPT').length;
+    const nReview = doc.fields.filter(f => f.routing === 'REVIEW').length;
+    const nReject = doc.fields.filter(f => f.routing === 'REJECT').length;
+    document.getElementById('metaAccept').textContent = nAccept;
+    document.getElementById('metaReview').textContent = nReview;
+    document.getElementById('metaReject').textContent = nReject;
+
+    // Extraction table
+    const tbody = document.getElementById('extractionBody');
+    tbody.innerHTML = '';
+    doc.fields.forEach(f => {
+        const tr = document.createElement('tr');
+        const noteHtml = f.note
+            ? `<div class="${f.routing === 'REJECT' ? 'reject-note' : 'review-note'}">${f.note}</div>`
+            : '';
+        tr.innerHTML = `
+<td><span class="field-label">${f.en}${f.critical ? '<span class="critical-star" title="Critical field — stricter threshold">★</span>' : ''}</span>
+    <span class="field-es">${f.es}</span></td>
+<td><span class="field-value">${f.value}</span></td>
+<td><div class="conf-wrap">
+    <span class="conf-pct">${(f.confidence * 100).toFixed(0)}%</span>
+    <div class="conf-bar"><div class="conf-fill ${confClass(f.confidence)}" style="width:${f.confidence*100}%;"></div></div>
+</div></td>
+<td><span class="badge ${routingClass(f.routing)}">${routingLabel(f.routing)}</span>${noteHtml}</td>`;
+        tbody.appendChild(tr);
+    });
+
+    // Routing summary
+    document.getElementById('routingSummary').innerHTML = `
+<div class="routing-stat accept"><div class="n">${nAccept}</div><div class="lbl">AUTO_ACCEPT</div></div>
+<div class="routing-stat review"><div class="n">${nReview}</div><div class="lbl">HUMAN_REVIEW</div></div>
+<div class="routing-stat reject"><div class="n">${nReject}</div><div class="lbl">AUTO_REJECT</div></div>`;
+
+    // Provenance tab
+    document.getElementById('provText').innerHTML = doc.provText;
+
+    // Audit log
+    const timeline = document.getElementById('auditTimeline');
+    timeline.innerHTML = '';
+    doc.audit.forEach(ev => {
+        const d = document.createElement('div');
+        d.className = `audit-item ev-${ev.ev}`;
+        d.innerHTML = `
+<div class="audit-time">${ev.t}</div>
+<div class="audit-dot-col">
+    <div class="audit-dot"></div>
+    <div class="audit-line"></div>
+</div>
+<div>
+    <div class="audit-event-name">${ev.ev.replace('_', ' ')}</div>
+    <div class="audit-detail">${ev.detail}</div>
+    <div class="audit-uuid">${randUuid()}</div>
+</div>`;
+        timeline.appendChild(d);
+    });
+
+    // Reset to first tab
+    switchTab(document.querySelector('.tab-btn'), 'extraction');
+}
+
+// =====================================================================
+// Tab Switching
+// =====================================================================
+function switchTab(btn, tabId) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + tabId).classList.add('active');
+}
+</script>
+
+</body>
+</html>
