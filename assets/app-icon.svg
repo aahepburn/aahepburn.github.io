@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- Background -->
+  <rect width="1024" height="1024" rx="180" fill="#0a0a0a"/>
+
+  <!-- Signal arcs (left side, quiet/faint) -->
+  <path d="M 310 512 A 80 80 0 0 1 390 432" fill="none" stroke="#0b8b8b" stroke-width="36" stroke-linecap="round" opacity="0.25"/>
+  <path d="M 270 512 A 120 120 0 0 1 390 392" fill="none" stroke="#0b8b8b" stroke-width="36" stroke-linecap="round" opacity="0.5"/>
+  <path d="M 230 512 A 160 160 0 0 1 390 352" fill="none" stroke="#0b8b8b" stroke-width="36" stroke-linecap="round" opacity="0.75"/>
+
+  <!-- Signal arcs (right side, active) -->
+  <path d="M 714 512 A 80 80 0 0 0 634 432" fill="none" stroke="#0b8b8b" stroke-width="36" stroke-linecap="round" opacity="0.5"/>
+  <path d="M 754 512 A 120 120 0 0 0 634 392" fill="none" stroke="#0b8b8b" stroke-width="36" stroke-linecap="round" opacity="0.75"/>
+  <path d="M 794 512 A 160 160 0 0 0 634 352" fill="none" stroke="#0b8b8b" stroke-width="36" stroke-linecap="round"/>
+
+  <!-- Central chat bubble -->
+  <rect x="362" y="390" width="300" height="210" rx="32" fill="#0b8b8b"/>
+  <!-- Bubble tail -->
+  <polygon points="462,600 512,660 562,600" fill="#0b8b8b"/>
+
+  <!-- Dots inside bubble -->
+  <circle cx="452" cy="496" r="22" fill="#0a0a0a" opacity="0.85"/>
+  <circle cx="512" cy="496" r="22" fill="#0a0a0a" opacity="0.85"/>
+  <circle cx="572" cy="496" r="22" fill="#0a0a0a" opacity="0.85"/>
+</svg>
