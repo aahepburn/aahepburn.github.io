@@ -19,20 +19,6 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <nav>
-            <div class="nav-brand">Quiet Signals Lab</div>
-            <ul class="nav-links">
-                <li><a href="#services">Services</a></li>
-                <li><a href="#software">Software</a></li>
-                <li><a href="#work">Work</a></li>
-                <li><a href="#writing">Writing</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-
     <!-- Hero Section (Two-Column) -->
     <section class="hero">
         <div class="hero-left">
@@ -68,6 +54,21 @@
             </div>
         </div>
     </section>
+
+    <!-- Tab Navigation -->
+    <nav class="tab-nav" role="tablist" aria-label="Site sections">
+        <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="panel-services" data-panel="panel-services">Services</button>
+        <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-software" data-panel="panel-software">Software</button>
+        <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-work" data-panel="panel-work">Work</button>
+        <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-writing" data-panel="panel-writing">Writing</button>
+        <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-stack" data-panel="panel-stack">Stack</button>
+    </nav>
+
+    <!-- Tab Panels -->
+    <div class="tab-panels">
+
+    <!-- Panel: Services -->
+    <div class="tab-panel active" id="panel-services" role="tabpanel">
 
     <!-- Services -->
     <!-- OLD CARD LAYOUT
@@ -199,6 +200,10 @@
         </div>
     </section>
 
+    </div><!-- /panel-services -->
+
+    <!-- Panel: Software -->
+    <div class="tab-panel" id="panel-software" role="tabpanel">
 
     <!-- Software -->
     <section class="software" id="software">
@@ -242,6 +247,11 @@
 
         </div>
     </section>
+
+    </div><!-- /panel-software -->
+
+    <!-- Panel: Work -->
+    <div class="tab-panel" id="panel-work" role="tabpanel">
 
     <!-- Featured Work -->
     <section class="featured-work" id="work">
@@ -300,6 +310,11 @@
         </div>
     </section>
 
+    </div><!-- /panel-work -->
+
+    <!-- Panel: Writing -->
+    <div class="tab-panel" id="panel-writing" role="tabpanel">
+
     <!-- Writing -->
     <section class="writing" id="writing">
         <h2 class="section-title">Writing</h2>
@@ -323,6 +338,11 @@
         </div>
     </section>
 
+    </div><!-- /panel-writing -->
+
+    <!-- Panel: Stack -->
+    <div class="tab-panel" id="panel-stack" role="tabpanel">
+
     <!-- Tech Stack -->
     <section class="tech-stack">
         <h2 class="section-title">Stack & Methods</h2>
@@ -344,6 +364,10 @@
         </div>
     </section>
 
+    </div><!-- /panel-stack -->
+
+    </div><!-- /tab-panels -->
+
     <!-- Footer -->
     <footer>
         <div class="footer-links">
@@ -357,44 +381,55 @@
     </footer>
 
 
-    <!-- Scroll animation script -->
     <script>
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
+        // ── Tab navigation ──────────────────────────────────────────
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const ANIM_DURATION = 200;
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
-                }
+        function activatePanel(btn) {
+            const targetId = btn.dataset.panel;
+            const current = document.querySelector('.tab-panel.active');
+            const next = document.getElementById(targetId);
+            if (!next || current === next) return;
+
+            tabBtns.forEach(b => {
+                b.classList.remove('active');
+                b.setAttribute('aria-selected', 'false');
             });
-        }, observerOptions);
+            btn.classList.add('active');
+            btn.setAttribute('aria-selected', 'true');
 
-        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-    </script>
+            current.classList.add('exiting');
+            setTimeout(() => {
+                current.classList.remove('active', 'exiting');
+                next.classList.add('active');
+                next.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
+            }, ANIM_DURATION);
+        }
 
-    <!-- Accordion functionality -->
-    <script>
-        const buttons = document.querySelectorAll('.accordion-button');
+        tabBtns.forEach(btn => btn.addEventListener('click', () => activatePanel(btn)));
 
-        buttons.forEach(button => {
+        // Mark fade-in elements in the initial active panel as visible
+        document.querySelector('.tab-panel.active')
+            ?.querySelectorAll('.fade-in')
+            .forEach(el => el.classList.add('visible'));
+
+        // ── Accordion ───────────────────────────────────────────────
+        const accordionButtons = document.querySelectorAll('.accordion-button');
+
+        accordionButtons.forEach(button => {
             button.addEventListener('click', () => {
                 const isExpanded = button.getAttribute('aria-expanded') === 'true';
                 const content = button.nextElementSibling;
 
-                // Close all other items
-                buttons.forEach(otherButton => {
-                    if (otherButton !== button) {
-                        otherButton.setAttribute('aria-expanded', 'false');
-                        otherButton.classList.remove('expanded');
-                        otherButton.nextElementSibling.classList.remove('expanded');
+                accordionButtons.forEach(other => {
+                    if (other !== button) {
+                        other.setAttribute('aria-expanded', 'false');
+                        other.classList.remove('expanded');
+                        other.nextElementSibling.classList.remove('expanded');
                     }
                 });
 
-                // Toggle current item
                 button.setAttribute('aria-expanded', !isExpanded);
                 button.classList.toggle('expanded');
                 content.classList.toggle('expanded');
