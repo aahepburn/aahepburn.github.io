@@ -86,11 +86,11 @@ nav {
 .hero {
     max-width: var(--max-width);
     margin: 0 auto;
-    padding: var(--spacing-xl) var(--spacing-lg) var(--spacing-lg);
+    padding: 3.5rem var(--spacing-lg) var(--spacing-lg);
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--spacing-2xl);
-    align-items: start;
+    align-items: end;
     border-bottom: 1px solid var(--border-color);
 }
 
