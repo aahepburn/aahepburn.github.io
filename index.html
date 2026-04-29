@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Quiet Signals Lab - Full-stack data science and machine learning solutions for NLP, information retrieval, and production ML systems.">
+    <meta name="description" content="Quiet Signals Lab — ML & Privacy Engineer based in Amsterdam. AI systems for privacy-sensitive and regulated workflows: legal, immigration, healthcare-adjacent.">
     <meta name="author" content="Alexander Hepburn">
-    <title>Quiet Signals Lab | Machine Learning & Information Retrieval</title>
+    <title>Quiet Signals Lab | ML & Privacy Engineer — Amsterdam</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
@@ -25,7 +25,9 @@
             <div class="nav-brand">Quiet Signals Lab</div>
             <ul class="nav-links">
                 <li><a href="#services">Services</a></li>
+                <li><a href="#software">Software</a></li>
                 <li><a href="#work">Work</a></li>
+                <li><a href="#writing">Writing</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
         </nav>
@@ -37,7 +39,7 @@
             <h1>Quiet Signals<br>Lab</h1>
             <div class="hero-meta">
                 <div><span class="label">Alexander Hepburn</span></div>
-                <div>ML Engineer & Data Scientist</div>
+                <div>ML & Privacy Engineer</div>
                 <div>Amsterdam, NL</div>
             </div>
             <div class="social-buttons">
@@ -60,9 +62,9 @@
         </div>
         <div class="hero-right">
             <div class="hero-intro">
-                <p>
-                   I'm a data scientist and AI engineer based in Amsterdam with a background in information retrieval and applied ML research. <br><br>The interesting problem is rarely which model to use—it's how to structure the problem so the model is actually useful. That means knowing when a language model is the right tool, how to build retrieval systems that retrieve the right thing, and how to diagnose why a model that worked in development stops working in production.
-                </p>
+                <p>I build AI systems for privacy-sensitive and regulated workflows — legal, immigration, healthcare-adjacent — where reliability, provenance, and audit are architectural properties rather than features added after the fact.</p>
+                <p>The privacy engineering angle is structural rather than purely algorithmic. Deterministic state machines wrapping language model components, so the system's correctness doesn't depend on the model's good behaviour. Retrieval pipelines with full source-span provenance, so every generated claim is traceable. Local-first inference where data sovereignty matters, so sensitive material never leaves the client's infrastructure.</p>
+                <p>Background in information retrieval and applied ML research (MSc, University of Amsterdam, 2025).</p>
             </div>
         </div>
     </section>
@@ -105,9 +107,11 @@
                 </button>
                 <div class="accordion-content">
                     <div class="accordion-body">
-                        <p>A functional sales or support agent requires two things to work well: a clear model of the conversation it needs to have, and a reliable way to interpret what the user actually means at each step. I work with clients to build both — translating business logic into a structured system and implementing the AI layer that makes it responsive to real language.</p>
+                        <p>A functional sales or support agent needs two things: a clear model of the conversation it should have, and a reliable way to interpret what the user actually means at each step. I build both — the business logic as a deterministic state machine, with language model components inserted only where probabilistic behaviour is genuinely wanted (intent matching, paraphrase, extraction).</p>
 
-                        <p>Quiet Signals Lab operates a verified Meta messaging application that client businesses connect their Facebook Pages and Instagram accounts to. Rather than building a new integration for each client, businesses get access to a single tested and approved system — reducing setup time and ensuring consistent reliability across deployments.</p>
+                        <p>The architectural payoff is operational integrity. The agent cannot say something it wasn't authorised to say, every transition is logged, and the system's correctness doesn't move when the underlying model is updated by a vendor. This matters most where conversations carry liability — regulated industries, customer data flows, anything subject to audit.</p>
+
+                        <p>Quiet Signals Lab operates a verified Meta messaging application that client businesses connect their Facebook Pages and Instagram accounts to. Rather than building a new integration per client, businesses get access to a single tested and approved system.</p>
 
                         <p><strong>Deliverables:</strong></p>
                         <ul>
@@ -129,7 +133,9 @@
                 </button>
                 <div class="accordion-content">
                     <div class="accordion-body">
-                        <p>The part of a RAG system most likely to fail is retrieval. A model can only work with what it's given — if the retrieved context is wrong or poorly ranked, the answer will be too, regardless of the model. I build retrieval pipelines where chunking strategy, embedding selection, and reranking are treated as the core engineering problems. Backend uses Python and FastAPI, with support for local models (Ollama) and commercial providers (OpenAI, Mistral), and vector storage via ChromaDB or pgvector.</p>
+                        <p>The part of a RAG system most likely to fail is retrieval. A model can only work with what it's given; if the retrieved context is wrong or poorly ranked, the answer is wrong regardless of which model generates it. I build retrieval pipelines where chunking, embedding selection, and reranking are treated as the core engineering problems, and where every generated response carries provenance back to the source passages it was grounded in.</p>
+
+                        <p>For workflows where data can't leave the client's infrastructure, the entire stack runs locally — Ollama or vLLM for inference, ChromaDB or pgvector for storage, no third-party calls in the answer path. For less restrictive contexts, commercial providers (OpenAI, Mistral) substitute in cleanly. The architecture stays the same; only the inference target changes.</p>
 
                         <p><strong>Deliverables:</strong></p>
                         <ul>
@@ -143,22 +149,49 @@
                 </div>
             </div>
 
-            <!-- Item 3: Model Diagnostics -->
+            <!-- Item 3: Document Automation for Regulated Workflows -->
             <div class="accordion-item">
                 <button class="accordion-button" aria-expanded="false">
                     <span class="accordion-icon">+</span>
-                    <span class="accordion-text">Model Diagnostics</span>
+                    <span class="accordion-text">Document Automation for Regulated Workflows</span>
                 </button>
                 <div class="accordion-content">
                     <div class="accordion-body">
-                        <p>When a model degrades in production, there's usually a specific, isolatable reason — a shift in input distribution, a data quality issue, a pattern that didn't generalise. I run controlled ablation studies to identify and rank contributing factors, so fixes can be prioritised by evidence rather than intuition.</p>
+                        <p>Many regulated workflows still rest on people reading documents and copying fields into systems. The bottleneck is rarely volume — it's that the documents don't follow predictable schemas, and the cost of a wrong field (a misread date of birth, an inverted clause, a missed citation) is high enough that pure automation fails the reliability bar without further structure.</p>
+
+                        <p>I build pipelines that combine deterministic structure — OCR, layout parsing, defined-term and cross-reference resolution — with schema-constrained LLM extraction and per-field confidence scoring. Outputs route automatically: high confidence to acceptance, mid to human review, low to rejection. Every extracted field carries a provenance link back to its source span, and every pipeline event is logged for audit.</p>
+
+                        <p>The deterministic layers are built on Contractex, the open-source library released through Quiet Signals Lab.</p>
+
+                        <p><strong>Deliverables:</strong></p>
+                        <ul>
+                            <li>End-to-end pipeline from raw document to structured output</li>
+                            <li>Per-field confidence scoring with routed human-in-the-loop</li>
+                            <li>Provenance tracking with character-level source spans</li>
+                            <li>Audit-ready event logs for GDPR-compliant processing</li>
+                            <li>Integration with downstream CRM, filing, or PDF workflows</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 4: Model Integrity & Diagnostics -->
+            <div class="accordion-item">
+                <button class="accordion-button" aria-expanded="false">
+                    <span class="accordion-icon">+</span>
+                    <span class="accordion-text">Model Integrity & Diagnostics</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="accordion-body">
+                        <p>Production models fail in two registers. The familiar one: distribution shift, data quality issues, patterns that didn't generalise. The less familiar one, more relevant in regulated settings: memorisation of training data, susceptibility to extraction attacks, behaviour under adversarial input. I run controlled ablation studies on the first set and integrity probes on the second, so fixes can be prioritised by evidence and the system's failure surface is documented before it ships rather than after a security review surfaces it.</p>
 
                         <p><strong>Deliverables:</strong></p>
                         <ul>
                             <li>Root cause diagnosis with quantified impact analysis</li>
-                            <li>Ablation studies isolating contributing factors</li>
-                            <li>Recommendations ranked by priority</li>
+                            <li>Distribution shift analysis and ablation studies</li>
+                            <li>Memorisation and extraction surface testing</li>
                             <li>Documented failure modes and monitoring thresholds</li>
+                            <li>Recommendations ranked by priority</li>
                         </ul>
                     </div>
                 </div>
@@ -167,9 +200,52 @@
     </section>
 
 
+    <!-- Software -->
+    <section class="software" id="software">
+        <h2 class="section-title">Software</h2>
+        <p class="section-intro">Open-source releases from Quiet Signals Lab. The same architectural commitments — deterministic structure first, language model components only where probabilistic behaviour is genuinely needed, provenance and auditability built in — applied to libraries and tools that are free for anyone to use.</p>
+        <div class="project-list fade-in">
+
+            <div class="project-item">
+                <div class="project-meta">
+                    <h3 class="project-title">Contractex</h3>
+                    <div class="project-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">LLM extraction</span>
+                        <span class="tag">OCR</span>
+                        <span class="tag">Provenance</span>
+                        <span class="tag">Open source</span>
+                    </div>
+                </div>
+                <div class="project-detail">
+                    <p class="project-desc">A Python library for building document processing pipelines in legal and regulated workflows. The architecture is deterministic-first: a structural parsing layer (clause hierarchy, defined-terms registry, cross-reference resolution) runs without any model calls, schema-constrained LLM extraction sits on top of it, and every produced field carries a SourceSpan record back to the original document. Includes a ConfidenceRouter for automatic field-level routing and an AuditLogger for compliance-grade event trails.</p>
+                    <a href="https://github.com/Quiet-Signals-Lab/Contractex-Legal-Tech-Library" target="_blank" rel="noopener noreferrer" class="project-link">View on GitHub →</a>
+                </div>
+            </div>
+
+            <div class="project-item">
+                <div class="project-meta">
+                    <h3 class="project-title">RAG Assistant for Zotero</h3>
+                    <div class="project-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">React</span>
+                        <span class="tag">Electron</span>
+                        <span class="tag">ChromaDB</span>
+                        <span class="tag">Open source</span>
+                    </div>
+                </div>
+                <div class="project-detail">
+                    <p class="project-desc">A desktop application for semantic search over Zotero research libraries. Designed for researchers who need to navigate large literature collections and get answers with clear source attribution — not summaries that obscure where the information came from. Supports local LLMs end-to-end, so libraries containing preprints, embargoed work, or sensitive material never leave the user's machine.</p>
+                    <a href="https://github.com/aahepburn/RAG-Assistant-for-Zotero" target="_blank" rel="noopener noreferrer" class="project-link">View on GitHub →</a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
     <!-- Featured Work -->
     <section class="featured-work" id="work">
-        <h2 class="section-title">Portfolio</h2>
+        <h2 class="section-title">Selected Work</h2>
         <div class="project-list fade-in">
 
             <div class="project-item">
@@ -183,41 +259,7 @@
                     </div>
                 </div>
                 <div class="project-detail">
-                    <p class="project-desc">A configurable sales agent built on the Quiet Signals Lab Meta messaging platform, deployed for a social media marketing agency. The system takes a client's sales methodology and translates it into structured dialogue flows: branching logic, objection handling, and fallback behaviour for unexpected inputs. The language model handles intent recognition at each step; all business logic and responses are defined separately. Because the platform is shared infrastructure, new client accounts can be onboarded without rebuilding the underlying integration.</p>
-                </div>
-            </div>
-
-            <div class="project-item">
-                <div class="project-meta">
-                    <h3 class="project-title">RAG Assistant for Zotero</h3>
-                    <div class="project-tags">
-                        <span class="tag">Python</span>
-                        <span class="tag">React</span>
-                        <span class="tag">Electron</span>
-                        <span class="tag">ChromaDB</span>
-                    </div>
-                    <span class="project-type">Open source</span>
-                </div>
-                <div class="project-detail">
-                    <p class="project-desc">A desktop application for semantic search over Zotero research libraries. Designed for researchers who need to navigate large literature collections and get answers with clear source attribution — not summaries that obscure where the information came from. Supports local LLMs for full data privacy.</p>
-                    <a href="https://github.com/aahepburn/RAG-Assistant-for-Zotero" target="_blank" rel="noopener noreferrer" class="project-link">View on GitHub →</a>
-                </div>
-            </div>
-
-            <div class="project-item">
-                <div class="project-meta">
-                    <h3 class="project-title">Model Robustness Under Distribution Shift</h3>
-                    <div class="project-tags">
-                        <span class="tag">Python</span>
-                        <span class="tag">PyTorch</span>
-                        <span class="tag">NLP</span>
-                        <span class="tag">Multi-task Learning</span>
-                    </div>
-                    <span class="project-type">MSc thesis · UvA 2025</span>
-                </div>
-                <div class="project-detail">
-                    <p class="project-desc">An empirical study of whether multi-task learning can improve NLP model robustness when input or label distributions shift between training and deployment. The experimental setting was persuasion detection across two domains — Ukraine conflict and climate change — confirmed to be meaningfully different before any modelling began. The central finding: multi-task learning helps most in low-resource, class-imbalanced settings, where the auxiliary task provides indirect data augmentation. In stable, data-rich settings, single-task models remain competitive.</p>
-                    <a href="https://github.com/aahepburn/Multi-Task-Propaganda-Detection" target="_blank" rel="noopener noreferrer" class="project-link">View on GitHub →</a>
+                    <p class="project-desc">A configurable sales agent deployed for a social media marketing agency, running on the Quiet Signals Lab Meta messaging platform. The conversation logic is a deterministic state machine — branching, objection handling, escalation — with the language model used at one specific point: scoring which authored branch best matches what the user said. Responses are defined in YAML, never generated. New client accounts onboard onto the shared platform without rebuilding the underlying integration.</p>
                 </div>
             </div>
 
@@ -226,15 +268,14 @@
                     <h3 class="project-title">Legal Information AI Chatbot</h3>
                     <div class="project-tags">
                         <span class="tag">Python</span>
-                        <span class="tag">Contractex</span>
                         <span class="tag">RAG</span>
                         <span class="tag">pgvector</span>
                         <span class="tag">FastAPI</span>
+                        <span class="tag">Built on Contractex</span>
                     </div>
-                    <span class="project-type">Interactive demo</span>
                 </div>
                 <div class="project-detail">
-                    <p class="project-desc">A RAG-powered chatbot that continuously ingests and indexes trusted U.S. legal sources — Cornell LII, Justia, FindLaw, United States Courts — and answers natural-language queries with source citations and provenance-tracked chunks. Built on Contractex: URLLoader handles ETag-gated incremental sync; SemanticChunker produces 512-token windows; ProvenanceTracker attaches SourceSpan records to every response; AuditLogger records the full pipeline event trail. Informational responses only, with a mandatory disclaimer on every answer.</p>
+                    <p class="project-desc">A retrieval system over trusted U.S. legal sources — Cornell LII, Justia, FindLaw, United States Courts — answering natural-language queries with citations and source-span provenance for every claim. Built on Contractex: incremental ETag-gated ingestion as sources update, semantic chunking and reranking, audit logging across the full pipeline. Responses are explicitly informational and carry a disclaimer on every answer — a hard constraint, not a footnote, given the domain.</p>
                     <a href="/legal-chatbot-demo.html" class="project-link">View Live Demo →</a>
                 </div>
             </div>
@@ -244,16 +285,38 @@
                     <h3 class="project-title">Immigration Document Automation</h3>
                     <div class="project-tags">
                         <span class="tag">Python</span>
-                        <span class="tag">Contractex</span>
                         <span class="tag">OCR</span>
                         <span class="tag">LLM Extraction</span>
-                        <span class="tag">ConfidenceRouter</span>
+                        <span class="tag">Provenance</span>
+                        <span class="tag">Built on Contractex</span>
                     </div>
-                    <span class="project-type">Interactive demo</span>
                 </div>
                 <div class="project-detail">
-                    <p class="project-desc">An end-to-end document processing pipeline for immigration law firms: OCR ingestion of passports, NIE certificates, and birth certificates; structured LLM extraction of typed fields; per-field confidence scoring with automatic routing (auto-accept / human review / auto-reject); provenance tracking with character-level source spans; and a full audit trail for GDPR-compliant processing logs. Built on Contractex's LegalDocument model, ConfidenceRouter, ProvenanceTracker, and AuditLogger. Designed to push structured output directly into CRM or PDF filling workflows.</p>
+                    <p class="project-desc">A document processing pipeline for immigration law firms. OCR ingestion of passports, NIE certificates, and birth certificates; schema-constrained LLM extraction of typed fields; per-field confidence scoring with automatic routing — auto-accept, human review, or auto-reject. Every extracted field carries a character-level provenance span back to the source; every pipeline event is logged for GDPR-compliant audit. Built on Contractex; structured outputs integrate downstream into CRM or PDF filling workflows.</p>
                     <a href="/immigration-doc-demo.html" class="project-link">View Live Demo →</a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Writing -->
+    <section class="writing" id="writing">
+        <h2 class="section-title">Writing</h2>
+        <p class="section-intro">Notes and longer-form pieces on the engineering and architecture problems behind the work.</p>
+        <div class="project-list fade-in">
+
+            <div class="project-item">
+                <div class="project-meta">
+                    <h3 class="project-title">Multi-Task Learning as Inductive Bias Under Distribution Shift</h3>
+                    <div class="project-tags">
+                        <span class="tag">Medium</span>
+                        <span class="tag">April 2026</span>
+                    </div>
+                </div>
+                <div class="project-detail">
+                    <p class="project-desc">A condensed account of the MSc thesis (UvA, 2025). The question: can multi-task learning act as a structural buffer against the performance loss models suffer when training and deployment distributions diverge — not by treating the symptom with more data, but by changing the architecture itself? The methodological core is a four-ablation design that isolates <em>why</em> MTL helps, including a data-duplication control that separates the contribution of task interaction from raw exposure to more labelled data. Headline finding: MTL helps most when conditions are hardest (data scarcity, class imbalance, large distributional shift) and can hurt under easier conditions — useful to know when deciding which architecture to reach for in production.</p>
+                    <a href="https://medium.com/@aahepburn/multi-task-learning-as-inductive-bias-under-distribution-shift-377c4c58e9cc" target="_blank" rel="noopener noreferrer" class="project-link">Read on Medium →</a>
                 </div>
             </div>
 
