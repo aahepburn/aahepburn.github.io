@@ -12,8 +12,8 @@
     --spacing-sm: 1rem;
     --spacing-md: 1.5rem;
     --spacing-lg: 2rem;
-    --spacing-xl: 3rem;
-    --spacing-2xl: 4rem;
+    --spacing-xl: 2rem;
+    --spacing-2xl: 2.5rem;
     
     /* Container widths */
     --max-width: 1200px;
@@ -59,10 +59,9 @@ nav {
 }
 
 .nav-brand {
-    font-family: 'Avenir Next', 'Avenir', -apple-system, BlinkMacSystemFont, sans-serif;
     font-weight: 600;
-    font-size: 1rem;
-    letter-spacing: -0.3px;
+    font-size: 0.9rem;
+    letter-spacing: 0;
 }
 
 .nav-links {
@@ -102,8 +101,7 @@ nav {
 }
 
 .hero h1 {
-    font-family: 'Avenir Next', 'Avenir', -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 4.5rem;
+    font-size: 4rem;
     font-weight: 700;
     line-height: 1;
     margin-bottom: var(--spacing-lg);
@@ -184,12 +182,12 @@ nav {
 }
 
 .section-title {
-    font-family: 'Avenir Next', 'Avenir', -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: var(--spacing-xl);
-    letter-spacing: -0.5px;
-    color: var(--primary-text);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--secondary-text);
+    margin-bottom: var(--spacing-lg);
 }
 
 /* OLD CARD STYLES - COMMENTED OUT */
@@ -223,12 +221,10 @@ nav {
 
 /* ============ ACCORDION STYLES ============ */
 .accordion {
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
+    border-top: 1px solid var(--border-color);
     overflow: hidden;
     max-width: 1000px;
     margin: 0 auto;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .accordion-item {
@@ -241,7 +237,7 @@ nav {
 
 .accordion-button {
     width: 100%;
-    padding: 24px 28px;
+    padding: 16px 0;
     background: transparent;
     border: none;
     text-align: left;
@@ -249,15 +245,15 @@ nav {
     display: flex;
     align-items: flex-start;
     gap: 14px;
-    font-family: 'Avenir Next', 'Avenir', -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 17px;
+    font-family: inherit;
+    font-size: 0.95rem;
     font-weight: 500;
     color: var(--primary-text);
-    transition: background-color 200ms ease;
+    transition: color 200ms ease;
 }
 
 .accordion-button:hover {
-    background-color: var(--light-bg);
+    color: var(--accent);
 }
 
 .accordion-button:focus-visible {
@@ -297,8 +293,8 @@ nav {
 }
 
 .accordion-body {
-    padding: 0 28px 28px 60px;
-    font-size: 15px;
+    padding: 0 0 18px 28px;
+    font-size: 0.875rem;
     line-height: 1.8;
     color: var(--secondary-text);
 }
@@ -424,7 +420,54 @@ nav {
     gap: 0.75rem;
 }
 
-/* ============ TECH STACK ============ */
+/* ============ PROJECT LIST (flat, publication-style) ============ */
+.project-list {
+    border-top: 1px solid var(--border-color);
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.project-item {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: var(--spacing-xl);
+    padding: var(--spacing-lg) 0;
+    border-bottom: 1px solid var(--border-color);
+    align-items: start;
+}
+
+.project-meta .project-title {
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: var(--primary-text);
+    line-height: 1.4;
+}
+
+.project-meta .project-tags {
+    margin-bottom: 0.5rem;
+}
+
+.project-type {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--secondary-text);
+    margin-top: 0.5rem;
+    font-style: italic;
+}
+
+.project-detail .project-desc {
+    margin-bottom: var(--spacing-sm);
+    flex-grow: unset;
+}
+
+.project-detail .project-link {
+    display: inline;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: color 0.2s;
+}
 .tech-stack {
     max-width: var(--max-width);
     margin: 0 auto;
@@ -693,6 +736,11 @@ footer {
 
     .projects-grid {
         grid-template-columns: 1fr;
+    }
+
+    .project-item {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-sm);
     }
 
     .services-grid {

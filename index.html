@@ -170,14 +170,11 @@
     <!-- Featured Work -->
     <section class="featured-work" id="work">
         <h2 class="section-title">Portfolio</h2>
-        <div class="projects-grid fade-in">
-            <div class="project-card">
-                <div class="project-image">
-                    <img src="assets/meta_sales_bot.png" alt="Meta AI Sales Bot for an SMM Agency">
-                </div>
-                <div class="project-content">
+        <div class="project-list fade-in">
+
+            <div class="project-item">
+                <div class="project-meta">
                     <h3 class="project-title">Meta AI Sales Bot for an SMM Agency</h3>
-                    <p class="project-desc">A configurable sales agent built on the Quiet Signals Lab Meta messaging platform, deployed for a social media marketing agency. The system takes a client's sales methodology and translates it into structured dialogue flows: branching logic, objection handling, and fallback behaviour for unexpected inputs. The language model handles intent recognition at each step; all business logic and responses are defined separately. Because the platform is shared infrastructure, new client accounts can be onboarded without rebuilding the underlying integration.</p>
                     <div class="project-tags">
                         <span class="tag">Python</span>
                         <span class="tag">Meta API</span>
@@ -185,50 +182,48 @@
                         <span class="tag">FastAPI</span>
                     </div>
                 </div>
+                <div class="project-detail">
+                    <p class="project-desc">A configurable sales agent built on the Quiet Signals Lab Meta messaging platform, deployed for a social media marketing agency. The system takes a client's sales methodology and translates it into structured dialogue flows: branching logic, objection handling, and fallback behaviour for unexpected inputs. The language model handles intent recognition at each step; all business logic and responses are defined separately. Because the platform is shared infrastructure, new client accounts can be onboarded without rebuilding the underlying integration.</p>
+                </div>
             </div>
 
-            <div class="project-card">
-                <div class="project-image">
-                    <img src="assets/zotero_rag.png" alt="RAG Assistant for Zotero">
-                </div>
-                <div class="project-content">
+            <div class="project-item">
+                <div class="project-meta">
                     <h3 class="project-title">RAG Assistant for Zotero</h3>
-                    <p class="project-desc">A desktop application for semantic search over Zotero research libraries. Designed for researchers who need to navigate large literature collections and get answers with clear source attribution — not summaries that obscure where the information came from. Supports local LLMs for full data privacy. Open source.</p>
                     <div class="project-tags">
                         <span class="tag">Python</span>
                         <span class="tag">React</span>
                         <span class="tag">Electron</span>
                         <span class="tag">ChromaDB</span>
                     </div>
+                    <span class="project-type">Open source</span>
+                </div>
+                <div class="project-detail">
+                    <p class="project-desc">A desktop application for semantic search over Zotero research libraries. Designed for researchers who need to navigate large literature collections and get answers with clear source attribution — not summaries that obscure where the information came from. Supports local LLMs for full data privacy.</p>
                     <a href="https://github.com/aahepburn/RAG-Assistant-for-Zotero" target="_blank" rel="noopener noreferrer" class="project-link">View on GitHub →</a>
                 </div>
             </div>
 
-            <div class="project-card">
-                <div class="project-image">
-                    <img src="assets/diagnostics.png" alt="Model Robustness Under Distribution Shift">
-                </div>
-                <div class="project-content">
-                    <h3 class="project-title">Model Robustness Under Distribution Shift (MSc thesis, UvA 2025)</h3>
-                    <p class="project-desc">An empirical study of whether multi-task learning can improve NLP model robustness when input or label distributions shift between training and deployment. The experimental setting was persuasion detection across two domains — Ukraine conflict and climate change — confirmed to be meaningfully different before any modelling began.<br><br>The central finding: multi-task learning helps most in low-resource, class-imbalanced settings, where the auxiliary task provides indirect data augmentation. In stable, data-rich settings, single-task models remain competitive.</p>
+            <div class="project-item">
+                <div class="project-meta">
+                    <h3 class="project-title">Model Robustness Under Distribution Shift</h3>
                     <div class="project-tags">
                         <span class="tag">Python</span>
                         <span class="tag">PyTorch</span>
                         <span class="tag">NLP</span>
                         <span class="tag">Multi-task Learning</span>
                     </div>
+                    <span class="project-type">MSc thesis · UvA 2025</span>
+                </div>
+                <div class="project-detail">
+                    <p class="project-desc">An empirical study of whether multi-task learning can improve NLP model robustness when input or label distributions shift between training and deployment. The experimental setting was persuasion detection across two domains — Ukraine conflict and climate change — confirmed to be meaningfully different before any modelling began. The central finding: multi-task learning helps most in low-resource, class-imbalanced settings, where the auxiliary task provides indirect data augmentation. In stable, data-rich settings, single-task models remain competitive.</p>
                     <a href="https://github.com/aahepburn/Multi-Task-Propaganda-Detection" target="_blank" rel="noopener noreferrer" class="project-link">View on GitHub →</a>
                 </div>
             </div>
 
-            <div class="project-card">
-                <div class="project-image" style="background:linear-gradient(135deg,#083d3d 0%,#0b8b8b 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;">
-                    <span style="font-size:2.8rem;line-height:1;">⚖️</span>
-                    <span style="color:rgba(255,255,255,0.85);font-size:0.75rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;">Interactive Demo</span>
-                </div>
-                <div class="project-content">
+            <div class="project-item">
+                <div class="project-meta">
                     <h3 class="project-title">Legal Information AI Chatbot</h3>
-                    <p class="project-desc">A RAG-powered chatbot that continuously ingests and indexes trusted U.S. legal sources — Cornell LII, Justia, FindLaw, United States Courts — and answers natural-language queries with source citations and provenance-tracked chunks.<br><br>Built on Contractex: URLLoader handles ETag-gated incremental sync; SemanticChunker produces 512-token windows; ProvenanceTracker attaches SourceSpan records to every response; AuditLogger records the full pipeline event trail. Informational responses only, with a mandatory disclaimer on every answer.</p>
                     <div class="project-tags">
                         <span class="tag">Python</span>
                         <span class="tag">Contractex</span>
@@ -236,18 +231,17 @@
                         <span class="tag">pgvector</span>
                         <span class="tag">FastAPI</span>
                     </div>
+                    <span class="project-type">Interactive demo</span>
+                </div>
+                <div class="project-detail">
+                    <p class="project-desc">A RAG-powered chatbot that continuously ingests and indexes trusted U.S. legal sources — Cornell LII, Justia, FindLaw, United States Courts — and answers natural-language queries with source citations and provenance-tracked chunks. Built on Contractex: URLLoader handles ETag-gated incremental sync; SemanticChunker produces 512-token windows; ProvenanceTracker attaches SourceSpan records to every response; AuditLogger records the full pipeline event trail. Informational responses only, with a mandatory disclaimer on every answer.</p>
                     <a href="/legal-chatbot-demo.html" class="project-link">View Live Demo →</a>
                 </div>
             </div>
 
-            <div class="project-card">
-                <div class="project-image" style="background:linear-gradient(135deg,#1a2744 0%,#2563eb 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;">
-                    <span style="font-size:2.8rem;line-height:1;">📄</span>
-                    <span style="color:rgba(255,255,255,0.85);font-size:0.75rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;">Interactive Demo</span>
-                </div>
-                <div class="project-content">
+            <div class="project-item">
+                <div class="project-meta">
                     <h3 class="project-title">Immigration Document Automation</h3>
-                    <p class="project-desc">An end-to-end document processing pipeline for immigration law firms: OCR ingestion of passports, NIE certificates, and birth certificates; structured LLM extraction of typed fields; per-field confidence scoring with automatic routing (auto-accept / human review / auto-reject); provenance tracking with character-level source spans; and a full audit trail for GDPR-compliant processing logs.<br><br>Built on Contractex's LegalDocument model, ConfidenceRouter, ProvenanceTracker, and AuditLogger. Designed to push structured output directly into CRM or PDF filling workflows.</p>
                     <div class="project-tags">
                         <span class="tag">Python</span>
                         <span class="tag">Contractex</span>
@@ -255,6 +249,10 @@
                         <span class="tag">LLM Extraction</span>
                         <span class="tag">ConfidenceRouter</span>
                     </div>
+                    <span class="project-type">Interactive demo</span>
+                </div>
+                <div class="project-detail">
+                    <p class="project-desc">An end-to-end document processing pipeline for immigration law firms: OCR ingestion of passports, NIE certificates, and birth certificates; structured LLM extraction of typed fields; per-field confidence scoring with automatic routing (auto-accept / human review / auto-reject); provenance tracking with character-level source spans; and a full audit trail for GDPR-compliant processing logs. Built on Contractex's LegalDocument model, ConfidenceRouter, ProvenanceTracker, and AuditLogger. Designed to push structured output directly into CRM or PDF filling workflows.</p>
                     <a href="/immigration-doc-demo.html" class="project-link">View Live Demo →</a>
                 </div>
             </div>
