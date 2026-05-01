@@ -19,17 +19,6 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Site header -->
-    <header>
-        <nav>
-            <a class="nav-brand" href="/">Quiet Signals Lab</a>
-            <ul class="nav-links">
-                <li><a href="/writing/">Writing</a></li>
-                <li><a href="mailto:hello@quietsignalslab.com">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-
     <!-- Hero Section (Two-Column) -->
     <section class="hero">
         <div class="hero-left">
@@ -72,6 +61,7 @@
         <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="panel-services" data-panel="panel-services">Services</button>
         <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-software" data-panel="panel-software">Software</button>
         <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-work" data-panel="panel-work">Work</button>
+        <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-writing" data-panel="panel-writing">Writing</button>
     </nav>
 
     <!-- Tab Panels -->
@@ -322,6 +312,47 @@
     </section>
 
     </div><!-- /panel-work -->
+
+    <!-- Panel: Writing -->
+    <div class="tab-panel" id="panel-writing" role="tabpanel">
+
+    <section class="writing" id="writing">
+        <h2 class="section-title">Writing</h2>
+        <p class="section-intro">Long-form technical pieces on ML privacy, membership inference, retrieval systems, and the engineering problems behind privacy-sensitive AI. Four to eight pieces per year. <a href="/writing/" style="color:var(--accent);font-weight:500;text-decoration:none;">Visit the writing section →</a></p>
+        <div class="project-list fade-in">
+
+            <div class="project-item">
+                <div class="project-meta">
+                    <h3 class="project-title"><a href="/writing/example-post/" style="color:inherit;text-decoration:none;">Membership Inference at the Threshold: Likelihood Ratios and What They Expose</a></h3>
+                    <div class="project-tags">
+                        <span class="tag">ML Privacy</span>
+                        <span class="tag">May 2026</span>
+                    </div>
+                </div>
+                <div class="project-detail">
+                    <p class="project-desc">Training samples sit closer to the decision boundary than non-members — here is what that means in practice, and what the ROC curve actually tells you about your model's privacy surface.</p>
+                    <a href="/writing/example-post/" class="project-link">Read →</a>
+                </div>
+            </div>
+
+            <div class="project-item">
+                <div class="project-meta">
+                    <h3 class="project-title"><a href="/writing/multi-task-learning-distribution-shift/" style="color:inherit;text-decoration:none;">Multi-Task Learning as Inductive Bias Under Distribution Shift</a></h3>
+                    <div class="project-tags">
+                        <span class="tag">ML Systems</span>
+                        <span class="tag">April 2026</span>
+                    </div>
+                </div>
+                <div class="project-detail">
+                    <p class="project-desc">Four controlled ablations that isolate when multi-task learning helps, when it hurts, and why — including the data-duplication control that separates task interaction from raw data volume.</p>
+                    <a href="/writing/multi-task-learning-distribution-shift/" class="project-link">Read →</a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    </div><!-- /panel-writing -->
 
     </div><!-- /tab-panels -->
 
