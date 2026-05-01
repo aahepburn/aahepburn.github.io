@@ -126,27 +126,6 @@
     --w-lh-code:  1.6;
 }
 
-/* ── Dark mode tokens ───────────────────────────────────────────────────
-   Not a simple inversion. Light mode: warm-near-white on warm-near-black.
-   Dark mode keeps the same warmth: the background is a deep warm gray
-   (#1a1917), text is warm off-white (#e8e4d9). The accent lightens to
-   #d4893a so it stays distinguishable on dark backgrounds without
-   neon-glow weight. Code background is a step lighter than the page.
-   ---------------------------------------------------------------------- */
-@media (prefers-color-scheme: dark) {
-    :root {
-        --w-bg:        #1a1917;
-        --w-text:      #e8e4d9;
-        --w-secondary: #9a9690;
-        --w-accent:    #d4893a;
-        --w-accent-dark: #c07828;
-        --w-border:    #2e2c28;
-        --w-code-bg:   #252320;
-        --w-code-text: #d4cfc6;
-        --w-mark-bg:   rgba(212, 137, 58, 0.18);
-    }
-}
-
 /* ── Reset / base ───────────────────────────────────────────────────── */
 *, *::before, *::after {
     box-sizing: border-box;
@@ -551,16 +530,6 @@ body {
 
 .token.regex,
 .token.important      { color: #d97b4a; font-weight: bold; }
-
-@media (prefers-color-scheme: dark) {
-    .token.comment,
-    .token.prolog     { color: #6a7179; }
-    .token.number,
-    .token.boolean    { color: #e09060; }
-    .token.string,
-    .token.char       { color: #7dc98a; }
-    .token.function   { color: #b08de0; }
-}
 
 /* ── Figures and captions ────────────────────────────────────────────── */
 .article-body figure {
