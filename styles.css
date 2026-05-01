@@ -1,11 +1,11 @@
 /* ============ CSS VARIABLES ============ */
 :root {
-    --primary-bg: #ffffff;
+    --primary-bg: #f7f5f1;
     --primary-text: #0a0a0a;
     --secondary-text: #626262;
-    --accent: #0b8b8b;
-    --border-color: #f0f0f0;
-    --light-bg: #fafafa;
+    --accent: #be6e19;
+    --border-color: #dedad3;
+    --light-bg: #edeae3;
     
     /* Spacing */
     --spacing-xs: 0.5rem;
@@ -45,7 +45,7 @@ header {
     border-bottom: 1px solid var(--border-color);
     z-index: 100;
     backdrop-filter: blur(8px);
-    background-color: rgba(255, 255, 255, 0.95);
+    background-color: rgba(247, 245, 241, 0.95);
 }
 
 nav {
@@ -91,7 +91,7 @@ nav {
     grid-template-columns: 1fr 1fr;
     gap: var(--spacing-2xl);
     align-items: end;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 2px solid var(--primary-text);
 }
 
 .hero-left {
@@ -186,8 +186,17 @@ nav {
     font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--secondary-text);
+    color: var(--accent);
     margin-bottom: var(--spacing-lg);
+}
+
+.section-title::before {
+    content: '';
+    display: block;
+    width: 1.75rem;
+    height: 2px;
+    background: currentColor;
+    margin-bottom: 0.5rem;
 }
 
 /* OLD CARD STYLES - COMMENTED OUT */
@@ -272,6 +281,10 @@ nav {
     font-weight: 300;
     transition: transform 300ms ease;
     margin-top: 2px;
+}
+
+.accordion-button.expanded {
+    color: var(--accent);
 }
 
 .accordion-button.expanded .accordion-icon {
@@ -406,7 +419,7 @@ nav {
 
 .tag {
     display: inline-block;
-    background: #f0f0f0;
+    background: var(--light-bg);
     color: var(--secondary-text);
     padding: 0.3rem 0.7rem;
     border-radius: 12px;
@@ -667,7 +680,7 @@ footer {
     top: 0;
     z-index: 100;
     backdrop-filter: blur(8px);
-    background-color: rgba(255, 255, 255, 0.95);
+    background-color: rgba(247, 245, 241, 0.95);
 }
 
 .tab-btn {
