@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Technical writing by Alexander Hepburn on ML privacy, membership inference, RAG systems, and the engineering problems behind privacy-sensitive AI.">
+    <meta name="author" content="Alexander Hepburn">
+
+    <!-- Open Graph -->
+    <meta property="og:type"        content="website">
+    <meta property="og:title"       content="Writing — Quiet Signals Lab">
+    <meta property="og:description" content="Long-form technical pieces on ML privacy, membership inference, document intelligence, and the engineering problems behind privacy-sensitive AI.">
+    <meta property="og:url"         content="https://quietsignalslab.com/writing/">
+    <meta property="og:site_name"   content="Quiet Signals Lab">
+
+    <!-- Twitter card -->
+    <meta name="twitter:card"        content="summary">
+    <meta name="twitter:title"       content="Writing — Quiet Signals Lab">
+    <meta name="twitter:description" content="Long-form technical pieces on ML privacy and adjacent topics.">
+
+    <link rel="canonical" href="https://quietsignalslab.com/writing/">
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml"
+          title="Quiet Signals Lab — Writing"
+          href="https://quietsignalslab.com/writing/feed.xml">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+
+    <!-- Fonts preloaded: Latin subsets only, no external requests -->
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+          href="/fonts/source-serif-4-latin-400.woff2">
+
+    <link rel="stylesheet" href="/writing/writing.css">
+
+    <title>Writing — Quiet Signals Lab</title>
+</head>
+<body>
+
+    <!-- Site header -->
+    <header class="site-header" role="banner">
+        <div class="site-header-inner">
+            <a class="site-brand" href="/">Quiet Signals Lab</a>
+            <nav aria-label="Site navigation">
+                <ul class="site-nav">
+                    <li><a href="/writing/" aria-current="page">Writing</a></li>
+                    <li class="site-nav-secondary"><a href="/#services">Services</a></li>
+                    <li class="site-nav-secondary"><a href="mailto:hello@quietsignalslab.com">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main content -->
+    <main>
+        <div class="writing-index">
+
+            <header class="writing-index-header">
+                <h1>Writing</h1>
+                <p>Long-form technical pieces on ML privacy, membership inference,
+                   retrieval systems, and the engineering problems behind
+                   privacy-sensitive AI. Four to eight pieces per year.
+                   <a href="/writing/feed.xml">RSS feed</a>.</p>
+            </header>
+
+            <!-- Post list — reverse chronological order.
+                 To add a new post: prepend a new <li> here and update feed.xml.
+                 See /writing/README.md for the full workflow. -->
+            <ol class="post-list" reversed>
+
+                <li class="post-list-item">
+                    <a class="post-list-link" href="/writing/example-post/">
+                        <h2 class="post-list-title">
+                            Membership Inference at the Threshold: Likelihood Ratios and What They Expose
+                        </h2>
+                        <p class="post-list-desc">
+                            The attack is geometrically simple: training samples sit closer to the
+                            decision boundary than non-members. Here is what that means in practice,
+                            why likelihood ratio tests are the right lens for it, and what the ROC
+                            curve actually tells you about your model's privacy surface.
+                        </p>
+                        <div class="post-list-meta">
+                            <time datetime="2026-05-01">1 May 2026</time>
+                            <span class="sep" aria-hidden="true">·</span>
+                            <span>14 min read</span>
+                        </div>
+                    </a>
+                </li>
+
+                <!-- Older posts go below this line, newest first -->
+
+            </ol>
+
+        </div>
+    </main>
+
+    <!-- Site footer -->
+    <footer class="site-footer">
+        <p>Quiet Signals Lab · KvK 99556650 · VAT: NL005394204B58</p>
+        <p>This site does not use cookies or tracking technologies. <a href="/privacy">Privacy Notice</a></p>
+        <p>© 2026 Alexander Hepburn. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

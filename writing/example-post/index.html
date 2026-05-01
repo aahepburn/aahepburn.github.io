@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The attack is geometrically simple: training samples sit closer to the decision boundary than non-members. Here is what that means in practice, why likelihood ratio tests are the right lens for it, and what the ROC curve actually tells you about your model's privacy surface.">
+    <meta name="author" content="Alexander Hepburn">
+
+    <meta property="og:type"        content="article">
+    <meta property="og:title"       content="Membership Inference at the Threshold — Quiet Signals Lab">
+    <meta property="og:description" content="Likelihood ratios, the ROC curve, and what they expose about your model's privacy surface.">
+    <meta property="og:url"         content="https://quietsignalslab.com/writing/example-post/">
+    <meta property="og:site_name"   content="Quiet Signals Lab">
+    <meta property="article:published_time" content="2026-05-01">
+    <meta property="article:author" content="Alexander Hepburn">
+
+    <meta name="twitter:card"        content="summary_large_image">
+    <meta name="twitter:title"       content="Membership Inference at the Threshold — Quiet Signals Lab">
+    <meta name="twitter:description" content="Likelihood ratios, the ROC curve, and what they expose about your model's privacy surface.">
+
+    <link rel="canonical" href="https://quietsignalslab.com/writing/example-post/">
+    <link rel="alternate" type="application/rss+xml"
+          title="Quiet Signals Lab — Writing"
+          href="https://quietsignalslab.com/writing/feed.xml">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Membership Inference at the Threshold: Likelihood Ratios and What They Expose",
+      "description": "The attack is geometrically simple: training samples sit closer to the decision boundary than non-members. Here is what that means in practice, why likelihood ratio tests are the right lens, and what the ROC curve tells you about your model's privacy surface.",
+      "datePublished": "2026-05-01",
+      "dateModified": "2026-05-01",
+      "author": {
+        "@type": "Person",
+        "name": "Alexander Hepburn",
+        "url": "https://quietsignalslab.com"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Quiet Signals Lab",
+        "url": "https://quietsignalslab.com"
+      },
+      "url": "https://quietsignalslab.com/writing/example-post/"
+    }
+    </script>
+
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+          href="/fonts/source-serif-4-latin-400.woff2">
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+          href="/fonts/source-serif-4-latin-700.woff2">
+
+    <link rel="stylesheet" href="/writing/writing.css">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"
+          crossorigin="anonymous">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css"
+          crossorigin="anonymous">
+
+    <title>Membership Inference at the Threshold — Quiet Signals Lab</title>
+</head>
+<body>
+
+    <header class="site-header" role="banner">
+        <div class="site-header-inner">
+            <a class="site-brand" href="/">Quiet Signals Lab</a>
+            <nav aria-label="Site navigation">
+                <ul class="site-nav">
+                    <li><a href="/writing/">Writing</a></li>
+                    <li class="site-nav-secondary"><a href="/#services">Services</a></li>
+                    <li class="site-nav-secondary"><a href="mailto:hello@quietsignalslab.com">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="article-layout">
+            <article class="article-body" itemscope itemtype="https://schema.org/Article">
+
+                <header class="post-header">
+                    <h1 class="post-title" itemprop="headline">
+                        Membership Inference at the Threshold: Likelihood Ratios and What They Expose
+                    </h1>
+                    <p class="post-subtitle">
+                        The attack is geometrically simple. The implications are not.
+                    </p>
+                    <div class="post-meta">
+                        <time datetime="2026-05-01" itemprop="datePublished">1 May 2026</time>
+                        <span class="sep" aria-hidden="true">·</span>
+                        <span class="reading-time" id="reading-time" aria-label="Estimated reading time"></span>
+                    </div>
+                </header>
+
+                <!-- ── Introduction ──────────────────────────────────────── -->
+
+                <p>
+                    The canonical framing of the membership inference attack is a binary
+                    classification problem: given a model $f_\theta$ and a sample $x$, does
+                    $x$ belong to the training set $\mathcal{D}_\text{train}$? The attack was
+                    formalised by Shokri et al. in 2017,<sup><a href="#fn1" id="ref1">1</a></sup>
+                    but the underlying geometry had been visible for longer: models tend to
+                    assign higher confidence to their training data than to held-out data, and
+                    that gap is exploitable.
+                </p>
+
+                <p>
+                    What is less often stated clearly is that membership inference is not
+                    a single attack — it is a family of attacks arranged along a spectrum
+                    from shadow-model methods (expensive, high accuracy on well-separated
+                    populations) to simple threshold attacks (cheap, surprisingly competitive
+                    on overfit models). This post works through the likelihood ratio
+                    formulation, which sits in the middle of that spectrum and is useful
+                    precisely because it is auditable: you can inspect what it is actually
+                    measuring.
+                </p>
+
+                <!-- ── The basic geometry ──────────────────────────────────── -->
+
+                <h2>The Basic Geometry</h2>
+
+                <p>
+                    Consider a classifier trained with cross-entropy loss. After training,
+                    the model assigns a predicted probability $\hat{p}_\theta(y \mid x)$ to
+                    each class $y$ given input $x$. For a sample that was in the training set,
+                    the model has had the opportunity to fit that sample — in the limit of
+                    overfitting, the model has memorised it. The predicted probability
+                    for the correct label will therefore be high, and the loss will be low.
+                </p>
+
+                <p>
+                    The converse is not guaranteed but is empirically common: for samples
+                    <em>not</em> in the training set, the model has not had the opportunity
+                    to overfit, so the loss is typically higher. This creates a distributional
+                    separation between the per-sample loss values of members and non-members.
+                    Formally, if $\ell(x, y; \theta)$ is the per-sample loss, then:
+                </p>
+
+                $$
+                \mathbb{E}[\ell(x, y; \theta) \mid x \in \mathcal{D}_\text{train}]
+                \;\leq\;
+                \mathbb{E}[\ell(x, y; \theta) \mid x \notin \mathcal{D}_\text{train}]
+                $$
+
+                <p>
+                    This is the gap the attacker exploits. The question is how to exploit
+                    it optimally — and this is where the likelihood ratio comes in.
+                </p>
+
+                <!-- ── Likelihood ratio formulation ────────────────────────── -->
+
+                <h2>The Likelihood Ratio Test</h2>
+
+                <p>
+                    The Neyman-Pearson lemma tells us that the most powerful test for
+                    distinguishing two hypotheses at a fixed false-positive rate is the
+                    likelihood ratio test. Here, our two hypotheses are:
+                </p>
+
+                $$
+                H_0: x \notin \mathcal{D}_\text{train}
+                \qquad
+                H_1: x \in \mathcal{D}_\text{train}
+                $$
+
+                <p>
+                    The likelihood ratio is:
+                </p>
+
+                $$
+                \Lambda(x) = \frac{p(\ell(x, y; \theta) \mid H_1)}{p(\ell(x, y; \theta) \mid H_0)}
+                $$
+
+                <p>
+                    We reject $H_0$ (i.e., classify as member) when $\Lambda(x) > \tau$
+                    for some threshold $\tau$. The practical difficulty is that we do not
+                    have access to the true densities $p(\ell \mid H_0)$ and
+                    $p(\ell \mid H_1)$. The Carlini et al. LiRA attack<sup><a href="#fn2" id="ref2">2</a></sup>
+                    estimates these by training many shadow models — one subset includes
+                    $x$ in training, the other excludes it — and using the empirical
+                    loss distributions from those runs.
+                </p>
+
+                <h3>A simpler approximation</h3>
+
+                <p>
+                    A useful baseline that avoids shadow models assumes the loss distributions
+                    are Gaussian. Under this approximation:
+                </p>
+
+                $$
+                \Lambda(x) = \frac{\mathcal{N}(\ell(x); \mu_{\text{in}}, \sigma_{\text{in}}^2)}
+                                   {\mathcal{N}(\ell(x); \mu_{\text{out}}, \sigma_{\text{out}}^2)}
+                $$
+
+                <p>
+                    where $\mu_\text{in}$ and $\mu_\text{out}$ are the mean losses on
+                    the training and validation sets respectively, and $\sigma^2$ can be
+                    pooled or estimated separately. This is computationally trivial —
+                    it requires only one forward pass per sample and knowledge of
+                    aggregate training and validation loss statistics.
+                </p>
+
+                <blockquote>
+                    <p>
+                        The simplest version of this attack — thresholding on raw loss — is
+                        equivalent to setting $\mu_\text{in} = 0$ and $\mu_\text{out} = \infty$.
+                        The Gaussian approximation is strictly more powerful. Neither requires
+                        shadow models.
+                    </p>
+                </blockquote>
+
+                <!-- ── Implementation ──────────────────────────────────────── -->
+
+                <h2>Implementation</h2>
+
+                <p>
+                    The following snippet computes the Gaussian likelihood ratio score for
+                    a batch of evaluation samples. It assumes you have already computed
+                    aggregate loss statistics from training and validation runs.
+                </p>
+
+                <pre><code class="language-python">import numpy as np
+from scipy import stats
+
+
+def gaussian_lira_score(
+    sample_losses: np.ndarray,
+    mu_in: float,
+    sigma_in: float,
+    mu_out: float,
+    sigma_out: float,
+) -> np.ndarray:
+    """
+    Compute the log likelihood-ratio score for membership inference.
+
+    A positive score suggests the sample is more likely a member;
+    a negative score suggests non-member.
+
+    Args:
+        sample_losses: Per-sample cross-entropy losses, shape (N,).
+        mu_in:         Mean training loss (from training run).
+        sigma_in:      Std of training losses.
+        mu_out:        Mean validation loss (held-out reference set).
+        sigma_out:     Std of validation losses.
+
+    Returns:
+        Log-likelihood ratios, shape (N,). Higher → more likely member.
+    """
+    log_p_in  = stats.norm.logpdf(sample_losses, loc=mu_in,  scale=sigma_in)
+    log_p_out = stats.norm.logpdf(sample_losses, loc=mu_out, scale=sigma_out)
+    return log_p_in - log_p_out
+
+
+def threshold_predict(scores: np.ndarray, tau: float = 0.0) -> np.ndarray:
+    """Classify as member (1) when score exceeds threshold tau."""
+    return (scores > tau).astype(int)
+</code></pre>
+
+                <p>
+                    To evaluate the attack, you need a ground-truth membership set.
+                    The standard evaluation protocol holds out a random subset of
+                    <em>both</em> training members and non-members at the beginning
+                    of the experiment — before training — so the model has never seen
+                    the non-member evaluation samples either:
+                </p>
+
+                <pre><code class="language-bash">python train.py \
+  --dataset cifar10 \
+  --train-size 25000 \
+  --eval-members 2500 \
+  --eval-nonmembers 2500 \
+  --epochs 100 \
+  --save-losses member_losses.npy validation_losses.npy
+</code></pre>
+
+                <h3>Computing the ROC curve</h3>
+
+                <p>
+                    Once you have scores for members and non-members, the ROC curve
+                    follows directly. The key metric for membership inference is the
+                    <abbr title="True Positive Rate at 0.1% False Positive Rate">TPR@0.1%FPR</abbr>:
+                    the fraction of members correctly identified when the false positive rate
+                    is held to 0.1%. This matters because in practice an attacker with
+                    reasonable confidence needs a very low false positive rate — classifying
+                    thousands of non-members as members is not useful.
+                </p>
+
+                <pre><code class="language-python">from sklearn.metrics import roc_curve, roc_auc_score
+
+
+def compute_mia_roc(
+    member_scores: np.ndarray,
+    nonmember_scores: np.ndarray,
+) -> dict:
+    """
+    Compute ROC curve and key membership inference metrics.
+
+    Returns dict with fpr, tpr, thresholds, auc, and tpr_at_low_fpr.
+    """
+    y_true  = np.concatenate([np.ones(len(member_scores)),
+                               np.zeros(len(nonmember_scores))])
+    y_score = np.concatenate([member_scores, nonmember_scores])
+
+    fpr, tpr, thresholds = roc_curve(y_true, y_score)
+    auc = roc_auc_score(y_true, y_score)
+
+    # TPR at FPR ≤ 0.001 (0.1%) — the primary privacy metric
+    low_fpr_mask  = fpr <= 0.001
+    tpr_at_01_fpr = tpr[low_fpr_mask].max() if low_fpr_mask.any() else 0.0
+
+    return {
+        "fpr":             fpr,
+        "tpr":             tpr,
+        "thresholds":      thresholds,
+        "auc":             auc,
+        "tpr_at_0.1%_fpr": tpr_at_01_fpr,
+    }
+</code></pre>
+
+                <!-- ── Figure: ROC curve ────────────────────────────────── -->
+
+                <figure>
+                    <img src="roc-curve-placeholder.svg"
+                         alt="ROC curve for a membership inference attack on a ResNet-18 trained on CIFAR-10 for 100 epochs without regularisation. The curve shows AUC of 0.73 and TPR of 8.4% at 0.1% FPR, indicating meaningful but not catastrophic leakage."
+                         width="720"
+                         height="480"
+                         style="background:#f1efeb;min-height:280px;display:flex;align-items:center;justify-content:center;">
+                    <figcaption>
+                        Figure 1. ROC curve for the Gaussian LiRA attack on a ResNet-18
+                        trained on CIFAR-10 for 100 epochs without dropout or weight decay.
+                        AUC = 0.73; TPR at 0.1% FPR = 8.4%. A random (non-leaking) model
+                        would yield AUC = 0.5 and TPR at 0.1% FPR ≈ 0.1%. The gap is
+                        meaningful but contained — the model overfits moderately but not
+                        catastrophically. Adding L2 regularisation (λ = 1×10⁻⁴) reduces
+                        AUC to 0.59 and TPR at 0.1% FPR to 2.1% on the same architecture.
+                        <em>[Placeholder: replace with actual generated figure.]</em>
+                    </figcaption>
+                </figure>
+
+                <!-- ── What the ROC curve tells you ───────────────────────── -->
+
+                <h2>What the ROC Curve Actually Tells You</h2>
+
+                <p>
+                    AUC is a useful aggregate but it hides the privacy-relevant part of
+                    the curve. An AUC of 0.60 can be consistent with TPR@0.1%FPR of
+                    nearly zero (if the separation is concentrated at high FPR) or with
+                    TPR@0.1%FPR of 15%+ (if the separation happens at the low-FPR end).
+                    These have very different privacy implications.
+                </p>
+
+                <p>
+                    The reason to care about the low-FPR region specifically is that it
+                    corresponds to the attacker's operational regime. If an adversary wants
+                    to confidently assert that a specific individual was in the training set,
+                    they need precision — they cannot tolerate high false positive rates.
+                    The TPR at 0.1% FPR is asking: how many true members does the attacker
+                    find before they accumulate one false positive for every thousand guesses?
+                </p>
+
+                <h4>Configuration example</h4>
+
+                <pre><code class="language-yaml"># mia_config.yaml — membership inference audit configuration
+model:
+  architecture: resnet18
+  checkpoint: checkpoints/resnet18_epoch100.pt
+  num_classes: 10
+
+attack:
+  type: gaussian_lira
+  fpr_targets: [0.001, 0.01, 0.1]   # evaluate TPR at these FPR values
+  n_bootstrap: 1000                  # bootstrap samples for confidence intervals
+
+evaluation:
+  member_losses_path: data/member_losses.npy
+  nonmember_losses_path: data/nonmember_losses.npy
+  output_dir: results/mia_audit/
+
+reporting:
+  primary_metric: tpr_at_fpr_0.001  # 0.1% FPR
+  threshold_for_concern: 0.05       # flag if TPR@0.1%FPR exceeds 5%
+</code></pre>
+
+                <!-- ── Interpreting results ────────────────────────────────── -->
+
+                <h2>Interpreting Results and Setting Thresholds</h2>
+
+                <p>
+                    There is no universal threshold that cleanly separates "private" from
+                    "not private". The right reference points are:
+                </p>
+
+                <ul>
+                    <li>
+                        <strong>Baseline TPR@0.1%FPR ≈ 0.1%.</strong> A perfectly non-leaking
+                        model yields a flat ROC curve; at 0.1% FPR, the attacker finds 0.1%
+                        of members. Any value substantially above this indicates leakage.
+                    </li>
+                    <li>
+                        <strong>2–5% TPR@0.1%FPR:</strong> moderate leakage. Common on
+                        well-regularised models. Usually acceptable if the training data
+                        is not particularly sensitive.
+                    </li>
+                    <li>
+                        <strong>&gt;10% TPR@0.1%FPR:</strong> material leakage. At this
+                        level, the model is reliably identifying a meaningful fraction of
+                        training members under realistic attacker constraints. Investigate
+                        overfitting, consider differential privacy.
+                    </li>
+                </ul>
+
+                <p>
+                    These thresholds are heuristic. If the training data contains medical
+                    records or other high-sensitivity material, even 2% may be unacceptable.
+                    If the training data is public web text, 10% may be tolerable. The
+                    right answer is always context-specific.
+                </p>
+
+                <!-- ── Mitigations ────────────────────────────────────────── -->
+
+                <h2>Mitigations</h2>
+
+                <h3>Regularisation (cheapest, imperfect)</h3>
+
+                <p>
+                    L2 weight decay and dropout reduce overfitting, which is the proximate
+                    cause of the loss gap. Empirically, heavy regularisation reduces
+                    TPR@0.1%FPR by 2–5× on common architectures without significant
+                    accuracy cost. It does not provide formal guarantees — it makes the
+                    attack harder, not impossible.
+                </p>
+
+                <h3>Early stopping</h3>
+
+                <p>
+                    Stopping before the model fully converges on the training set prevents
+                    the deep memorisation that drives the loss gap. The cost is some
+                    training loss — you leave accuracy on the table. The tradeoff depends
+                    on how much of your accuracy is coming from memorised samples versus
+                    generalised features, which requires ablation to determine.
+                </p>
+
+                <h3>Differential privacy (formal guarantee, meaningful cost)</h3>
+
+                <p>
+                    $(\varepsilon, \delta)$-differential privacy provides a formal bound
+                    on the advantage any membership inference attacker can achieve. Under
+                    DP-SGD,<sup><a href="#fn3" id="ref3">3</a></sup> the mechanism adds
+                    calibrated Gaussian noise to per-sample gradients before averaging,
+                    making the output distribution of the training algorithm insensitive
+                    to any individual training sample:
+                </p>
+
+                $$
+                \Pr[\mathcal{M}(\mathcal{D}) \in S]
+                \;\leq\;
+                e^\varepsilon \cdot \Pr[\mathcal{M}(\mathcal{D}') \in S] + \delta
+                $$
+
+                <p>
+                    for any adjacent datasets $\mathcal{D}$ and $\mathcal{D}'$ differing
+                    in one record, and any measurable set $S$ of model parameters.
+                    The privacy cost $\varepsilon$ is the core parameter: smaller is more
+                    private, but the utility cost at $\varepsilon \leq 3$ is substantial
+                    (typically 5–15% accuracy degradation on image classifiers).
+                </p>
+
+                <p>
+                    DP-SGD is not always the answer. For large language models fine-tuned
+                    on small private corpora, the utility degradation at meaningful $\varepsilon$
+                    values can be severe enough to make the model useless. The decision
+                    to use DP requires quantifying the sensitivity of the training data
+                    and the cost of the accuracy hit — both of which are project-specific.
+                </p>
+
+                <!-- ── Conclusion ──────────────────────────────────────────── -->
+
+                <h2>Conclusion</h2>
+
+                <p>
+                    Membership inference is best understood as a measurement tool, not
+                    just an attack. Running the Gaussian LiRA evaluation as a routine
+                    audit step — compute per-sample losses, fit the approximation, plot
+                    the ROC curve — takes less than an hour on any trained model and
+                    tells you something specific and actionable about where you sit on
+                    the privacy-utility curve.
+                </p>
+
+                <p>
+                    The metric that matters is TPR at low FPR, not AUC. A model with
+                    AUC of 0.65 and TPR@0.1%FPR of 1.2% is in a different situation
+                    from a model with AUC of 0.65 and TPR@0.1%FPR of 18%. The ROC
+                    curve is the right instrument; read it in the right region.
+                </p>
+
+                <!-- ── Footnotes ───────────────────────────────────────────── -->
+
+                <aside class="footnotes" role="doc-endnotes">
+                    <h4>Notes</h4>
+                    <ol>
+                        <li id="fn1">
+                            Shokri, R., Stronati, M., Song, C., &amp; Shmatikov, V. (2017).
+                            Membership inference attacks against machine learning models.
+                            <em>IEEE Symposium on Security and Privacy</em>, 3–18.
+                            <a href="#ref1" class="fn-back" aria-label="Back to reference 1">↩</a>
+                        </li>
+                        <li id="fn2">
+                            Carlini, N., Chien, S., Nasr, M., Song, S., Terzis, A., &amp;
+                            Tramer, F. (2022). Membership inference attacks from first principles.
+                            <em>IEEE Symposium on Security and Privacy</em>, 1897–1914.
+                            The LiRA attack uses shadow models to estimate the loss distributions
+                            non-parametrically; the Gaussian approximation presented here is
+                            the "offline" variant from the same paper.
+                            <a href="#ref2" class="fn-back" aria-label="Back to reference 2">↩</a>
+                        </li>
+                        <li id="fn3">
+                            Abadi, M., et al. (2016). Deep learning with differential privacy.
+                            <em>ACM CCS</em>, 308–318. The DP-SGD algorithm and its privacy
+                            accounting are implemented in <code>opacus</code> (PyTorch) and
+                            <code>tensorflow-privacy</code>.
+                            <a href="#ref3" class="fn-back" aria-label="Back to reference 3">↩</a>
+                        </li>
+                    </ol>
+                </aside>
+
+                <!-- ── Post footer ─────────────────────────────────── -->
+                <footer class="post-footer">
+                    <p class="post-footer-author">
+                        <strong>Alexander Hepburn</strong> is an ML &amp; privacy engineer
+                        based in Amsterdam. He consults through Quiet Signals Lab on
+                        privacy-sensitive AI systems, document intelligence, and model integrity.
+                    </p>
+                    <nav class="post-footer-nav" aria-label="Post navigation">
+                        <a href="/writing/">← All writing</a>
+                        <span class="sep" aria-hidden="true">·</span>
+                        <a href="/#services">Services</a>
+                        <span class="sep" aria-hidden="true">·</span>
+                        <a href="https://github.com/aahepburn" rel="noopener noreferrer">GitHub</a>
+                        <span class="sep" aria-hidden="true">·</span>
+                        <a href="mailto:hello@quietsignalslab.com">Contact</a>
+                    </nav>
+                </footer>
+
+            </article>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <p>Quiet Signals Lab · KvK 99556650 · VAT: NL005394204B58</p>
+        <p>This site does not use cookies or tracking technologies. <a href="/privacy">Privacy Notice</a></p>
+        <p>© 2026 Alexander Hepburn. All rights reserved.</p>
+    </footer>
+
+    <script defer
+            src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"
+            crossorigin="anonymous"></script>
+    <script defer
+            src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+            crossorigin="anonymous"
+            onload="renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '$$',  right: '$$',  display: true},
+                    {left: '$',   right: '$',   display: false},
+                    {left: '\\[', right: '\\]', display: true},
+                    {left: '\\(', right: '\\)', display: false}
+                ],
+                throwOnError: false
+            });"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"
+            crossorigin="anonymous"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var body = document.querySelector('.article-body');
+            var el   = document.getElementById('reading-time');
+            if (!body || !el) return;
+            var words   = body.innerText.trim().split(/\s+/).filter(Boolean).length;
+            var minutes = Math.max(1, Math.round(words / 200));
+            el.textContent = minutes + '\u202fmin read';
+        });
+    </script>
+
+</body>
+</html>

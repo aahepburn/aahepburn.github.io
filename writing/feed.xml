@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    =========================================================================
+    /writing/feed.xml — RSS 2.0 feed for Quiet Signals Lab writing section
+    =========================================================================
+
+    STRUCTURE:
+    This feed is manually maintained. To add a new post, copy the <item>
+    block marked with "[ITEM TEMPLATE]" at the bottom of this file,
+    fill in the five fields, and prepend it as the first <item> inside
+    <channel> (RSS 2.0 is reverse-chronological; newest item first).
+
+    Then update <lastBuildDate> to the current publication date.
+
+    FIELD GUIDE:
+      <title>       — Plain text, same as the <h1> of the post.
+      <link>        — Full URL to the post (https://quietsignalslab.com/writing/<slug>/).
+      <description> — Excerpt: one or two sentences from the post introduction.
+                      Full content is deliberately not included here; readers
+                      follow the link to the post. Reason: the site has no
+                      analytics; omitting full content means I don't distribute
+                      rendered HTML that is harder to maintain than the source.
+      <pubDate>     — RFC 2822 date: "Thu, 01 May 2026 00:00:00 +0000".
+                      Easy to generate: use `date -R` in bash.
+      <guid>        — Permanent link, same as <link>. isPermaLink="true" means
+                      RSS readers treat it as the canonical URL.
+
+    VALIDATION:
+      https://validator.w3.org/feed/ — paste the feed URL or raw XML.
+
+    =========================================================================
+-->
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+
+    <title>Quiet Signals Lab — Writing</title>
+    <link>https://quietsignalslab.com/writing/</link>
+    <description>
+      Long-form technical writing by Alexander Hepburn on ML privacy,
+      membership inference, retrieval systems, and the engineering problems
+      behind privacy-sensitive AI. Four to eight pieces per year.
+    </description>
+    <language>en-gb</language>
+    <copyright>© 2026 Alexander Hepburn</copyright>
+    <managingEditor>hello@quietsignalslab.com (Alexander Hepburn)</managingEditor>
+    <webMaster>hello@quietsignalslab.com (Alexander Hepburn)</webMaster>
+
+    <!-- Update this to the date of the most recently published post -->
+    <lastBuildDate>Thu, 01 May 2026 00:00:00 +0000</lastBuildDate>
+
+    <!-- Self-reference required by Atom namespace (feeds best practice) -->
+    <atom:link href="https://quietsignalslab.com/writing/feed.xml"
+               rel="self"
+               type="application/rss+xml"/>
+
+    <!-- ── Posts (newest first) ──────────────────────────────────────── -->
+
+    <item>
+      <title>Membership Inference at the Threshold: Likelihood Ratios and What They Expose</title>
+      <link>https://quietsignalslab.com/writing/example-post/</link>
+      <description>
+        The attack is geometrically simple: training samples sit closer to the
+        decision boundary than non-members. This piece works through the Gaussian
+        likelihood ratio formulation of the LiRA attack, explains why TPR at
+        0.1% FPR is the right privacy metric (not AUC), and covers the practical
+        tradeoffs between regularisation, early stopping, and differential privacy.
+      </description>
+      <pubDate>Thu, 01 May 2026 00:00:00 +0000</pubDate>
+      <guid isPermaLink="true">https://quietsignalslab.com/writing/example-post/</guid>
+    </item>
+
+    <!--
+    =========================================================================
+    [ITEM TEMPLATE] — copy this block and fill in before adding a new post
+    =========================================================================
+
+    <item>
+      <title><!-- Post title --></title>
+      <link>https://quietsignalslab.com/writing/<!-- slug -->/</link>
+      <description>
+        <!-- 2-3 sentence excerpt from the introduction -->
+      </description>
+      <pubDate><!-- e.g. Mon, 15 Jun 2026 00:00:00 +0000 --></pubDate>
+      <guid isPermaLink="true">https://quietsignalslab.com/writing/<!-- slug -->/</guid>
+    </item>
+
+    =========================================================================
+    -->
+
+  </channel>
+</rss>

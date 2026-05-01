@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         SEO META — fill in before publishing
+         ═══════════════════════════════════════════════════════════════ -->
+    <meta name="description"        content="<!-- ONE-SENTENCE DESCRIPTION (120-160 chars) -->">
+    <meta name="author"             content="Alexander Hepburn">
+
+    <!-- Open Graph / social preview -->
+    <meta property="og:type"        content="article">
+    <meta property="og:title"       content="<!-- POST TITLE --> — Quiet Signals Lab">
+    <meta property="og:description" content="<!-- ONE-SENTENCE DESCRIPTION -->">
+    <meta property="og:url"         content="https://quietsignalslab.com/writing/<!-- SLUG -->/">
+    <meta property="og:image"       content="https://quietsignalslab.com/writing/<!-- SLUG -->/og-image.png">
+    <!-- og:image recommended size: 1200×630px -->
+    <meta property="og:site_name"   content="Quiet Signals Lab">
+    <meta property="article:published_time" content="<!-- YYYY-MM-DD -->">
+    <meta property="article:author" content="Alexander Hepburn">
+
+    <!-- Twitter card -->
+    <meta name="twitter:card"        content="summary_large_image">
+    <meta name="twitter:title"       content="<!-- POST TITLE --> — Quiet Signals Lab">
+    <meta name="twitter:description" content="<!-- ONE-SENTENCE DESCRIPTION -->">
+    <meta name="twitter:image"       content="https://quietsignalslab.com/writing/<!-- SLUG -->/og-image.png">
+
+    <!-- Canonical URL — must match the og:url above -->
+    <link rel="canonical" href="https://quietsignalslab.com/writing/<!-- SLUG -->/">
+
+    <!-- RSS back-link so browsers discover the feed -->
+    <link rel="alternate" type="application/rss+xml"
+          title="Quiet Signals Lab — Writing"
+          href="https://quietsignalslab.com/writing/feed.xml">
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         SCHEMA.ORG Article structured data (JSON-LD)
+         Fill in the four placeholder values; the rest can stay as-is.
+         ═══════════════════════════════════════════════════════════════ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "<!-- POST TITLE -->",
+      "description": "<!-- ONE-SENTENCE DESCRIPTION -->",
+      "datePublished": "<!-- YYYY-MM-DD -->",
+      "dateModified": "<!-- YYYY-MM-DD -->",
+      "author": {
+        "@type": "Person",
+        "name": "Alexander Hepburn",
+        "url": "https://quietsignalslab.com"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Quiet Signals Lab",
+        "url": "https://quietsignalslab.com"
+      },
+      "url": "https://quietsignalslab.com/writing/<!-- SLUG -->/"
+    }
+    </script>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         FONT PRELOADS — self-hosted woff2, no external requests.
+         Preloading the body font (400) minimises layout shift on load.
+         ═══════════════════════════════════════════════════════════════ -->
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+          href="/fonts/source-serif-4-latin-400.woff2">
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+          href="/fonts/source-serif-4-latin-700.woff2">
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         STYLESHEETS
+         writing.css is self-contained and defines all tokens.
+         ═══════════════════════════════════════════════════════════════ -->
+    <link rel="stylesheet" href="/writing/writing.css">
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         KATEX — math rendering (inline $...$ and display $$...$$)
+         Loaded from CDN; auto-render extension handles delimiters.
+         Version pinned for reproducibility. Update when upgrading.
+         ═══════════════════════════════════════════════════════════════ -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"
+          crossorigin="anonymous">
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         PRISM.JS — syntax highlighting
+         Core + autoloader: downloads language grammars on demand.
+         Supported out of the box: Python, Bash, JavaScript, JSON, YAML.
+         Add more at https://prismjs.com/download.html if needed.
+         ═══════════════════════════════════════════════════════════════ -->
+    <!-- Prism CSS overridden by writing.css token rules -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css"
+          crossorigin="anonymous">
+
+    <title><!-- POST TITLE --> — Quiet Signals Lab</title>
+</head>
+<body>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         SITE HEADER — same on every writing page; do not alter.
+         ═══════════════════════════════════════════════════════════════ -->
+    <header class="site-header" role="banner">
+        <div class="site-header-inner">
+            <a class="site-brand" href="/">Quiet Signals Lab</a>
+            <nav aria-label="Site navigation">
+                <ul class="site-nav">
+                    <li><a href="/writing/">Writing</a></li>
+                    <li class="site-nav-secondary"><a href="/#services">Services</a></li>
+                    <li class="site-nav-secondary"><a href="mailto:hello@quietsignalslab.com">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         ARTICLE
+         ═══════════════════════════════════════════════════════════════ -->
+    <main>
+        <div class="article-layout">
+            <article class="article-body" itemscope itemtype="https://schema.org/Article">
+
+                <!-- ── Post header ─────────────────────────────────── -->
+                <header class="post-header">
+                    <!-- h1 is used ONCE per page, for the post title only -->
+                    <h1 class="post-title" itemprop="headline">
+                        <!-- POST TITLE -->
+                    </h1>
+
+                    <!-- Optional subtitle / descriptor sentence -->
+                    <!-- DELETE the <p> below if you don't need a subtitle -->
+                    <p class="post-subtitle">
+                        <!-- ONE-LINE SUBTITLE OR DESCRIPTOR (optional) -->
+                    </p>
+
+                    <div class="post-meta">
+                        <!-- datetime attribute: machine-readable ISO 8601 -->
+                        <!-- Display text: "1 June 2026" — long-form, unambiguous.
+                             Rationale: ISO dates (2026-06-01) read as bureaucratic;
+                             US month-first (June 1, 2026) is unfamiliar to EU readers.
+                             Day-first long form reads naturally across all audiences. -->
+                        <time datetime="<!-- YYYY-MM-DD -->" itemprop="datePublished">
+                            <!-- D Month YYYY e.g. 1 June 2026 -->
+                        </time>
+                        <span class="sep" aria-hidden="true">·</span>
+                        <!-- Reading time is computed on page load by the JS at the
+                             bottom of this file. Falls back gracefully to empty. -->
+                        <span class="reading-time" id="reading-time" aria-label="Estimated reading time"></span>
+                    </div>
+                </header>
+
+                <!-- ══════════════════════════════════════════════════
+                     POST BODY — write your content below this comment.
+
+                     Available elements:
+                       <h2>  Section heading
+                       <h3>  Sub-section heading
+                       <h4>  Run-in label / aside heading
+                       <p>   Body paragraph
+                       <ul>/<ol>  Lists
+                       <blockquote>  Pull quote / extended quotation
+                       <pre><code class="language-python">  Code block
+                       <code>  Inline code
+                       <figure>  Image with caption
+                       <figure class="figure-wide">  Wide figure (breaks column)
+                       Footnotes: <sup><a href="#fn1" id="ref1">1</a></sup>
+
+                     Math:
+                       Inline:  $\theta$ or \(\theta\)
+                       Display: $$\mathcal{L}$$ or \[\mathcal{L}\]
+                ══════════════════════════════════════════════════════ -->
+
+                <!-- ── Introduction paragraph ──────────────────────── -->
+                <p>
+                    <!-- Opening paragraph goes here. -->
+                </p>
+
+                <!-- ── Section example ────────────────────────────── -->
+                <h2><!-- Section Heading --></h2>
+
+                <p><!-- Body text --></p>
+
+                <!-- ── Code block example ─────────────────────────── -->
+                <pre><code class="language-python">
+# Replace with your code
+def example():
+    pass
+                </code></pre>
+
+                <!-- ── Figure example ──────────────────────────────── -->
+                <!--
+                <figure>
+                    <img src="figure-name.png"
+                         alt="Descriptive alt text for accessibility"
+                         width="800" height="480">
+                    <figcaption>
+                        Figure 1. Caption text goes here. Keep captions factual and
+                        specific — a reader should be able to understand the figure
+                        from the caption alone.
+                    </figcaption>
+                </figure>
+                -->
+
+                <!-- ── Wide figure example (breaks out of column) ──── -->
+                <!--
+                <figure class="figure-wide">
+                    <img src="wide-figure.png"
+                         alt="Alt text"
+                         width="1200" height="600">
+                    <figcaption>Figure N. Wide caption.</figcaption>
+                </figure>
+                -->
+
+                <!-- ── Math example ────────────────────────────────── -->
+                <!--
+                <p>
+                    Inline math: the loss is $\mathcal{L}(\theta)$. For display:
+                </p>
+                $$
+                \mathcal{L}(\theta) = -\frac{1}{n}\sum_{i=1}^{n} \log p_\theta(x_i)
+                $$
+                -->
+
+                <!-- ── Blockquote example ──────────────────────────── -->
+                <!--
+                <blockquote>
+                    <p>Quoted text goes here. Keep block quotes short — one or two
+                       sentences — and use them for genuinely quotable material,
+                       not for padding.</p>
+                </blockquote>
+                -->
+
+                <!-- ── Footnote reference example (in body) ───────── -->
+                <!--
+                In body text, place footnote references like this:
+                "…the result holds under mild regularity conditions.<sup><a href="#fn1" id="ref1">1</a></sup>"
+                -->
+
+                <!-- ══════════════════════════════════════════════════
+                     FOOTNOTES — keep at the end of the article body.
+                     Delete this block if the post has no footnotes.
+                ══════════════════════════════════════════════════════ -->
+                <!--
+                <aside class="footnotes" role="doc-endnotes">
+                    <h4>Notes</h4>
+                    <ol>
+                        <li id="fn1">
+                            Footnote text. Citation or elaboration.
+                            <a href="#ref1" class="fn-back" aria-label="Back to reference 1">↩</a>
+                        </li>
+                        <li id="fn2">
+                            Second footnote.
+                            <a href="#ref2" class="fn-back" aria-label="Back to reference 2">↩</a>
+                        </li>
+                    </ol>
+                </aside>
+                -->
+
+                <!-- ── Post footer ─────────────────────────────────── -->
+                <footer class="post-footer">
+                    <p class="post-footer-author">
+                        <strong>Alexander Hepburn</strong> is an ML &amp; privacy engineer
+                        based in Amsterdam. He consults through Quiet Signals Lab on
+                        privacy-sensitive AI systems, document intelligence, and model integrity.
+                    </p>
+                    <nav class="post-footer-nav" aria-label="Post navigation">
+                        <a href="/writing/">← All writing</a>
+                        <span class="sep" aria-hidden="true">·</span>
+                        <a href="/#services">Services</a>
+                        <span class="sep" aria-hidden="true">·</span>
+                        <a href="https://github.com/aahepburn" rel="noopener noreferrer">GitHub</a>
+                        <span class="sep" aria-hidden="true">·</span>
+                        <a href="mailto:hello@quietsignalslab.com">Contact</a>
+                    </nav>
+                </footer>
+
+            </article>
+        </div>
+    </main>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         SITE FOOTER — same on every writing page; do not alter.
+         ═══════════════════════════════════════════════════════════════ -->
+    <footer class="site-footer">
+        <p>Quiet Signals Lab · KvK 99556650 · VAT: NL005394204B58</p>
+        <p>This site does not use cookies or tracking technologies. <a href="/privacy">Privacy Notice</a></p>
+        <p>© 2026 Alexander Hepburn. All rights reserved.</p>
+    </footer>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         KATEX auto-render — processes $...$ and $$...$$ in the page.
+         Loaded deferred so it doesn't block the initial render.
+         ═══════════════════════════════════════════════════════════════ -->
+    <script defer
+            src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"
+            crossorigin="anonymous"></script>
+    <script defer
+            src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+            crossorigin="anonymous"
+            onload="renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '$$',  right: '$$',  display: true},
+                    {left: '$',   right: '$',   display: false},
+                    {left: '\\[', right: '\\]', display: true},
+                    {left: '\\(', right: '\\)', display: false}
+                ],
+                throwOnError: false
+            });"></script>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         PRISM.JS — syntax highlighting.
+         Core script + autoloader for on-demand language grammar loading.
+         ═══════════════════════════════════════════════════════════════ -->
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"
+            crossorigin="anonymous"></script>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         READING TIME — vanilla JS, ~10 lines.
+         Counts words in .article-body, assumes 200 wpm, rounds to nearest
+         minute (minimum 1). Runs after DOM is ready so it always has content.
+         No dependency on any library.
+
+         URL structure decision: posts live at /writing/<slug>/index.html
+         (served as /writing/<slug>/) rather than /writing/<slug>.html.
+         Rationale: directory-style URLs survive server configuration changes
+         and look cleaner in sharing contexts. GitHub Pages serves both;
+         the directory form is preferred.
+         ═══════════════════════════════════════════════════════════════ -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var body = document.querySelector('.article-body');
+            var el   = document.getElementById('reading-time');
+            if (!body || !el) return;
+            var words   = body.innerText.trim().split(/\s+/).filter(Boolean).length;
+            var minutes = Math.max(1, Math.round(words / 200));
+            el.textContent = minutes + '\u202fmin read';
+        });
+    </script>
+
+</body>
+</html>
