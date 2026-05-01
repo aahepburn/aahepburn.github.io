@@ -64,27 +64,26 @@
    - Text: #1c1c1a — very near-black with a barely perceptible warm tint.
      Pure #000 reads as harsh on screen; this is softer without sacrificing
      contrast (WCAG AA at body sizes, AAA at display sizes).
-   - Background: #f9f8f5 — near-white with a warm undertone, like paper.
-     Creates a reading surface that doesn't fatigue the eyes.
-   - Accent: #0b8b8b — matches the main site's teal exactly. Used on links,
-     the header rule, and active states only. The teal reads as "serious
-     informational" rather than flashy; it earns its use.
+   - Background: #f7f5f1 — matches the main site's off-white exactly.
+     Warm newsprint undertone; not pure white.
+   - Accent: #be6e19 — amber, matches the main site accent exactly.
+     Used on links, the header rule, and active states only.
    - Secondary text: #5a5a57 — warmed-down gray for dates, captions,
      reading time. Clearly subordinate but not invisible.
-   - Code background: #f1efeb — a step darker than the page, same warm key,
-     no hue shift. Marks code as distinct without introducing a second color.
+   - Code background: #edeae3 — matches the main site's light-bg token,
+     same warm key, no hue shift. Marks code as distinct.
    ---------------------------------------------------------------------- */
 :root {
     /* Colors — light mode */
-    --w-bg:           #f9f8f5;
+    --w-bg:           #f7f5f1;
     --w-text:         #1c1c1a;
     --w-secondary:    #5a5a57;
-    --w-accent:       #0b8b8b;
-    --w-accent-dark:  #086565;
-    --w-border:       #e2e0db;
-    --w-code-bg:      #f1efeb;
+    --w-accent:       #be6e19;
+    --w-accent-dark:  #a05c14;
+    --w-border:       #dedad3;
+    --w-code-bg:      #edeae3;
     --w-code-text:    #2a2927;
-    --w-mark-bg:      rgba(11, 139, 139, 0.12);
+    --w-mark-bg:      rgba(190, 110, 25, 0.12);
 
     /* Typography */
     --w-body-font:    'Source Serif 4', Georgia, 'Times New Roman', serif;
@@ -131,7 +130,7 @@
    Not a simple inversion. Light mode: warm-near-white on warm-near-black.
    Dark mode keeps the same warmth: the background is a deep warm gray
    (#1a1917), text is warm off-white (#e8e4d9). The accent lightens to
-   #3bbfbf so it stays distinguishable on dark backgrounds without
+   #d4893a so it stays distinguishable on dark backgrounds without
    neon-glow weight. Code background is a step lighter than the page.
    ---------------------------------------------------------------------- */
 @media (prefers-color-scheme: dark) {
@@ -139,12 +138,12 @@
         --w-bg:        #1a1917;
         --w-text:      #e8e4d9;
         --w-secondary: #9a9690;
-        --w-accent:    #3bbfbf;
-        --w-accent-dark: #2eaaaa;
+        --w-accent:    #d4893a;
+        --w-accent-dark: #c07828;
         --w-border:    #2e2c28;
         --w-code-bg:   #252320;
         --w-code-text: #d4cfc6;
-        --w-mark-bg:   rgba(59, 191, 191, 0.15);
+        --w-mark-bg:   rgba(212, 137, 58, 0.18);
     }
 }
 
@@ -239,7 +238,7 @@ body {
     max-width: var(--w-content-width);
     margin: 0 auto var(--w-sp-xl);
     padding-bottom: var(--w-sp-lg);
-    border-bottom: 1px solid var(--w-border);
+    border-bottom: 2px solid var(--w-text);
 }
 
 .writing-index-header h1 {
