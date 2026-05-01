@@ -686,13 +686,14 @@ nav {
 /* ============ SITE QUOTE ============ */
 .site-quote {
     border: none;
-    margin: 0;
+    max-width: var(--max-width);
+    margin: 0 auto;
     padding: 3.5rem var(--spacing-lg);
     text-align: center;
 }
 
 .site-quote p {
-    font-family: 'Lora', Georgia, 'Times New Roman', serif;
+    font-family: 'EB Garamond', Georgia, 'Times New Roman', serif;
     font-style: italic;
     font-size: clamp(1.2rem, 2.5vw, 1.6rem);
     color: var(--secondary-text);
@@ -701,7 +702,7 @@ nav {
 }
 
 .site-quote cite {
-    font-family: 'Lora', Georgia, 'Times New Roman', serif;
+    font-family: 'EB Garamond', Georgia, 'Times New Roman', serif;
     font-style: italic;
     font-size: 0.9rem;
     color: var(--border-color);
