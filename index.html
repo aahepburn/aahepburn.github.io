@@ -238,6 +238,7 @@
                         <span class="tag">Electron</span>
                         <span class="tag">ChromaDB</span>
                         <span class="tag">Open source</span>
+                        <span class="tag" id="rag-stars" aria-label="GitHub star count">★ &thinsp;&hellip;</span>
                     </div>
                 </div>
                 <div class="project-detail">
@@ -450,6 +451,21 @@
                 content.classList.toggle('expanded');
             });
         });
+    </script>
+    <script>
+        // Fetch GitHub star count for RAG-Assistant-for-Zotero
+        (function () {
+            var el = document.getElementById('rag-stars');
+            if (!el) return;
+            fetch('https://api.github.com/repos/aahepburn/RAG-Assistant-for-Zotero', {
+                headers: { Accept: 'application/vnd.github+json' }
+            })
+            .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+            .then(function (data) {
+                el.textContent = '★ ' + data.stargazers_count.toLocaleString();
+            })
+            .catch(function () { el.style.display = 'none'; });
+        })();
     </script>
 </body>
 </html>
