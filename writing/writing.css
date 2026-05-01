@@ -286,7 +286,7 @@ body {
     align-items: center;
     gap: 0.75rem;
     font-size: var(--w-size-sm);
-    color: var(--w-secondary);
+    color: var(--w-accent);
     font-family: var(--w-head-font);
 }
 
