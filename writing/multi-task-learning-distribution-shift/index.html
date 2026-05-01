@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Multi-task learning as a structural buffer against distribution shift in NLP: four controlled ablations on cross-domain persuasion detection that isolate when MTL helps, when it doesn't, and why.">
+    <meta name="author" content="Alexander Hepburn">
+
+    <meta property="og:type"        content="article">
+    <meta property="og:title"       content="Multi-Task Learning as Inductive Bias Under Distribution Shift — Quiet Signals Lab">
+    <meta property="og:description" content="Four controlled ablations on cross-domain NLP classification that isolate when multi-task learning helps, when it doesn't, and why.">
+    <meta property="og:url"         content="https://quietsignalslab.com/writing/multi-task-learning-distribution-shift/">
+    <meta property="og:site_name"   content="Quiet Signals Lab">
+    <meta property="article:published_time" content="2026-04-14">
+    <meta property="article:author" content="Alexander Hepburn">
+
+    <meta name="twitter:card"        content="summary_large_image">
+    <meta name="twitter:title"       content="Multi-Task Learning as Inductive Bias Under Distribution Shift — Quiet Signals Lab">
+    <meta name="twitter:description" content="Four controlled ablations on cross-domain NLP classification that isolate when MTL helps, when it doesn't, and why.">
+
+    <link rel="canonical" href="https://quietsignalslab.com/writing/multi-task-learning-distribution-shift/">
+    <link rel="alternate" type="application/rss+xml"
+          title="Quiet Signals Lab — Writing"
+          href="https://quietsignalslab.com/writing/feed.xml">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Multi-Task Learning as Inductive Bias Under Distribution Shift",
+      "description": "Multi-task learning as a structural buffer against distribution shift in NLP: four controlled ablations on cross-domain persuasion detection that isolate when MTL helps, when it doesn't, and why.",
+      "datePublished": "2026-04-14",
+      "dateModified": "2026-04-14",
+      "author": {
+        "@type": "Person",
+        "name": "Alexander Hepburn",
+        "url": "https://quietsignalslab.com"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Quiet Signals Lab",
+        "url": "https://quietsignalslab.com"
+      },
+      "url": "https://quietsignalslab.com/writing/multi-task-learning-distribution-shift/"
+    }
+    </script>
+
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+          href="/fonts/source-serif-4-latin-400.woff2">
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+          href="/fonts/source-serif-4-latin-700.woff2">
+
+    <link rel="stylesheet" href="/writing/writing.css">
+
+    <title>Multi-Task Learning as Inductive Bias Under Distribution Shift — Quiet Signals Lab</title>
+</head>
+<body>
+
+    <header class="site-header" role="banner">
+        <div class="site-header-inner">
+            <a class="site-brand" href="/">Quiet Signals Lab</a>
+            <nav aria-label="Site navigation">
+                <ul class="site-nav">
+                    <li><a href="/writing/">Writing</a></li>
+                    <li class="site-nav-secondary"><a href="/#services">Services</a></li>
+                    <li class="site-nav-secondary"><a href="mailto:hello@quietsignalslab.com">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="article-layout">
+            <article class="article-body" itemscope itemtype="https://schema.org/Article">
+
+                <header class="post-header">
+                    <h1 class="post-title" itemprop="headline">
+                        Multi-Task Learning as Inductive Bias Under Distribution Shift
+                    </h1>
+                    <p class="post-subtitle">
+                        A model trained on one domain and deployed in another will lose performance.
+                        The question is whether the architecture itself can act as a structural buffer.
+                    </p>
+                    <div class="post-meta">
+                        <time datetime="2026-04-14" itemprop="datePublished">14 April 2026</time>
+                        <span class="sep" aria-hidden="true">·</span>
+                        <span class="reading-time" id="reading-time" aria-label="Estimated reading time"></span>
+                    </div>
+                </header>
+
+                <p>
+                    A model trained on one domain and deployed in another will lose performance.
+                    This is well known. What is less well understood is <em>why</em> — because
+                    "distribution shift" is not one thing. The input vocabulary changes (lexical
+                    shift). The label frequencies change (label shift). The label semantics
+                    themselves may shift. These effects compound, and most evaluations do not
+                    disentangle them.
+                </p>
+
+                <p>
+                    The standard response is more data, larger models, or domain adaptation.
+                    These work, but they treat the symptom. The question this thesis asks is
+                    whether the architecture itself — specifically, multi-task learning — can
+                    act as a structural buffer against degradation, by forcing the encoder to
+                    learn representations that serve more than one objective.
+                </p>
+
+                <h2>Experimental Setting</h2>
+
+                <p>
+                    Two NLP classification tasks drawn from the SemEval 2025 shared task on
+                    persuasion detection: <strong>entity framing</strong> (assigning roles to
+                    named entities in news text) and <strong>narrative classification</strong>
+                    (identifying overarching discourse strategies in articles). Both tasks are
+                    multi-label and hierarchical — the challenging end of the classification
+                    spectrum.
+                </p>
+
+                <p>
+                    Two domains — Ukraine conflict and climate change — with verified
+                    distributional divergence: Jensen-Shannon divergence of 0.41 on token
+                    distributions, cosine distance of 0.64 on sentence embeddings, and
+                    non-overlapping narrative label sets across domains.
+                </p>
+
+                <figure>
+                    <img src="pca-tsne-embeddings.png"
+                         alt="PCA and t-SNE plots of sentence embeddings for Ukraine and climate change domains. PCA shows moderate overlap with a noticeable central shift. t-SNE shows clearly separated clusters, with most climate change and Ukraine points occupying different regions of the embedding space."
+                         width="800" height="420"
+                         style="background:var(--w-code-bg);min-height:200px;">
+                    <figcaption>
+                        Figure 2. PCA (left) captures linear variation in the embeddings and shows
+                        overall structure; there is moderate overlap but a noticeable central shift
+                        between domains. t-SNE (right) captures non-linear relationships; the domains
+                        are clearly separated, with most climate change (CC) and Ukraine (UA) points
+                        occupying different regions of the space.
+                    </figcaption>
+                </figure>
+
+                <p>
+                    Three architectures compared: single-task learning (STL), multi-task learning
+                    with hard parameter sharing (MTL), and a hybrid variant with task-specific
+                    adapter modules (MTL-A). Each configuration evaluated over 20 random seeds
+                    with Wilcoxon signed-rank tests for significance.
+                </p>
+
+                <figure>
+                    <img src="architecture-diagram.png"
+                         alt="Diagram showing the three architectures: single-task learning with one task head, multi-task learning with a shared encoder and two task heads, and MTL with adapters adding task-specific modules between shared encoder layers."
+                         width="800" height="340"
+                         style="background:var(--w-code-bg);min-height:160px;">
+                    <figcaption>
+                        Figure 3. The multi-task learning setup (centre) and MTL with task-specific
+                        adapters (right, shown in blue). Both fine-tune the shared encoder by
+                        optimising a summed loss across tasks. The single-task setup (left) includes
+                        only one task head and no adapter modules.
+                    </figcaption>
+                </figure>
+
+                <h2>What I Tested</h2>
+
+                <p>
+                    The thesis is structured around four controlled ablations. Each one isolates
+                    a different mechanism — to answer not just whether MTL helps, but under what
+                    conditions and why.
+                </p>
+
+                <h3>1. Cross-domain training</h3>
+
+                <p>
+                    One task trained on domain A, the other on domain B. Does the auxiliary
+                    task's domain signal transfer to the primary task?
+                </p>
+
+                <p>
+                    <strong>Finding:</strong> training entity framing on climate change data while
+                    training narrative classification on Ukraine data recovered entity framing
+                    performance on Ukraine evaluation metrics to the level of a model trained
+                    directly on Ukraine. The auxiliary task acted as an indirect source of
+                    domain-relevant signal — a form of cross-task, cross-domain data augmentation.
+                </p>
+
+                <h3>2. Data duplication</h3>
+
+                <p>
+                    The most important control. MTL models see roughly twice the data of STL
+                    models (two tasks' worth of labelled examples passing through a shared
+                    encoder). Is the MTL gain just a data volume effect? To test this, I
+                    duplicated the STL training data to match the MTL token count.
+                </p>
+
+                <p>
+                    <strong>Finding:</strong> duplication does improve performance, particularly
+                    on rare labels. But MTL configurations still outperform the duplicated
+                    baseline on the tasks that benefit most from multi-task training — confirming
+                    that task interaction contributes something beyond additional supervision
+                    volume.
+                </p>
+
+                <h3>3. Label granularity</h3>
+
+                <p>
+                    The label taxonomy was varied across four configurations: both tasks
+                    fine-grained, one coarse / one fine, and both coarse.
+                </p>
+
+                <p>
+                    <strong>Finding:</strong> when both tasks use coarse labels and the
+                    classification problem becomes more balanced, STL outperforms MTL. Hard
+                    parameter sharing is most beneficial precisely when the problem is hardest —
+                    high label imbalance, data scarcity, and large distributional shift. Under
+                    easier conditions, the specialisation of a single-task model wins.
+                </p>
+
+                <h3>4. Cross-domain evaluation</h3>
+
+                <p>
+                    All models were evaluated on held-out test sets from both domains, regardless
+                    of training domain. This surfaces asymmetric transfer: models trained on one
+                    domain generalised to the other more effectively than the reverse, suggesting
+                    that domain informativeness — not just domain similarity — drives transfer quality.
+                </p>
+
+                <h2>Key Findings</h2>
+
+                <p>
+                    <strong>MTL helps most when things are hardest.</strong> Under data scarcity,
+                    extreme class imbalance, and large distributional shift, multi-task models
+                    recovered performance that single-task models lost. The clearest example:
+                    narrative classification trained on Ukraine data alone scored 0.00 micro-F1
+                    on climate change test data under STL — complete failure. Under MTL, the same
+                    encoder produced 0.24. Still low, but a meaningful recovery from zero.
+                </p>
+
+                <p>
+                    <strong>MTL is not universally better.</strong> In stable, data-rich settings
+                    with well-covered label distributions, single-task models performed
+                    competitively or better. The negative transfer observed in entity framing
+                    (2–3% micro-F1 degradation under MTL) was consistent and statistically
+                    significant in several configurations. MTL is a specific tool for specific
+                    failure modes, not a universal upgrade.
+                </p>
+
+                <p>
+                    <strong>The data duplication ablation matters.</strong> Without it, the MTL
+                    results would be ambiguous — the gains could be explained by exposure to more
+                    labelled data, not by task interaction. Isolating these two effects is what
+                    allows the thesis to make a causal claim about the role of multi-task
+                    structure, rather than just reporting correlations.
+                </p>
+
+                <p>
+                    <strong>Label granularity mediates the effect.</strong> When the auxiliary
+                    task uses fine-grained labels (more imbalanced, harder), MTL provides a
+                    stronger benefit. When labels are coarsened (more balanced, easier), the MTL
+                    advantage diminishes or reverses. This suggests that MTL's regularisation
+                    effect is most valuable when the model is at greatest risk of overfitting to
+                    dominant classes.
+                </p>
+
+                <h2>Methodology Notes</h2>
+
+                <p>
+                    Evaluation over 20 seeds (10 per ablation) with mean ± standard deviation
+                    reported for all metrics. Statistical significance assessed via two-sided
+                    Wilcoxon signed-rank tests. Three complementary metrics: micro-F1 (overall
+                    accuracy, sensitive to frequent classes), macro-F1 (per-class average,
+                    sensitive to rare classes), and exact match ratio (strictest — every label
+                    correct for a given instance).
+                </p>
+
+                <p>
+                    The full multi-label, hierarchical label taxonomy was preserved rather than
+                    simplified to multi-class. This is a deliberate methodological choice: it
+                    makes the problem harder but the results more representative of real-world
+                    classification tasks where label spaces are large, imbalanced, and structured.
+                </p>
+
+                <p>
+                    Post-hoc interpretability via SHAP token attributions was included for
+                    completeness but treated with appropriate caution given the known limitations
+                    of post-hoc explanations for transformer models.
+                </p>
+
+                <h2>Relevance to Applied ML</h2>
+
+                <p>
+                    The project addresses a problem that recurs in every production ML system:
+                    your training data does not perfectly represent the data you will encounter
+                    at deployment. The findings have direct implications for practitioners
+                    deciding between single-task and multi-task architectures.
+                </p>
+
+                <p>
+                    <strong>Reach for MTL</strong> when you have limited labelled data, severe
+                    class imbalance, or reason to expect domain shift at deployment. The inductive
+                    bias from a related auxiliary task can act as a structural regulariser that
+                    simple data augmentation cannot fully replicate.
+                </p>
+
+                <p>
+                    <strong>Stay with STL</strong> when you have sufficient, well-distributed
+                    training data and a stable deployment domain. The specialisation advantage
+                    of a single-task model outweighs the regularisation benefit of MTL in these
+                    conditions.
+                </p>
+
+                <p>
+                    <strong>Design your evaluation to isolate mechanisms.</strong> An MTL result
+                    without a data-volume control is incomplete. An out-of-domain evaluation
+                    without disentangling input shift from label shift conflates two different
+                    failure modes. The ablation methodology used here — varying one factor while
+                    holding others constant — is transferable to any model evaluation pipeline.
+                </p>
+
+                <blockquote>
+                    <p>
+                        This post is a condensed version of my MSc thesis at the University of
+                        Amsterdam (2025). The full thesis is available on request. An earlier
+                        version was published on
+                        <a href="https://medium.com/@aahepburn/multi-task-learning-as-inductive-bias-under-distribution-shift-377c4c58e9cc"
+                           target="_blank" rel="noopener noreferrer">Medium</a>.
+                    </p>
+                </blockquote>
+
+                <footer class="post-footer">
+                    <p class="post-footer-author">
+                        <strong>Alexander Hepburn</strong> is an ML &amp; privacy engineer
+                        based in Amsterdam. He consults through Quiet Signals Lab on
+                        privacy-sensitive AI systems, document intelligence, and model integrity.
+                    </p>
+                    <nav class="post-footer-nav" aria-label="Post navigation">
+                        <a href="/writing/">← All writing</a>
+                        <span class="sep" aria-hidden="true">·</span>
+                        <a href="/#services">Services</a>
+                        <span class="sep" aria-hidden="true">·</span>
+                        <a href="https://github.com/aahepburn" rel="noopener noreferrer">GitHub</a>
+                        <span class="sep" aria-hidden="true">·</span>
+                        <a href="mailto:hello@quietsignalslab.com">Contact</a>
+                    </nav>
+                </footer>
+
+            </article>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <p>Quiet Signals Lab · KvK 99556650 · VAT: NL005394204B58</p>
+        <p>This site does not use cookies or tracking technologies. <a href="/privacy">Privacy Notice</a></p>
+        <p>© 2026 Alexander Hepburn. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var body = document.querySelector('.article-body');
+            var el   = document.getElementById('reading-time');
+            if (!body || !el) return;
+            var words   = body.innerText.trim().split(/\s+/).filter(Boolean).length;
+            var minutes = Math.max(1, Math.round(words / 200));
+            el.textContent = minutes + '\u202fmin read';
+        });
+    </script>
+
+</body>
+</html>

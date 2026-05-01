@@ -69,6 +69,20 @@
       <guid isPermaLink="true">https://quietsignalslab.com/writing/example-post/</guid>
     </item>
 
+    <item>
+      <title>Multi-Task Learning as Inductive Bias Under Distribution Shift</title>
+      <link>https://quietsignalslab.com/writing/multi-task-learning-distribution-shift/</link>
+      <description>
+        A model trained on one domain and deployed in another will lose performance.
+        This piece works through four controlled ablations on cross-domain NLP
+        classification — cross-domain training, data duplication, label granularity,
+        and cross-domain evaluation — to isolate when multi-task learning acts as a
+        structural buffer against distribution shift, and when it doesn’t.
+      </description>
+      <pubDate>Mon, 14 Apr 2026 00:00:00 +0000</pubDate>
+      <guid isPermaLink="true">https://quietsignalslab.com/writing/multi-task-learning-distribution-shift/</guid>
+    </item>
+
     <!--
     =========================================================================
     [ITEM TEMPLATE] — copy this block and fill in before adding a new post
