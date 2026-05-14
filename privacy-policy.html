@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Privacy Policy for ShadowClip — a pixel-perfect audit tool that keeps all data on your device.">
+  <title>Privacy Policy · ShadowClip</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    .prose {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 3rem 2rem 5rem;
+    }
+
+    .prose .page-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--secondary-text);
+      margin-bottom: 0.5rem;
+    }
+
+    .prose h1 {
+      font-family: 'Avenir Next', 'Avenir', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--primary-text);
+      margin-bottom: 0.4rem;
+    }
+
+    .prose .page-meta {
+      font-size: 0.85rem;
+      color: var(--secondary-text);
+      margin-bottom: 2.5rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .prose .lede {
+      font-size: 1.1rem;
+      line-height: 1.75;
+      color: var(--primary-text);
+      font-weight: 400;
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .prose h2 {
+      font-family: 'Avenir Next', 'Avenir', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin: 2.5rem 0 0.75rem;
+    }
+
+    .prose p { color: var(--secondary-text); line-height: 1.8; margin-bottom: 1rem; }
+    .prose strong { color: var(--primary-text); font-weight: 600; }
+
+    .prose code {
+      font-size: 0.875em;
+      background: var(--light-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      padding: 0.1em 0.35em;
+      color: var(--primary-text);
+    }
+
+    .prose a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .constraint-box {
+      background: color-mix(in srgb, var(--accent) 8%, var(--primary-bg));
+      border-left: 3px solid var(--accent);
+      padding: 1rem 1.25rem;
+      border-radius: 0 6px 6px 0;
+      margin: 1.5rem 0;
+      font-size: 0.95rem;
+      color: var(--secondary-text);
+      line-height: 1.7;
+    }
+
+    .constraint-box strong {
+      display: block;
+      margin-bottom: 0.25rem;
+      color: var(--primary-text);
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0 1.5rem;
+      font-size: 0.875rem;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .data-table th {
+      background: var(--light-bg);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--secondary-text);
+      text-align: left;
+      padding: 0.6rem 1rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .data-table td {
+      padding: 0.75rem 1rem;
+      vertical-align: top;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--secondary-text);
+      line-height: 1.6;
+    }
+
+    .data-table tr:last-child td { border-bottom: none; }
+
+    a.nav-brand {
+      text-decoration: none;
+      color: var(--primary-text);
+    }
+
+    @media (max-width: 768px) {
+      .prose { padding: 2rem 1.25rem 4rem; }
+      .prose h1 { font-size: 1.75rem; }
+      .data-table { font-size: 0.8rem; }
+      .data-table th, .data-table td { padding: 0.5rem 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="/" class="nav-brand">Quiet Signals Lab</a>
+    <ul class="nav-links">
+      <li><a href="/writing/">Writing</a></li>
+      <li><a href="/#services">Services</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="prose">
+  <p class="page-label">Legal</p>
+  <h1>Privacy Policy</h1>
+  <p class="page-meta">ShadowClip &nbsp;·&nbsp; Quiet Signals Lab &nbsp;·&nbsp; Effective: 1 June 2026</p>
+
+  <p class="lede">
+    ShadowClip does not collect, transmit, store, or share any personal data.
+    This is not a policy commitment — it is a physical constraint enforced by the
+    operating system.
+  </p>
+
+<h2>The short version</h2>
+
+<div class="constraint-box">
+  <strong>ShadowClip has no network access.</strong>
+  Apple's App Sandbox is configured with no <code>network.client</code> and no
+  <code>network.server</code> entitlements. macOS and iOS enforce this at the
+  kernel level. The app cannot make a network connection regardless of what any
+  policy document says.
+</div>
+
+<p>
+  Every image you process stays on your device. No pixel, no metadata, no filename,
+  no detection result leaves your machine. There is no server to send it to.
+</p>
+
+<h2>What the app stores</h2>
+
+<p>
+  ShadowClip stores your preferences locally using <code>UserDefaults</code>
+  (your chosen detection profile, redaction style, and per-category toggles).
+  This data lives only on your device, in your app container. It is not readable
+  by any other app or service, and it is deleted when you uninstall ShadowClip.
+</p>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Data</th>
+      <th>Where it lives</th>
+      <th>Leaves your device?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Images you process</td>
+      <td>Never stored — held in memory during the session only</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td>Detection results</td>
+      <td>Never stored — discarded when you close the review panel</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td>Redacted output files</td>
+      <td>Saved where you choose (your file system)</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td>Audit sidecar files (Legal profile)</td>
+      <td>Saved alongside the output, where you choose</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td>App preferences</td>
+      <td>Your device, in the app's UserDefaults container</td>
+      <td>No</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>Third-party services</h2>
+
+<p>
+  None. ShadowClip uses only Apple's built-in frameworks (Vision and Natural Language)
+  for detection. No third-party analytics SDKs, crash reporters, advertising networks,
+  or telemetry libraries are included in the app. This is verifiable: the binary
+  contains no analytics endpoints, no tracking identifiers, and no outbound URLs of
+  any kind.
+</p>
+
+<h2>Crash reports and diagnostics</h2>
+
+<p>
+  ShadowClip does not collect crash reports. If the app crashes, macOS will offer
+  to send a report to Apple through the standard system crash reporter — that is an
+  Apple service, governed by Apple's privacy policy, and entirely opt-in on your part.
+  No crash data is sent to Quiet Signals Lab.
+</p>
+
+<h2>Children</h2>
+
+<p>
+  ShadowClip has no age-gated features and collects no data from anyone, including
+  children. The app is rated 4+ on the App Store.
+</p>
+
+<h2>Changes to this policy</h2>
+
+<p>
+  If anything here ever changes — which would require a fundamental redesign of the
+  app's architecture — the updated policy will be posted at this URL with a revised
+  effective date, and the change will be noted in the app's release notes.
+</p>
+
+<h2>Contact</h2>
+
+<p>
+  Questions about privacy?
+  <a href="mailto:privacy@quietsignalslab.com">privacy@quietsignalslab.com</a>
+</p>
+
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="/shadowclip/">ShadowClip</a>
+    <a href="https://github.com/Quiet-Signals-Lab/RedactApp/issues">Support</a>
+    <a href="/">Quiet Signals Lab</a>
+  </div>
+  <div class="footer-meta">
+    <p>© 2026 Quiet Signals Lab. All rights reserved.</p>
+    <p>ShadowClip does not use cookies or tracking technologies.</p>
+  </div>
+</footer>
+
+</body>
+</html>
