@@ -226,7 +226,7 @@
                     <img src="assets/shadow_clip.png" alt="ShadowClip app icon" class="project-icon">
                     <h3 class="project-title">ShadowClip</h3>
                     <div class="project-tags">
-                        <span class="tag">macOS</span>
+                        <span class="tag">Computer Vision</span>
                         <span class="tag">Privacy</span>
                         <span class="tag">Coming June 2026</span>
                     </div>
@@ -242,16 +242,18 @@
                     <img src="assets/rag_zotero.png" alt="RAG Assistant for Zotero icon" style="height:52px;width:auto;margin-bottom:0.85rem;display:block;">
                     <h3 class="project-title">RAG Assistant for Zotero</h3>
                     <div class="project-tags">
-                        <span class="tag">Python</span>
-                        <span class="tag">React</span>
-                        <span class="tag">Electron</span>
-                        <span class="tag">ChromaDB</span>
-                        <span class="tag">Open source</span>
+                        <span class="tag">Knowledge Discovery</span>
+                        <span class="tag">Local AI</span>
+                        <span class="tag">Provenance</span>
                         <span class="tag" id="rag-stars" aria-label="GitHub star count">★ &thinsp;&hellip;</span>
+                        <span class="tag">Apache 2.0</span>
                     </div>
                 </div>
                 <div class="project-detail">
                     <p class="project-desc">A desktop application for semantic search over Zotero research libraries. Designed for researchers who need to navigate large literature collections and get answers with clear source attribution — not summaries that obscure where the information came from. Supports local LLMs end-to-end, so libraries containing preprints, embargoed work, or sensitive material never leave the user's machine.</p>
+                    <div class="install-cmd"><span style="color:var(--accent);font-weight:600;font-style:normal;">macOS · Apple Silicon</span>  ·  Homebrew
+brew tap Quiet-Signals-Lab/rag-assistant-for-zotero
+brew install --cask rag-assistant-for-zotero</div>
                     <a href="https://github.com/Quiet-Signals-Lab/RAG-Assistant-for-Zotero" target="_blank" rel="noopener noreferrer" class="project-link">View on GitHub →</a>
                 </div>
             </div>
@@ -260,16 +262,20 @@
                 <div class="project-meta">
                     <h3 class="project-title">Contractex</h3>
                     <div class="project-tags">
-                        <span class="tag">Python</span>
-                        <span class="tag">LLM extraction</span>
-                        <span class="tag">OCR</span>
+                        <span class="tag">Python Library</span>
+                        <span class="tag">Information Retrieval</span>
                         <span class="tag">Provenance</span>
-                        <span class="tag">Open source</span>
+                        <span class="tag" id="contractex-version" aria-label="PyPI version">PyPI ···</span>
+                        <span class="tag" id="contractex-downloads" aria-label="Monthly downloads">↓ ···</span>
+                        <span class="tag">Apache 2.0</span>
                     </div>
                 </div>
                 <div class="project-detail">
-                    <p class="project-desc">A Python library for building document processing pipelines in legal and regulated workflows. The architecture is deterministic-first: a structural parsing layer (clause hierarchy, defined-terms registry, cross-reference resolution) runs without any model calls, schema-constrained LLM extraction sits on top of it, and every produced field carries a SourceSpan record back to the original document. Includes a ConfidenceRouter for automatic field-level routing and an AuditLogger for compliance-grade event trails.</p>
+                    <p class="project-desc">ContractEx is a Python library for legal document intelligence. Every operation is a composable LegalTask that takes a LegalDoc and returns a LegalDoc, making it trivial to build privacy-respecting extraction pipelines, RAG chatbots, and document-automation workflows over contracts, statutes, regulations, identity documents, and more. Privacy controls are a mandatory first-class stage in every pipeline.</p>
+                    <div class="install-cmd"><span style="color:var(--accent);font-weight:600;font-style:normal;">pip</span>  ·  Python 3.9+
+pip install contractex</div>
                     <a href="https://github.com/Quiet-Signals-Lab/Contractex-Legal-Tech-Library" target="_blank" rel="noopener noreferrer" class="project-link">View on GitHub →</a>
+                    <a href="https://pypi.org/project/contractex/" target="_blank" rel="noopener noreferrer" class="project-link">View on PyPI →</a>
                 </div>
             </div>
 
@@ -346,7 +352,6 @@
 
     <section class="writing" id="writing">
         <h2 class="section-title">Blog</h2>
-        <p class="section-intro">Long-form technical pieces on ML privacy, the engineering problems behind privacy-sensitive AI. <a href="/writing/" style="color:var(--accent);font-weight:500;text-decoration:none;">Visit the writing section →</a></p>
         <div class="project-list fade-in">
 
             <div class="project-item" style="display:none;">
@@ -467,6 +472,35 @@
                 content.classList.toggle('expanded');
             });
         });
+    </script>
+    <script>
+        // Fetch PyPI data for contractex
+        (function () {
+            var verEl = document.getElementById('contractex-version');
+            var dlEl  = document.getElementById('contractex-downloads');
+
+            if (verEl) {
+                fetch('https://pypi.org/pypi/contractex/json')
+                    .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+                    .then(function (data) {
+                        verEl.textContent = 'v' + data.info.version;
+                    })
+                    .catch(function () { verEl.style.display = 'none'; });
+            }
+
+            if (dlEl) {
+                fetch('https://pypistats.org/api/packages/contractex/recent')
+                    .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+                    .then(function (data) {
+                        var count = data.data.last_month;
+                        var formatted = count >= 1000
+                            ? (count / 1000).toFixed(1).replace(/\.0$/, '') + 'k'
+                            : count.toString();
+                        dlEl.textContent = '\u2193 ' + formatted + '/mo';
+                    })
+                    .catch(function () { dlEl.style.display = 'none'; });
+            }
+        })();
     </script>
     <script>
         // Fetch GitHub star count for RAG-Assistant-for-Zotero
