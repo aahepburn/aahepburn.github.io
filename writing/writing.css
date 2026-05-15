@@ -250,6 +250,15 @@ body {
     border-bottom: 1px solid var(--w-border);
 }
 
+/* ── Hidden posts ────────────────────────────────────────────────────────
+   Add this class to a <li class="post-list-item"> to remove it from the
+   listing without deleting the entry. The post's own URL remains live.
+   Also comment out the matching <item> in feed.xml.
+   ---------------------------------------------------------------------- */
+.post-list-item.post-hidden {
+    display: none;
+}
+
 .post-list-item:first-child {
     border-top: 1px solid var(--w-border);
 }

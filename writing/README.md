@@ -190,6 +190,37 @@ GitHub Pages deploys in ~60 seconds. No build step.
 
 ---
 
+## Hiding a post (without deleting it)
+
+To remove a post from the listing while keeping its URL live:
+
+**1. In `writing/index.html`** — add `post-hidden` to the `<li>` class:
+
+```html
+<!-- before -->
+<li class="post-list-item">
+
+<!-- after -->
+<li class="post-list-item post-hidden">
+```
+
+`writing.css` sets `display: none` for that class, so the entry disappears
+from the index. The post's own page at `/writing/<slug>/` stays accessible.
+
+**2. In `writing/feed.xml`** — wrap the matching `<item>` block in an XML comment:
+
+```xml
+<!--
+<item>
+    ...
+</item>
+-->
+```
+
+To unhide: remove `post-hidden` from the class and uncomment the feed item.
+
+---
+
 ## Naming conventions
 
 | Thing | Convention | Example |

@@ -54,7 +54,7 @@
                type="application/rss+xml"/>
 
     <!-- ── Posts (newest first) ──────────────────────────────────────── -->
-
+<!--
     <item>
       <title>Membership Inference at the Threshold: Likelihood Ratios and What They Expose</title>
       <link>https://quietsignalslab.com/writing/example-post/</link>
@@ -68,7 +68,7 @@
       <pubDate>Thu, 01 May 2026 00:00:00 +0000</pubDate>
       <guid isPermaLink="true">https://quietsignalslab.com/writing/example-post/</guid>
     </item>
-
+-->
     <item>
       <title>Multi-Task Learning as Inductive Bias Under Distribution Shift</title>
       <link>https://quietsignalslab.com/writing/multi-task-learning-distribution-shift/</link>
