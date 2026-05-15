@@ -1,8 +1,8 @@
 /* ============ CSS VARIABLES ============ */
 :root {
     --primary-bg: #f7f5f1;
-    --primary-text: #0a0a0a;
-    --secondary-text: #626262;
+    --primary-text: #000000;
+    --secondary-text: #000000;
     --accent: #be6e19;
     --border-color: #dedad3;
     --light-bg: #edeae3;
@@ -204,7 +204,7 @@ nav {
 
 .section-title {
     font-family: var(--head-font);
-    font-size: 0.7rem;
+    font-size: 0.85rem;
     font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -355,7 +355,14 @@ nav {
 /* ============ SOFTWARE & WRITING ============ */
 .software,
 .writing {
-    max-width: var(--max-width);
+    max-width: 900px;
+    margin: 0 auto;
+    padding: var(--spacing-2xl) var(--spacing-lg);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.about {
+    max-width: 640px;
     margin: 0 auto;
     padding: var(--spacing-2xl) var(--spacing-lg);
     border-bottom: 1px solid var(--border-color);
@@ -512,6 +519,28 @@ nav {
     font-weight: 500;
     transition: color 0.2s;
 }
+
+.project-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 11px;
+    margin-bottom: 0.85rem;
+    display: block;
+}
+
+.appstore-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: #000;
+    color: #fff;
+    border-radius: 7px;
+    padding: 0.4rem 0.9rem 0.4rem 0.75rem;
+    text-decoration: none;
+    margin-top: 0.6rem;
+    user-select: none;
+}
+
 .tech-stack {
     max-width: var(--max-width);
     margin: 0 auto;
@@ -715,7 +744,7 @@ footer {
     margin: 0 auto;
     padding: var(--spacing-lg) var(--spacing-lg);
     text-align: center;
-    color: var(--secondary-text);
+    color: #626262;
     font-size: 0.85rem;
 }
 

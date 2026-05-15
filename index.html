@@ -57,17 +57,29 @@
 
     <!-- Tab Navigation -->
     <nav class="tab-nav" role="tablist" aria-label="Site sections">
-        <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="panel-services" data-panel="panel-services">Services</button>
-        <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-software" data-panel="panel-software">Software</button>
-        <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-work" data-panel="panel-work">Work</button>
-        <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-writing" data-panel="panel-writing">Writing</button>
+        <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="panel-software" data-panel="panel-software">Software</button>
+        <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-writing" data-panel="panel-writing">Blog</button>
+        <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-about" data-panel="panel-about">About</button>
     </nav>
 
     <!-- Tab Panels -->
     <div class="tab-panels">
 
-    <!-- Panel: Services -->
-    <div class="tab-panel active" id="panel-services" role="tabpanel">
+    <!-- Panel: About -->
+    <div class="tab-panel" id="panel-about" role="tabpanel">
+
+    <section class="about" id="about">
+        <h2 class="section-title">About</h2>
+        <p>Thanks for visiting my website!</p><br>
+        <p>My name is Alexander and I live in Amsterdam. I started Quiet Signals Lab in 2026 as a platform to pursue my interest in responsible ML.</p><br>
+        <p>I hold a master's degree in data science from the University of Amsterdam. My thesis was on addressing distribution shifts in low-resource NLP tasks, supervised by Prof. Paul Groth (INDELab). </p><br>
+        <p>Don't hesitate to drop me a message if you are interested in what I do.</p>
+    </section>
+
+    </div><!-- /panel-about -->
+
+    <!-- Panel: Services (hidden) -->
+    <div class="tab-panel" id="panel-services" role="tabpanel" style="display:none;">
 
     <!-- Services -->
     <!-- OLD CARD LAYOUT
@@ -202,16 +214,32 @@
     </div><!-- /panel-services -->
 
     <!-- Panel: Software -->
-    <div class="tab-panel" id="panel-software" role="tabpanel">
+    <div class="tab-panel active" id="panel-software" role="tabpanel">
 
     <!-- Software -->
     <section class="software" id="software">
         <h2 class="section-title">Software</h2>
-        <p class="section-intro">Open-source releases from Quiet Signals Lab. The same architectural commitments — deterministic structure first, language model components only where probabilistic behaviour is genuinely needed, provenance and auditability built in — applied to libraries and tools that are free for anyone to use.</p>
         <div class="project-list fade-in">
 
             <div class="project-item">
                 <div class="project-meta">
+                    <img src="assets/shadow_clip.png" alt="ShadowClip app icon" class="project-icon">
+                    <h3 class="project-title">ShadowClip</h3>
+                    <div class="project-tags">
+                        <span class="tag">macOS</span>
+                        <span class="tag">Privacy</span>
+                        <span class="tag">Coming June 2026</span>
+                    </div>
+                </div>
+                <div class="project-detail">
+                    <p class="project-desc">A macOS and iOS utility for redacting sensitive content from screenshots before they reach AI tools, colleagues, or support tickets. All detection runs on-device — Apple Vision for faces and text layout, Natural Language for named entities, and hand-authored patterns for API keys and structured credentials — with no network entitlement and no data in transit.</p>
+                    <span class="appstore-badge" title="Coming to the App Store — June 2026">Coming to the App Store</span>
+                </div>
+            </div>
+
+            <div class="project-item">
+                <div class="project-meta">
+                    <img src="assets/rag_zotero.png" alt="RAG Assistant for Zotero icon" style="height:52px;width:auto;margin-bottom:0.85rem;display:block;">
                     <h3 class="project-title">RAG Assistant for Zotero</h3>
                     <div class="project-tags">
                         <span class="tag">Python</span>
@@ -251,8 +279,8 @@
 
     </div><!-- /panel-software -->
 
-    <!-- Panel: Work -->
-    <div class="tab-panel" id="panel-work" role="tabpanel">
+    <!-- Panel: Work (hidden) -->
+    <div class="tab-panel" id="panel-work" role="tabpanel" style="display:none;">
 
     <!-- Featured Work -->
     <section class="featured-work" id="work">
@@ -313,12 +341,12 @@
 
     </div><!-- /panel-work -->
 
-    <!-- Panel: Writing -->
+    <!-- Panel: Blog -->
     <div class="tab-panel" id="panel-writing" role="tabpanel">
 
     <section class="writing" id="writing">
-        <h2 class="section-title">Writing</h2>
-        <p class="section-intro">Long-form technical pieces on ML privacy, membership inference, retrieval systems, and the engineering problems behind privacy-sensitive AI. Four to eight pieces per year. <a href="/writing/" style="color:var(--accent);font-weight:500;text-decoration:none;">Visit the writing section →</a></p>
+        <h2 class="section-title">Blog</h2>
+        <p class="section-intro">Long-form technical pieces on ML privacy, the engineering problems behind privacy-sensitive AI. <a href="/writing/" style="color:var(--accent);font-weight:500;text-decoration:none;">Visit the writing section →</a></p>
         <div class="project-list fade-in">
 
             <div class="project-item" style="display:none;">
@@ -356,11 +384,13 @@
 
     </div><!-- /tab-panels -->
 
-    <!-- Pull Quote -->
+    <!-- Pull Quote (hidden) -->
+    <!--
     <blockquote class="site-quote">
         <p>&#8220;All models are wrong, but some are useful.&#8221;</p>
         <cite>— George Box</cite>
     </blockquote>
+    -->
 
     <!-- Footer -->
     <footer>
