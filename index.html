@@ -433,6 +433,14 @@
 
         tabBtns.forEach(btn => btn.addEventListener('click', () => activatePanel(btn)));
 
+        // Hash-based tab activation (e.g. /#about, /#blog, /#software)
+        const hashMap = { '#about': 'panel-about', '#blog': 'panel-writing', '#writing': 'panel-writing', '#software': 'panel-software' };
+        const hashTarget = hashMap[window.location.hash];
+        if (hashTarget) {
+            const btn = document.querySelector(`.tab-btn[data-panel="${hashTarget}"]`);
+            if (btn) activatePanel(btn);
+        }
+
         // Mark fade-in elements in the initial active panel as visible
         document.querySelector('.tab-panel.active')
             ?.querySelectorAll('.fade-in')
