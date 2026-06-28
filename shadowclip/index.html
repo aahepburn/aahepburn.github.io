@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ShadowClip — Redact sensitive content from screenshots before they reach AI tools, colleagues, or support tickets. All detection runs on-device. Available for macOS and iOS.">
+    <meta name="author" content="Quiet Signals Lab">
+    <title>ShadowClip · Quiet Signals Lab</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../assets/app-icon-1024.png">
+
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="../styles.css">
+
+    <style>
+        /* ── Page-specific overrides ── */
+        .sc-page {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 2rem 5rem;
+        }
+
+        /* Hero */
+        .sc-hero {
+            padding: 3.5rem 0 2.5rem;
+            border-bottom: 2px solid var(--accent);
+            display: flex;
+            align-items: flex-start;
+            gap: 2rem;
+        }
+
+        .sc-hero-icon {
+            width: 88px;
+            height: 88px;
+            border-radius: 20px;
+            flex-shrink: 0;
+        }
+
+        .sc-hero-text h1 {
+            font-family: var(--head-font);
+            font-size: 2.75rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            line-height: 1.1;
+            color: var(--primary-text);
+            margin-bottom: 0.5rem;
+        }
+
+        .sc-hero-text .sc-tagline {
+            font-size: 1rem;
+            color: var(--secondary-text);
+            line-height: 1.7;
+            max-width: 560px;
+            margin-bottom: 1.25rem;
+        }
+
+        .sc-hero-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .sc-appstore-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #000;
+            color: #fff;
+            border-radius: 8px;
+            padding: 0.55rem 1.1rem;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+            transition: background 0.2s;
+        }
+
+        .sc-appstore-btn:hover {
+            background: #222;
+            color: #fff;
+        }
+
+        .sc-appstore-btn svg {
+            flex-shrink: 0;
+        }
+
+        .sc-coming-badge {
+            display: inline-flex;
+            align-items: center;
+            background: var(--light-bg);
+            border: 1px solid var(--border-color);
+            color: var(--secondary-text);
+            border-radius: 8px;
+            padding: 0.55rem 1.1rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        /* Sections */
+        .sc-section {
+            padding: 2.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sc-section:last-child {
+            border-bottom: none;
+        }
+
+        .sc-section h2 {
+            font-family: var(--head-font);
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1.25rem;
+        }
+
+        .sc-section h2::before {
+            content: '';
+            display: block;
+            width: 1.75rem;
+            height: 2px;
+            background: currentColor;
+            margin-bottom: 0.5rem;
+        }
+
+        .sc-body {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: var(--secondary-text);
+            max-width: 680px;
+        }
+
+        .sc-body p + p {
+            margin-top: 1rem;
+        }
+
+        /* Feature grid */
+        .sc-features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .sc-feature {
+            border-left: 2px solid var(--accent);
+            padding-left: 1rem;
+        }
+
+        .sc-feature h3 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary-text);
+            margin-bottom: 0.4rem;
+        }
+
+        .sc-feature p {
+            font-size: 0.85rem;
+            line-height: 1.65;
+            color: var(--secondary-text);
+        }
+
+        /* Platform tags */
+        .sc-platform-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        /* FAQ */
+        .sc-faq {
+            margin-top: 1rem;
+        }
+
+        .sc-faq-item {
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+        }
+
+        .sc-faq-item:first-child {
+            border-top: 1px solid var(--border-color);
+        }
+
+        .sc-faq-q {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary-text);
+            margin-bottom: 0.4rem;
+        }
+
+        .sc-faq-a {
+            font-size: 0.875rem;
+            line-height: 1.75;
+            color: var(--secondary-text);
+        }
+
+        /* Support contact */
+        .sc-contact-box {
+            background: var(--light-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1.25rem;
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .sc-contact-box p {
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: var(--secondary-text);
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .sc-contact-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            white-space: nowrap;
+            align-self: center;
+        }
+
+        .sc-contact-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .sc-hero {
+                flex-direction: column;
+                gap: 1.25rem;
+            }
+
+            .sc-hero-text h1 {
+                font-size: 2rem;
+            }
+
+            .sc-features {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sticky nav -->
+    <header>
+        <nav>
+            <a href="/" class="nav-brand">Quiet Signals Lab</a>
+            <ul class="nav-links">
+                <li><a href="/#software">Software</a></li>
+                <li><a href="/#writing">Blog</a></li>
+                <li><a href="/#about">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="sc-page">
+
+        <!-- Hero -->
+        <div class="sc-hero">
+            <img src="../assets/shadow_clip.png" alt="ShadowClip app icon" class="sc-hero-icon">
+            <div class="sc-hero-text">
+                <h1>ShadowClip</h1>
+                <p class="sc-tagline">Redact sensitive content from screenshots before they reach AI tools, colleagues, or support tickets. All detection runs on-device — nothing leaves your Mac or iPhone.</p>
+                <div class="sc-hero-badges">
+                    <!-- swap href when live on the App Store -->
+                    <span class="sc-coming-badge">Coming to the App Store — June 2026</span>
+                    <div class="sc-platform-tags">
+                        <span class="tag">macOS</span>
+                        <span class="tag">iOS</span>
+                        <span class="tag">On-Device</span>
+                        <span class="tag">No Network</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- What it does -->
+        <div class="sc-section">
+            <h2>What it does</h2>
+            <div class="sc-body">
+                <p>ShadowClip sits in your menu bar and intercepts screenshots the moment you take them. Before you paste, share, or upload anything, it automatically detects and blacks out the sensitive regions — faces, names, email addresses, API keys, access tokens, credit card numbers, and other structured credentials.</p>
+                <p>There is no cloud step. No account. No subscription. Detection runs entirely on-device using Apple Vision for faces and text layout, the Natural Language framework for named entities, and hand-authored pattern matchers for credentials and structured data. ShadowClip has no network entitlement and cannot make outbound connections.</p>
+            </div>
+
+            <div class="sc-features">
+                <div class="sc-feature">
+                    <h3>Face &amp; Person Detection</h3>
+                    <p>Apple Vision locates faces and person regions in screenshots. Redaction boxes cover the detected area with configurable padding.</p>
+                </div>
+                <div class="sc-feature">
+                    <h3>Named Entity Recognition</h3>
+                    <p>The Apple Natural Language framework identifies names, organisations, and locations in any text recognised in the image.</p>
+                </div>
+                <div class="sc-feature">
+                    <h3>Credential Patterns</h3>
+                    <p>Hand-authored regex patterns catch API keys, access tokens, connection strings, credit card numbers, and IBANs before they slip out.</p>
+                </div>
+                <div class="sc-feature">
+                    <h3>Manual Redaction</h3>
+                    <p>Draw your own redaction boxes for anything automatic detection missed. Drag to resize, click to delete.</p>
+                </div>
+                <div class="sc-feature">
+                    <h3>Clipboard Integration</h3>
+                    <p>The redacted image copies to your clipboard instantly — paste it wherever you were going without an extra save step.</p>
+                </div>
+                <div class="sc-feature">
+                    <h3>Batch Export</h3>
+                    <p>Process a folder of existing screenshots in one pass. Redacted copies are saved alongside the originals.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Privacy -->
+        <div class="sc-section">
+            <h2>Privacy by architecture</h2>
+            <div class="sc-body">
+                <p>ShadowClip is built around a single constraint: your screenshots never leave your device. This is enforced at the architecture level, not by policy. The app has no network entitlement in its sandbox, which means the operating system will reject any outbound connection attempt, regardless of what the code tries to do.</p>
+                <p>No account is required. No telemetry is collected. No crash reports are sent. If you want to report a bug, you do it manually through the support address below.</p>
+                <p>All processing — OCR, entity detection, face detection, pattern matching — runs locally using Apple's on-device frameworks. The only data written to disk is the redacted image you choose to export.</p>
+            </div>
+        </div>
+
+        <!-- System requirements -->
+        <div class="sc-section">
+            <h2>System requirements</h2>
+            <div class="sc-body">
+                <p>ShadowClip is available on two platforms:</p>
+            </div>
+            <div class="sc-features" style="margin-top:1rem;">
+                <div class="sc-feature">
+                    <h3>macOS</h3>
+                    <p>macOS 14 Sonoma or later. Apple Silicon recommended for best performance. Intel Macs supported.</p>
+                </div>
+                <div class="sc-feature">
+                    <h3>iOS</h3>
+                    <p>iOS 17 or later. Works with the system share sheet — redact any image from Photos, Safari, or any other app.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ -->
+        <div class="sc-section">
+            <h2>Frequently asked questions</h2>
+            <div class="sc-faq">
+                <div class="sc-faq-item">
+                    <p class="sc-faq-q">Does ShadowClip send my screenshots anywhere?</p>
+                    <p class="sc-faq-a">No. The app has no network entitlement. It cannot make outbound connections. All processing happens locally on your device.</p>
+                </div>
+                <div class="sc-faq-item">
+                    <p class="sc-faq-q">Do I need an account or subscription?</p>
+                    <p class="sc-faq-a">No account and no subscription. ShadowClip is a one-time purchase on the App Store.</p>
+                </div>
+                <div class="sc-faq-item">
+                    <p class="sc-faq-q">What languages does text detection support?</p>
+                    <p class="sc-faq-a">ShadowClip uses Apple's Vision and Natural Language frameworks, which support the languages available in those system APIs. Coverage is best for Latin-script languages. Credential pattern matching is language-agnostic.</p>
+                </div>
+                <div class="sc-faq-item">
+                    <p class="sc-faq-q">Can I undo a redaction?</p>
+                    <p class="sc-faq-a">Yes — until you copy or export. Redaction boxes are non-destructive overlays in the editor. The original screenshot file is never modified; the redacted version is a new image.</p>
+                </div>
+                <div class="sc-faq-item">
+                    <p class="sc-faq-q">Does automatic detection catch everything?</p>
+                    <p class="sc-faq-a">No automatic system catches everything. ShadowClip includes a manual redaction mode so you can draw boxes over anything the automatic pass missed. Always review the output before sharing.</p>
+                </div>
+                <div class="sc-faq-item">
+                    <p class="sc-faq-q">Is there a family or team licence?</p>
+                    <p class="sc-faq-a">App Store Family Sharing is supported. For team deployments via Apple Business Manager, contact us at the address below.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Support -->
+        <div class="sc-section">
+            <h2>Support</h2>
+            <div class="sc-body">
+                <p>ShadowClip is built and maintained by Quiet Signals Lab. For bug reports, feature requests, or anything else, reach out directly.</p>
+            </div>
+            <div class="sc-contact-box">
+                <p>Include your macOS or iOS version and a description of what happened. Screenshots are welcome — run them through ShadowClip first.</p>
+                <a href="mailto:hello@quietsignalslab.com" class="sc-contact-link">
+                    hello@quietsignalslab.com →
+                </a>
+            </div>
+        </div>
+
+    </div><!-- /sc-page -->
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-meta">
+            <p>Quiet Signals Lab · KvK 99556650 · VAT: NL005394204B58</p>
+            <p>This site does not use cookies or tracking technologies. <a href="/privacy">Privacy Notice</a></p>
+            <p>© 2026 Alexander Hepburn. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
