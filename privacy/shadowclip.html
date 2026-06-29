@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Privacy Policy for ShadowClip — a pixel-perfect audit tool that keeps all data on your device.">
+  <title>Privacy Policy · ShadowClip</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="../styles.css">
+
+  <style>
+    .prose {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 3rem 2rem 5rem;
+    }
+
+    .prose .page-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--secondary-text);
+      margin-bottom: 0.5rem;
+    }
+
+    .prose h1 {
+      font-family: 'Avenir Next', 'Avenir', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--primary-text);
+      margin-bottom: 0.4rem;
+    }
+
+    .prose .page-meta {
+      font-size: 0.85rem;
+      color: var(--secondary-text);
+      margin-bottom: 2.5rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .prose .lede {
+      font-size: 1.1rem;
+      line-height: 1.75;
+      color: var(--primary-text);
+      font-weight: 400;
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .prose h2 {
+      font-family: 'Avenir Next', 'Avenir', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin: 2.5rem 0 0.75rem;
+    }
+
+    .prose p { color: var(--secondary-text); line-height: 1.8; margin-bottom: 1rem; }
+    .prose strong { color: var(--primary-text); font-weight: 600; }
+
+    .prose code {
+      font-size: 0.875em;
+      background: var(--light-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      padding: 0.1em 0.35em;
+      color: var(--primary-text);
+    }
+
+    .prose a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .constraint-box {
+      background: color-mix(in srgb, var(--accent) 8%, var(--primary-bg));
+      border-left: 3px solid var(--accent);
+      padding: 1rem 1.25rem;
+      border-radius: 0 6px 6px 0;
+      margin: 1.5rem 0;
+      font-size: 0.95rem;
+      color: var(--secondary-text);
+      line-height: 1.7;
+    }
+
+    .constraint-box strong {
+      display: block;
+      margin-bottom: 0.25rem;
+      color: var(--primary-text);
+    }
+
+    a.nav-brand {
+      text-decoration: none;
+      color: var(--primary-text);
+    }
+
+    @media (max-width: 768px) {
+      .prose { padding: 2rem 1.25rem 4rem; }
+      .prose h1 { font-size: 1.75rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="/" class="nav-brand">Quiet Signals Lab</a>
+    <ul class="nav-links">
+      <li><a href="/#software">Software</a></li>
+      <li><a href="/#about">About</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="prose">
+  <p class="page-label">Legal</p>
+  <h1>Privacy Policy — ShadowClip</h1>
+  <p class="page-meta">Quiet Signals Lab &nbsp;·&nbsp; Last updated: 29 June 2026</p>
+
+  <p class="lede">
+    ShadowClip does not collect, transmit, or store any personal data. The images you process never leave your device.
+  </p>
+
+<h2>What the app does with your images</h2>
+
+<p>
+  Images are loaded into memory, processed, and discarded. The only file written to disk is the redacted output you explicitly choose to save, and where you choose to save it. The source image is never modified and never written to any location by the app.
+</p>
+
+<p>
+  On iOS, if you tap "Save to Photos", the redacted image is added to your photo library using the standard iOS Photos API. The app requests your permission before doing this and only writes the output — it does not read your library.
+</p>
+
+<h2>Audit sidecar</h2>
+
+<p>
+  If you enable the optional audit sidecar, a <code>.shadowclip-audit.json</code> file is written alongside the output. It records the categories of redactions applied (e.g. "email address", "API key"), their pixel coordinates, and a SHA-256 fingerprint of the output file. It never contains the redacted text itself. This file is written locally to the same location you chose for the output. It is not transmitted anywhere.
+</p>
+
+<h2>Settings and preferences</h2>
+
+<p>
+  App preferences (redaction style, detection category settings) are stored in <code>UserDefaults</code> on your device. On macOS, these are shared between the main app, the Share Extension, and the Quick Action via an App Group container. Nothing in this store is transmitted off-device.
+</p>
+
+<h2>No network access</h2>
+
+<div class="constraint-box">
+  <strong>ShadowClip has no network.client and no network.server entitlements in its App Sandbox.</strong>
+  This is an operating system constraint, not a configuration option. The app cannot make outbound network connections. You can verify this with:<br>
+  <code>codesign -d --entitlements - /Applications/ShadowClip.app</code>
+</div>
+
+<h2>On-device frameworks</h2>
+
+<p>
+  All detection uses Apple's on-device frameworks: Vision, Natural Language, and NSDataDetector. No data is sent to Apple for processing — these frameworks run entirely on your CPU/Neural Engine. No third-party SDKs or analytics libraries are included in the app.
+</p>
+
+<h2>Purchases</h2>
+
+<p>
+  ShadowClip is sold as a one-time purchase through the Apple App Store. All payment processing is handled by Apple. Quiet Signals Lab receives no financial data, no payment information, and no App Store receipt data beyond what Apple's standard royalty reporting provides (aggregate sales counts, no individual identifiers).
+</p>
+
+<h2>No accounts, no tracking</h2>
+
+<p>
+  There is no sign-in, no user account, no device identifier collection, no crash reporting, and no analytics. If you encounter a bug, you report it manually by email.
+</p>
+
+<h2>Children</h2>
+
+<p>
+  ShadowClip does not knowingly collect information from anyone, including children. There is nothing to collect.
+</p>
+
+<h2>GDPR (EU/EEA users)</h2>
+
+<p>
+  Quiet Signals Lab is registered in the Netherlands (KvK 99556650). Because the app processes no personal data on behalf of users — all processing occurs on-device and no data is transmitted to Quiet Signals Lab or any third party — there is no data processing relationship to which GDPR applies. If you believe this assessment is incorrect, contact us at the address below.
+</p>
+
+<h2>Changes to this policy</h2>
+
+<p>
+  If the app's data handling ever changes, this policy will be updated before the change takes effect, with a new "last updated" date. The current policy always applies to the current version of the app.
+</p>
+
+<h2>Contact</h2>
+
+<p>
+  Quiet Signals Lab &nbsp;·&nbsp; <a href="mailto:hello@quietsignalslab.com">hello@quietsignalslab.com</a>
+</p>
+
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="/shadowclip/">ShadowClip</a>
+    <a href="/privacy">Privacy Notice</a>
+    <a href="/">Quiet Signals Lab</a>
+  </div>
+  <div class="footer-meta">
+    <p>Quiet Signals Lab · KvK 99556650 · VAT: NL005394204B58</p>
+    <p>ShadowClip does not use cookies or tracking technologies.</p>
+    <p>© 2026 Alexander Hepburn. All rights reserved.</p>
+  </div>
+</footer>
+
+</body>
+</html>
