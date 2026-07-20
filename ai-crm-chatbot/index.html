@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Hybrid AI CRM Chatbot — A Messenger and Instagram DM sales agent that runs authored YAML conversation flows, using an LLM only to classify intent. Deterministic responses, multi-page, self-hosted state.">
+    <meta name="author" content="Quiet Signals Lab">
+    <title>Hybrid AI CRM Chatbot · Quiet Signals Lab</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../assets/app-icon-1024.png">
+
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="../styles.css">
+
+    <style>
+        .sc-page {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 2rem 5rem;
+        }
+
+        /* Hero */
+        .sc-hero {
+            padding: 3.5rem 0 2.5rem;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .sc-hero-text h1 {
+            font-family: var(--head-font);
+            font-size: 2.75rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            line-height: 1.1;
+            color: var(--primary-text);
+            margin-bottom: 0.5rem;
+        }
+
+        .sc-hero-text .sc-tagline {
+            font-size: 1rem;
+            color: var(--secondary-text);
+            line-height: 1.7;
+            max-width: 620px;
+            margin-bottom: 1.25rem;
+        }
+
+        .sc-hero-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .sc-platform-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        /* Sections */
+        .sc-section {
+            padding: 2.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sc-section:last-child {
+            border-bottom: none;
+        }
+
+        .sc-section h2 {
+            font-family: var(--head-font);
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1.25rem;
+        }
+
+        .sc-section h2::before {
+            content: '';
+            display: block;
+            width: 1.75rem;
+            height: 2px;
+            background: currentColor;
+            margin-bottom: 0.5rem;
+        }
+
+        .sc-body {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: var(--secondary-text);
+            max-width: 680px;
+        }
+
+        .sc-body p + p {
+            margin-top: 1rem;
+        }
+
+        /* Feature / detail list */
+        .sc-detection-list {
+            margin-top: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .sc-detection-item {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 1.5rem;
+            padding: 1.1rem 0;
+            border-bottom: 1px solid var(--border-color);
+            align-items: start;
+        }
+
+        .sc-detection-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--primary-text);
+        }
+
+        .sc-detection-desc {
+            font-size: 0.875rem;
+            line-height: 1.7;
+            color: var(--secondary-text);
+        }
+
+        /* FAQ */
+        .sc-faq {
+            margin-top: 1rem;
+        }
+
+        .sc-faq-item {
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+        }
+
+        .sc-faq-item:first-child {
+            border-top: 1px solid var(--border-color);
+        }
+
+        .sc-faq-q {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary-text);
+            margin-bottom: 0.4rem;
+        }
+
+        .sc-faq-a {
+            font-size: 0.875rem;
+            line-height: 1.75;
+            color: var(--secondary-text);
+        }
+
+        /* Support */
+        .sc-contact-box {
+            background: var(--light-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1.25rem;
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .sc-contact-box p {
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: var(--secondary-text);
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .sc-contact-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            white-space: nowrap;
+            align-self: center;
+        }
+
+        .sc-contact-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 640px) {
+            .sc-hero-text h1 {
+                font-size: 2rem;
+            }
+
+            .sc-detection-item {
+                grid-template-columns: 1fr;
+                gap: 0.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <a href="/" class="nav-brand">Quiet Signals Lab</a>
+            <ul class="nav-links">
+                <li><a href="/#software">Software</a></li>
+                <li><a href="/#writing">Blog</a></li>
+                <li><a href="/#about">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="sc-page">
+
+        <!-- Hero -->
+        <div class="sc-hero">
+            <div class="sc-hero-text">
+                <h1>Hybrid AI CRM Chatbot</h1>
+                <p class="sc-tagline">A sales agent for Messenger and Instagram DMs that runs authored conversation flows, not generated text. The language model classifies what the customer means; every reply is pre-written in YAML — so responses stay predictable, on-brand, and controllable per client. One deployment serves many pages, each with its own script and knowledge base.</p>
+                <div class="sc-hero-badges">
+                    <a href="mailto:hello@quietsignalslab.com?subject=Hybrid%20AI%20CRM%20Chatbot" class="appstore-badge">Enquire about a deployment</a>
+                    <div class="sc-platform-tags">
+                        <span class="tag">Messenger</span>
+                        <span class="tag">Instagram DM</span>
+                        <span class="tag">FastAPI</span>
+                        <span class="tag">Multi-Page</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- What it does -->
+        <div class="sc-section">
+            <h2>What it does</h2>
+            <div class="sc-body">
+                <p>The chatbot receives webhook events from Meta Messenger and Instagram DMs, works out what the user wants, and replies with scripted conversation flows defined in YAML. The conversation logic is a deterministic state machine — branching, objection handling, escalation to a human — with the language model used at one specific point: scoring which authored branch best matches what the customer just said.</p>
+                <p>Because responses are pre-written rather than generated, they never hallucinate a price, invent a policy, or drift off-brand. The same engine works for a car dealership, a dental clinic, or a beauty salon without code changes — each vertical is just a different script, knowledge base, and set of classifier hints.</p>
+            </div>
+
+            <div class="sc-detection-list">
+                <div class="sc-detection-item">
+                    <span class="sc-detection-label">Authored Flows</span>
+                    <span class="sc-detection-desc">Conversations are YAML trees of branches — each with an intent description, keyword fallbacks, multilingual responses, and transitions. Human-editable, version-controllable, no database required. Every reply the customer sees was written and approved in advance.</span>
+                </div>
+                <div class="sc-detection-item">
+                    <span class="sc-detection-label">LLM for Intent Only</span>
+                    <span class="sc-detection-desc">A multi-provider classifier (OpenAI → Gemini → OpenRouter, with automatic failover) determines the user's intent, urgency, and pain points using page-specific knowledge base context. It selects a branch; it never writes the message.</span>
+                </div>
+                <div class="sc-detection-item">
+                    <span class="sc-detection-label">Multi-Page Mode</span>
+                    <span class="sc-detection-desc">A single deployment serves multiple Meta Pages, each with its own script, knowledge base, access token, and routing thresholds. Incoming webhooks route by Page ID; conversation state is isolated per page. New clients onboard onto the shared platform without rebuilding the integration.</span>
+                </div>
+                <div class="sc-detection-item">
+                    <span class="sc-detection-label">Persistent State</span>
+                    <span class="sc-detection-desc">Conversation state lives in Redis with a configurable TTL (30 days by default), keyed per page and user. It survives restarts and supports re-entry — resuming a conversation naturally after a customer goes quiet and comes back.</span>
+                </div>
+                <div class="sc-detection-item">
+                    <span class="sc-detection-label">Platform-Agnostic</span>
+                    <span class="sc-detection-desc">Messenger and Instagram payloads are normalised into one internal message model before processing, so the rest of the pipeline doesn't care which platform a message came from. Rapid-fire messages are batched within a short window so the bot replies to the whole thought, not each fragment.</span>
+                </div>
+                <div class="sc-detection-item">
+                    <span class="sc-detection-label">Integrations</span>
+                    <span class="sc-detection-desc">Optional Google Calendar booking for appointments, CRM follow-up scheduling, live inventory polling with fuzzy search, and fire-and-forget Postgres analytics that never block the reply pipeline. Each is opt-in per deployment.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Why hybrid -->
+        <div class="sc-section">
+            <h2>Why hybrid, not generative</h2>
+            <div class="sc-body">
+                <p>A fully generative chatbot is fluent but unaccountable: it will confidently state a price you never set or a policy you don't have. A pure keyword bot is safe but brittle, breaking the moment a customer phrases something unexpectedly.</p>
+                <p>This is the middle path. The LLM handles the one thing it's genuinely good at — understanding messy, multilingual, real-world phrasing — and hands off to authored copy for everything the customer actually reads. You get the naturalness of an LLM front door with the control of a scripted back end, and you can audit every possible response by reading the YAML.</p>
+            </div>
+        </div>
+
+        <!-- FAQ -->
+        <div class="sc-section">
+            <h2>Frequently asked questions</h2>
+            <div class="sc-faq">
+                <div class="sc-faq-item">
+                    <p class="sc-faq-q">Does the bot generate its own replies?</p>
+                    <p class="sc-faq-a">No. Every response is pre-written in your conversation script. The language model only classifies intent — it chooses which authored branch to send. This is what keeps responses predictable and on-brand.</p>
+                </div>
+                <div class="sc-faq-item">
+                    <p class="sc-faq-q">Which channels are supported?</p>
+                    <p class="sc-faq-a">Meta Messenger and Instagram DMs. Both are normalised into one internal message format, so a single script serves both channels.</p>
+                </div>
+                <div class="sc-faq-item">
+                    <p class="sc-faq-q">Can it handle multiple languages?</p>
+                    <p class="sc-faq-a">Yes. Responses are authored per language in the script, with heuristic language detection and a configurable fallback. Intent classification is language-agnostic.</p>
+                </div>
+                <div class="sc-faq-item">
+                    <p class="sc-faq-q">Can it serve more than one business?</p>
+                    <p class="sc-faq-a">Yes. In multi-page mode, one deployment serves many Meta Pages, each with its own script, knowledge base, and access token. Adding a client is a config change, not a rebuild.</p>
+                </div>
+                <div class="sc-faq-item">
+                    <p class="sc-faq-q">What happens if a customer needs a human?</p>
+                    <p class="sc-faq-a">Escalation is a first-class branch in the state machine. Scripts define when and how to hand off, and CRM follow-ups can be scheduled to re-engage a lead later.</p>
+                </div>
+                <div class="sc-faq-item">
+                    <p class="sc-faq-q">Is it a product I can buy?</p>
+                    <p class="sc-faq-a">It's deployed as a managed service. Quiet Signals Lab runs the platform and authors the conversation script and knowledge base for your business. Get in touch to discuss a deployment.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Support -->
+        <div class="sc-section">
+            <h2>Get in touch</h2>
+            <div class="sc-body">
+                <p>The Hybrid AI CRM Chatbot is built and operated by Quiet Signals Lab, and already deployed for a social media marketing agency's client accounts. If you'd like a bot for your business, or want to onboard a set of client pages onto the platform, reach out.</p>
+            </div>
+            <div class="sc-contact-box">
+                <p>Tell us the channels you use, the languages you serve, and what a good conversation looks like for your business — and we'll take it from there.</p>
+                <a href="mailto:hello@quietsignalslab.com?subject=Hybrid%20AI%20CRM%20Chatbot" class="sc-contact-link">hello@quietsignalslab.com →</a>
+            </div>
+        </div>
+
+    </div><!-- /sc-page -->
+
+    <footer>
+        <div class="footer-meta">
+            <p>Quiet Signals Lab · KvK 99556650 · VAT: NL005394204B58</p>
+            <p>This site does not use cookies or tracking technologies. <a href="/privacy">Privacy Notice</a></p>
+            <p>© 2026 Alexander Hepburn. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

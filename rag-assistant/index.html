@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="RAG Assistant for Zotero — Semantic search and cited answers over your Zotero library. Runs fully local with Ollama or LM Studio, or connects to cloud LLMs. macOS, Windows, and Linux.">
+    <meta name="author" content="Quiet Signals Lab">
+    <title>RAG Assistant for Zotero · Quiet Signals Lab</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../assets/app-icon-1024.png">
+
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="../styles.css">
+
+    <style>
+        .sc-page {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 2rem 5rem;
+        }
+
+        /* Hero */
+        .sc-hero {
+            padding: 3.5rem 0 2.5rem;
+            border-bottom: 2px solid var(--accent);
+            display: flex;
+            align-items: flex-start;
+            gap: 2rem;
+        }
+
+        .sc-hero-icon {
+            width: 88px;
+            height: 88px;
+            border-radius: 20px;
+            flex-shrink: 0;
+        }
+
+        .sc-hero-text h1 {
+            font-family: var(--head-font);
+            font-size: 2.75rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            line-height: 1.1;
+            color: var(--primary-text);
+            margin-bottom: 0.5rem;
+        }
+
+        .sc-hero-text .sc-tagline {
+            font-size: 1rem;
+            color: var(--secondary-text);
+            line-height: 1.7;
+            max-width: 560px;
+            margin-bottom: 1.25rem;
+        }
+
+        .sc-hero-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        /* Sections */
+        .sc-section {
+            padding: 2.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sc-section:last-child {
+            border-bottom: none;
+        }
+
+        .sc-section h2 {
+            font-family: var(--head-font);
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1.25rem;
+        }
+
+        .sc-section h2::before {
+            content: '';
+            display: block;
+            width: 1.75rem;
+            height: 2px;
+            background: currentColor;
+            margin-bottom: 0.5rem;
+        }
+
+        .sc-body {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: var(--secondary-text);
+            max-width: 680px;
+        }
+
+        .sc-body p + p {
+            margin-top: 1rem;
+        }
+
+        /* Feature / detail list */
+        .sc-detection-list {
+            margin-top: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .sc-detection-item {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 1.5rem;
+            padding: 1.1rem 0;
+            border-bottom: 1px solid var(--border-color);
+            align-items: start;
+        }
+
+        .sc-detection-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--primary-text);
+        }
+
+        .sc-detection-desc {
+            font-size: 0.875rem;
+            line-height: 1.7;
+            color: var(--secondary-text);
+        }
+
+        .sc-platform-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        /* Install */
+        .sc-install {
+            background: var(--light-bg);
+            border-radius: 7px;
+            padding: 0.9rem 1.1rem;
+            margin-top: 1.25rem;
+            font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace;
+            font-size: 0.82rem;
+            color: var(--secondary-text);
+            line-height: 1.9;
+            white-space: pre;
+            overflow-x: auto;
+        }
+
+        /* FAQ */
+        .sc-faq {
+            margin-top: 1rem;
+        }
+
+        .sc-faq-item {
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+        }
+
+        .sc-faq-item:first-child {
+            border-top: 1px solid var(--border-color);
+        }
+
+        .sc-faq-q {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary-text);
+            margin-bottom: 0.4rem;
+        }
+
+        .sc-faq-a {
+            font-size: 0.875rem;
+            line-height: 1.75;
+            color: var(--secondary-text);
+        }
+
+        /* Support */
+        .sc-contact-box {
+            background: var(--light-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1.25rem;
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .sc-contact-box p {
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: var(--secondary-text);
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .sc-contact-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            white-space: nowrap;
+            align-self: center;
+        }
+
+        .sc-contact-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 640px) {
+            .sc-hero {
+                flex-direction: column;
+                gap: 1.25rem;
+            }
+
+            .sc-hero-text h1 {
+                font-size: 2rem;
+            }
+
+            .sc-detection-item {
+                grid-template-columns: 1fr;
+                gap: 0.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <a href="/" class="nav-brand">Quiet Signals Lab</a>
+            <ul class="nav-links">
+                <li><a href="/#software">Software</a></li>
+                <li><a href="/#writing">Blog</a></li>
+                <li><a href="/#about">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="sc-page">
+
+        <!-- Hero -->
+        <div class="sc-hero">
+            <img src="../assets/rag_zotero.png" alt="RAG Assistant for Zotero icon" class="sc-hero-icon">
+            <div class="sc-hero-text">
+                <h1>RAG Assistant for Zotero</h1>
+                <p class="sc-tagline">Semantic search and cited answers over your Zotero library. Ask questions in plain language and get responses grounded in your own PDFs, with citations to the exact document and page. Runs fully local with Ollama or LM Studio — your library never leaves your machine.</p>
+                <div class="sc-hero-badges">
+                    <a href="https://github.com/Quiet-Signals-Lab/RAG-Assistant-for-Zotero" target="_blank" rel="noopener noreferrer" class="appstore-badge">View on GitHub</a>
+                    <div class="sc-platform-tags">
+                        <span class="tag">macOS</span>
+                        <span class="tag">Windows</span>
+                        <span class="tag">Linux</span>
+                        <span class="tag">Local AI</span>
+                        <span class="tag">Apache 2.0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- What it does -->
+        <div class="sc-section">
+            <h2>What it does</h2>
+            <div class="sc-body">
+                <p>RAG Assistant indexes the PDFs in your Zotero library and uses retrieval-augmented generation to answer questions grounded in their content. Every answer includes citations to the specific sources and page numbers used, so you can verify each claim and follow up on interesting findings rather than trusting a summary that obscures where the information came from.</p>
+                <p>It's built for researchers navigating large literature collections — preprints, embargoed work, sensitive material. With a local model via Ollama or LM Studio, your documents and queries never leave your machine. When you'd rather use a cloud model, it connects to OpenAI, Anthropic, Google, Mistral, Groq, or OpenRouter.</p>
+            </div>
+
+            <div class="sc-detection-list">
+                <div class="sc-detection-item">
+                    <span class="sc-detection-label">Hybrid Search</span>
+                    <span class="sc-detection-desc">Combines dense semantic embeddings with BM25 keyword search, merged by Reciprocal Rank Fusion, then reranked by a cross-encoder that scores the query and each passage together. Captures both conceptual similarity and exact terminology, so specific terms and proper nouns aren't lost.</span>
+                </div>
+                <div class="sc-detection-item">
+                    <span class="sc-detection-label">Cited Answers</span>
+                    <span class="sc-detection-desc">Responses reference the specific documents and page numbers they draw from. An Evidence Panel shows the exact text passages used to generate each answer, and document titles open straight in Zotero or your PDF reader.</span>
+                </div>
+                <div class="sc-detection-item">
+                    <span class="sc-detection-label">Metadata Filtering</span>
+                    <span class="sc-detection-desc">Filter by year, tags, collections, authors, or item type — either through manual controls or by describing the constraint in natural language, which an LLM extracts into structured filters. If auto-extracted filters return nothing, the system retries without them to avoid over-restriction.</span>
+                </div>
+                <div class="sc-detection-item">
+                    <span class="sc-detection-label">Conversational Follow-ups</span>
+                    <span class="sc-detection-desc">Follow-up questions with pronouns or contextual references are rewritten into standalone queries before retrieval, so they match the corpus correctly without you repeating yourself. Sessions are trimmed to fit each provider's context window.</span>
+                </div>
+                <div class="sc-detection-item">
+                    <span class="sc-detection-label">Multiple LLM Providers</span>
+                    <span class="sc-detection-desc">Run local models via Ollama or LM Studio with no API key, or connect to OpenAI, Anthropic, Google, Mistral, Groq, or OpenRouter. Switch providers and models anytime; retrieval limits scale automatically to the active model's context window.</span>
+                </div>
+                <div class="sc-detection-item">
+                    <span class="sc-detection-label">Profiles</span>
+                    <span class="sc-detection-desc">Maintain separate workspaces with their own settings, libraries, and chat histories — one profile per research project. Academic scaffolding prompt templates are built in for common literature-review tasks.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- How it works -->
+        <div class="sc-section">
+            <h2>How it works</h2>
+            <div class="sc-body">
+                <p>PDFs are extracted with page-level granularity and split into roughly 800-character chunks with 200-character overlap, cut on sentence boundaries. Each chunk carries its item ID, title, authors, year, tags, collections, item type, and page number — the metadata behind both filtering and citations.</p>
+                <p>Embeddings are generated with SentenceTransformers (downloaded automatically on first use) and stored in ChromaDB. Choose from BGE-base (default, best quality), SPECTER (scientific papers), MiniLM-L6 (balanced), or MiniLM-L3 (fastest); each model creates its own collection, so you can switch without re-indexing if the index already exists. The backend is FastAPI, the frontend React and TypeScript, packaged as an Electron desktop app with automatic updates.</p>
+            </div>
+        </div>
+
+        <!-- Install -->
+        <div class="sc-section">
+            <h2>Install</h2>
+            <div class="sc-body">
+                <p>On macOS, install via Homebrew. Windows and Linux builds are available from the GitHub Releases page.</p>
+            </div>
+            <div class="sc-install">brew tap Quiet-Signals-Lab/rag-assistant-for-zotero
+brew install --cask rag-assistant-for-zotero</div>
+            <div class="sc-body">
+                <p>The app isn't notarized, so macOS blocks it on first launch. Clear the quarantine flag once after installing: <code>xattr -dr com.apple.quarantine "/Applications/RAG Assistant.app"</code></p>
+            </div>
+        </div>
+
+        <!-- Requirements -->
+        <div class="sc-section">
+            <h2>System requirements</h2>
+            <div class="sc-detection-list">
+                <div class="sc-detection-item">
+                    <span class="sc-detection-label">macOS</span>
+                    <span class="sc-detection-desc">macOS 11 Big Sur or later. Apple Silicon (M1/M2/M3) recommended — Intel builds may have limited support due to PyTorch compatibility.</span>
+                </div>
+                <div class="sc-detection-item">
+                    <span class="sc-detection-label">Windows</span>
+                    <span class="sc-detection-desc">Windows 10 or later (64-bit). Install via <code>winget</code> or the installer from Releases. May show a SmartScreen warning, as the build isn't code-signed.</span>
+                </div>
+                <div class="sc-detection-item">
+                    <span class="sc-detection-label">Linux</span>
+                    <span class="sc-detection-desc">Debian/Ubuntu-based distributions (Ubuntu 18.04+, Debian 10+). Install the <code>.deb</code> package; Python and all dependencies are bundled.</span>
+                </div>
+                <div class="sc-detection-item">
+                    <span class="sc-detection-label">Zotero</span>
+                    <span class="sc-detection-desc">The Zotero desktop client, installed with your library synced. The app reads your local <code>zotero.sqlite</code> database for PDFs and metadata.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ -->
+        <div class="sc-section">
+            <h2>Frequently asked questions</h2>
+            <div class="sc-faq">
+                <div class="sc-faq-item">
+                    <p class="sc-faq-q">Does my library leave my machine?</p>
+                    <p class="sc-faq-a">All indexing and processing happen locally. If you use a local model via Ollama or LM Studio, nothing leaves your machine at all. If you choose a cloud provider, only your queries and the retrieved document chunks are sent to their API — never your full library.</p>
+                </div>
+                <div class="sc-faq-item">
+                    <p class="sc-faq-q">Do I need an API key?</p>
+                    <p class="sc-faq-a">Not if you run a local model with Ollama or LM Studio. Cloud providers (OpenAI, Anthropic, Google, Mistral, Groq, OpenRouter) require an API key you add in Settings.</p>
+                </div>
+                <div class="sc-faq-item">
+                    <p class="sc-faq-q">Can it index scanned PDFs?</p>
+                    <p class="sc-faq-a">Only if they contain selectable text. Scanned documents without OCR cannot be indexed — run OCR on them first.</p>
+                </div>
+                <div class="sc-faq-item">
+                    <p class="sc-faq-q">How long does indexing take?</p>
+                    <p class="sc-faq-a">It depends on library size. Initial indexing builds embeddings for every PDF and can take a while for large collections; subsequent runs only process new or changed items.</p>
+                </div>
+                <div class="sc-faq-item">
+                    <p class="sc-faq-q">How much does it cost?</p>
+                    <p class="sc-faq-a">The app is free and open source under Apache 2.0. Your only potential cost is cloud LLM API usage, if you opt for a cloud provider instead of a local model.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Support -->
+        <div class="sc-section">
+            <h2>Support</h2>
+            <div class="sc-body">
+                <p>RAG Assistant for Zotero is built and maintained by Quiet Signals Lab. Bug reports and feature requests are welcome as GitHub issues; contributions are welcome too — open an issue to discuss significant changes first.</p>
+            </div>
+            <div class="sc-contact-box">
+                <p>For issues, include your OS, the LLM provider you're using, and a description of what happened. For anything else, reach out directly.</p>
+                <a href="mailto:hello@quietsignalslab.com" class="sc-contact-link">hello@quietsignalslab.com →</a>
+            </div>
+        </div>
+
+    </div><!-- /sc-page -->
+
+    <footer>
+        <div class="footer-meta">
+            <p>Quiet Signals Lab · KvK 99556650 · VAT: NL005394204B58</p>
+            <p>This site does not use cookies or tracking technologies. <a href="/privacy">Privacy Notice</a></p>
+            <p>© 2026 Alexander Hepburn. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
