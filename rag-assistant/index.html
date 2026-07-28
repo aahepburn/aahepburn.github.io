@@ -316,13 +316,11 @@
         <div class="sc-section">
             <h2>Install</h2>
             <div class="sc-body">
-                <p>On macOS, install via Homebrew. Windows and Linux builds are available from the GitHub Releases page.</p>
+                <p>On macOS, install via Homebrew. On Windows, install via winget. Linux <code>.deb</code> builds are available from the GitHub Releases page.</p>
             </div>
             <div class="sc-install">brew tap Quiet-Signals-Lab/rag-assistant-for-zotero
 brew install --cask rag-assistant-for-zotero</div>
-            <div class="sc-body">
-                <p>The app isn't notarized, so macOS blocks it on first launch. Clear the quarantine flag once after installing: <code>xattr -dr com.apple.quarantine "/Applications/RAG Assistant.app"</code></p>
-            </div>
+            <div class="sc-install">winget install aahepburn.RAGAssistantForZotero</div>
         </div>
 
         <!-- Requirements -->
@@ -344,6 +342,28 @@ brew install --cask rag-assistant-for-zotero</div>
                 <div class="sc-detection-item">
                     <span class="sc-detection-label">Zotero</span>
                     <span class="sc-detection-desc">The Zotero desktop client, installed with your library synced. The app reads your local <code>zotero.sqlite</code> database for PDFs and metadata.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Documentation -->
+        <div class="sc-section">
+            <h2>Documentation</h2>
+            <div class="sc-body">
+                <p>Setup and usage guides covering LLM providers, profiles, and prompting. <a href="/rag-assistant/docs/">Browse all docs →</a></p>
+            </div>
+            <div class="sc-detection-list">
+                <div class="sc-detection-item">
+                    <span class="sc-detection-label"><a href="/rag-assistant/docs/providers.html">LLM Providers &amp; API Keys</a></span>
+                    <span class="sc-detection-desc">Connect local models (Ollama, LM Studio) or cloud providers, and where to get each API key.</span>
+                </div>
+                <div class="sc-detection-item">
+                    <span class="sc-detection-label"><a href="/rag-assistant/docs/profiles.html">Profiles</a></span>
+                    <span class="sc-detection-desc">Separate workspaces with their own settings, library, and chat history — one profile per project.</span>
+                </div>
+                <div class="sc-detection-item">
+                    <span class="sc-detection-label"><a href="/rag-assistant/docs/prompting.html">Prompting &amp; Generation</a></span>
+                    <span class="sc-detection-desc">How answers are generated, how to tune generation, and how the prompt is structured.</span>
                 </div>
             </div>
         </div>

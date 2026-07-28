@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Setup and usage guides for RAG
+Assistant for Zotero.">
+    <meta name="author" content="Quiet Signals Lab">
+    <title>Documentation · RAG Assistant Docs</title>
+    <link rel="icon" type="image/png" href="/assets/app-icon-1024.png">
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        /* --- Docs portal (reuses styles.css design tokens) --- */
+        .doc-shell {
+            max-width: 1160px; margin: 0 auto; padding: 0 2rem 5rem;
+            display: grid; grid-template-columns: 240px 1fr; gap: 3rem; align-items: start;
+        }
+
+        /* Persistent sidebar / table of contents */
+        .wiki-sidebar { position: sticky; top: 1.5rem; padding-top: 2.5rem; }
+        #wiki-nav { font-size: 0.88rem; }
+        .wiki-nav-home {
+            display: block; font-family: var(--head-font); font-weight: 700; font-size: 1rem;
+            color: var(--primary-text); text-decoration: none; margin-bottom: 1.5rem;
+        }
+        .wiki-nav-section {
+            font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+            color: var(--accent); margin: 1.5rem 0 0.5rem;
+        }
+        #wiki-nav ul { list-style: none; padding: 0; margin: 0; }
+        #wiki-nav li { margin: 0; }
+        #wiki-nav > ul > li > a {
+            display: block; color: var(--secondary-text); text-decoration: none;
+            padding: 0.32rem 0 0.32rem 0.75rem; line-height: 1.4;
+            border-left: 2px solid var(--border-color);
+        }
+        #wiki-nav > ul > li > a:hover { color: var(--primary-text); border-left-color: var(--secondary-text); }
+        #wiki-nav > ul > li > a.active { color: var(--accent); font-weight: 600; border-left-color: var(--accent); }
+
+        /* Current page's sub-headings (built client-side from the article) */
+        .wiki-subnav { list-style: none; margin: 0.15rem 0 0.4rem; padding: 0; }
+        .wiki-subnav a {
+            display: block; font-size: 0.82rem; color: var(--secondary-text); text-decoration: none;
+            padding: 0.2rem 0 0.2rem 1.25rem; line-height: 1.35;
+            border-left: 2px solid var(--border-color);
+        }
+        .wiki-subnav li.lvl-h3 a { padding-left: 2.1rem; }
+        .wiki-subnav a:hover { color: var(--primary-text); }
+        .wiki-subnav a.here { color: var(--accent); border-left-color: var(--accent); }
+
+        /* Prose */
+        .doc-content { min-width: 0; padding-top: 2.5rem; }
+        .doc-content article { max-width: 720px; font-size: 0.95rem; line-height: 1.8; color: var(--secondary-text); }
+        .doc-content h1 {
+            font-family: var(--head-font); font-size: 2.1rem; font-weight: 700;
+            letter-spacing: -0.5px; line-height: 1.15; color: var(--primary-text); margin-bottom: 1.5rem;
+        }
+        .doc-content h2 {
+            font-family: var(--head-font); font-size: 1.35rem; font-weight: 700;
+            color: var(--primary-text); margin: 2.5rem 0 1rem; padding-top: 1rem; border-top: 1px solid var(--border-color);
+        }
+        .doc-content h3 { font-size: 1.05rem; font-weight: 600; color: var(--primary-text); margin: 1.8rem 0 0.6rem; }
+        .doc-content h4 { font-size: 0.95rem; font-weight: 600; color: var(--primary-text); margin: 1.4rem 0 0.5rem; }
+        .doc-content p { margin: 0 0 1rem; }
+        .doc-content a { color: var(--accent); }
+        .doc-content ul, .doc-content ol { margin: 0 0 1rem; padding-left: 1.4rem; }
+        .doc-content li { margin-bottom: 0.4rem; }
+        .doc-content strong { color: var(--primary-text); }
+        .doc-content code {
+            font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace; font-size: 0.85em;
+            background: var(--light-bg); padding: 0.15em 0.4em; border-radius: 4px; word-break: break-word;
+        }
+        .doc-content pre {
+            background: var(--light-bg); border: 1px solid var(--border-color); border-radius: 7px;
+            padding: 1rem 1.1rem; overflow-x: auto; margin: 0 0 1.25rem; font-size: 0.8rem; line-height: 1.7;
+        }
+        .doc-content pre code { background: none; padding: 0; font-size: inherit; word-break: normal; }
+        .doc-content blockquote {
+            border-left: 3px solid var(--accent); margin: 0 0 1.25rem; padding: 0.25rem 0 0.25rem 1.1rem; color: var(--secondary-text);
+        }
+        .doc-content table { border-collapse: collapse; width: 100%; margin: 0 0 1.25rem; font-size: 0.88rem; display: block; overflow-x: auto; }
+        .doc-content th, .doc-content td { border: 1px solid var(--border-color); padding: 0.5rem 0.75rem; text-align: left; }
+        .doc-content th { background: var(--light-bg); color: var(--primary-text); font-weight: 600; }
+        .doc-content img { max-width: 100%; height: auto; }
+        .doc-content hr { border: none; border-top: 1px solid var(--border-color); margin: 2rem 0; }
+
+        @media (max-width: 820px) {
+            .doc-shell { grid-template-columns: 1fr; gap: 0; }
+            .wiki-sidebar { position: static; padding: 1.5rem 0; border-bottom: 1px solid var(--border-color); }
+            .doc-content { padding-top: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <a href="/" class="nav-brand">Quiet Signals Lab</a>
+            <ul class="nav-links">
+                <li><a href="/#software">Software</a></li>
+                <li><a href="/#writing">Blog</a></li>
+                <li><a href="/#about">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="doc-shell">
+        <aside class="wiki-sidebar"><nav id="wiki-nav">
+  <a class="wiki-nav-home" href="/rag-assistant/docs/">Documentation</a>
+  <div class="wiki-nav-section">Getting Started</div>
+  <ul>
+    <li><a href="/rag-assistant/docs/overview.html">Overview</a></li>
+    <li><a href="/rag-assistant/docs/installation.html">Installation</a></li>
+    <li><a href="/rag-assistant/docs/platform-support.html">Platform Support</a></li>
+  </ul>
+  <div class="wiki-nav-section">Core Features</div>
+  <ul>
+    <li><a href="/rag-assistant/docs/indexing.html">Indexing Your Library</a></li>
+    <li><a href="/rag-assistant/docs/profiles.html">Profiles</a></li>
+    <li><a href="/rag-assistant/docs/prompting.html">Prompting &amp; Generation</a></li>
+  </ul>
+  <div class="wiki-nav-section">Configuration &amp; Privacy</div>
+  <ul>
+    <li><a href="/rag-assistant/docs/providers.html">LLM Providers &amp; API Keys</a></li>
+    <li><a href="/rag-assistant/docs/privacy.html">Privacy &amp; Data Controls</a></li>
+  </ul>
+  <div class="wiki-nav-section">Troubleshooting</div>
+  <ul>
+    <li><a href="/rag-assistant/docs/wont-index.html">The app won't index my library</a></li>
+    <li><a href="/rag-assistant/docs/profile-wont-start.html">App won't start after deleting a profile</a></li>
+  </ul>
+</nav>
+</aside>
+        <div class="doc-content">
+            <article>
+<h1 id="rag-assistant-documentation">RAG Assistant Documentation</h1>
+<p>Setup and usage guides for RAG Assistant for Zotero.</p>
+<h2 id="getting-started">Getting Started</h2>
+<ul>
+<li><a href="./overview.html">Overview</a> — What RAG Assistant is and
+how it works.</li>
+<li><a href="./installation.html">Installation</a> — Install on macOS,
+Windows, and Linux.</li>
+<li><a href="./platform-support.html">Platform Support</a> — Supported
+operating systems and Zotero requirements.</li>
+</ul>
+<h2 id="core-features">Core Features</h2>
+<ul>
+<li><a href="./indexing.html">Indexing Your Library</a> — How indexing
+works, embedding models, and re-indexing.</li>
+<li><a href="./profiles.html">Profiles</a> — Separate workspaces with
+their own settings, library, and chat history.</li>
+<li><a href="./prompting.html">Prompting &amp; Generation</a> — How
+answers are generated and how to tune them.</li>
+</ul>
+<h2 id="configuration-privacy">Configuration &amp; Privacy</h2>
+<ul>
+<li><a href="./providers.html">LLM Providers &amp; API Keys</a> —
+Connect local or cloud models and manage API keys.</li>
+<li><a href="./privacy.html">Privacy &amp; Data Controls</a> — What
+stays local and what is sent to cloud providers.</li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<ul>
+<li><a href="./wont-index.html">The app won’t index my library</a> —
+Fixing indexing that won’t start.</li>
+<li><a href="./profile-wont-start.html">App won’t start after deleting a
+profile</a> — Recreate a default profile to recover.</li>
+</ul>
+            </article>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-meta">
+            <p>Quiet Signals Lab · KvK 99556650 · VAT: NL005394204B58</p>
+            <p>This site does not use cookies or tracking technologies. <a href="/privacy">Privacy Notice</a></p>
+            <p>© 2026 Alexander Hepburn. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+    (function () {
+        var nav = document.getElementById('wiki-nav');
+        if (!nav) return;
+
+        // Highlight the current page and find its nav item.
+        var active = null;
+        nav.querySelectorAll('a').forEach(function (a) {
+            if (a.pathname === location.pathname) { a.classList.add('active'); active = a; }
+        });
+        var li = active && active.closest('li');
+        if (!li) return; // hub / home link: no sub-headings
+
+        // Build a nested ToC of this page's H2/H3 headings.
+        var headings = document.querySelectorAll('.doc-content article h2[id], .doc-content article h3[id]');
+        if (!headings.length) return;
+        var sub = document.createElement('ul');
+        sub.className = 'wiki-subnav';
+        var links = {};
+        headings.forEach(function (h) {
+            var item = document.createElement('li');
+            item.className = 'lvl-' + h.tagName.toLowerCase();
+            var a = document.createElement('a');
+            a.href = '#' + h.id;
+            a.textContent = h.textContent;
+            item.appendChild(a);
+            sub.appendChild(item);
+            links[h.id] = a;
+        });
+        li.appendChild(sub);
+
+        // Scrollspy: highlight the section currently in view.
+        var current;
+        var obs = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+                if (e.isIntersecting) current = e.target.id;
+            });
+            Object.keys(links).forEach(function (id) {
+                links[id].classList.toggle('here', id === current);
+            });
+        }, { rootMargin: '0px 0px -70% 0px' });
+        headings.forEach(function (h) { obs.observe(h); });
+    })();
+    </script>
+
+</body>
+</html>
