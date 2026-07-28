@@ -18,7 +18,8 @@ works.">
 
         /* Persistent sidebar / table of contents */
         .wiki-sidebar { position: sticky; top: 1.5rem; padding-top: 2.5rem; }
-        #wiki-nav { font-size: 0.88rem; }
+        /* Reset the global `nav { display:flex }` rule from styles.css */
+        #wiki-nav { display: block; max-width: none; margin: 0; padding: 0; font-size: 0.88rem; }
         .wiki-nav-home {
             display: block; font-family: var(--head-font); font-weight: 700; font-size: 1rem;
             color: var(--primary-text); text-decoration: none; margin-bottom: 1.5rem;
@@ -142,15 +143,23 @@ trusting an opaque summary.</p>
 <p>It runs fully local with <a href="./providers.html">Ollama or LM
 Studio</a> — your library never leaves your machine — or connects to
 cloud models when you prefer.</p>
+<p>Think of it as a <strong>library clerk rather than a paper
+summariser</strong>: you describe what’s on your mind and it fetches the
+passages worth reading to get you started. It’s built to optimise one
+specific part of a literature review — surfacing semantically related
+concepts across your PDFs that you’d otherwise miss.</p>
 <h2 id="what-it-does">What it does</h2>
 <ul>
 <li><strong>Hybrid search</strong> — dense semantic embeddings combined
 with BM25 keyword search (merged by Reciprocal Rank Fusion), then
-reranked by a cross-encoder. Captures both conceptual similarity and
-exact terminology.</li>
-<li><strong>Cited answers</strong> — responses reference the documents
-and page numbers they use, with an Evidence Panel showing the exact
-passages.</li>
+reranked by a cross-encoder, with diversity controls to avoid
+near-duplicate passages. Captures both conceptual similarity and exact
+terminology. All of this runs before the LLM is called.</li>
+<li><strong>Cited answers</strong> — a <strong>Sources</strong> panel
+lists every source behind an answer, and an <strong>Evidence</strong>
+panel shows the exact PDF chunks, with page numbers, used to produce it.
+Strict prompting keeps the model to the retrieved text and tells it how
+to handle insufficient context instead of inventing an answer.</li>
 <li><strong>Metadata filtering</strong> — filter by year, tags,
 collections, authors, or item type, manually or by describing the
 constraint in natural language.</li>

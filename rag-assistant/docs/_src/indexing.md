@@ -22,8 +22,8 @@ search later.
 
 ## Embedding models
 
-Embeddings are generated with SentenceTransformers, downloaded automatically on
-first use. Choose the model in Settings:
+Embeddings are generated on your own CPU with SentenceTransformers, downloaded
+automatically on first use. Choose the model in Settings:
 
 | Model | Best for |
 |---|---|
@@ -43,6 +43,7 @@ selectable text can be indexed — scanned documents need OCR first.
 
 ## Scope and exclusions
 
-You can limit what gets indexed to specific collections, and exclude items you
-don't want in the index, so a large library doesn't force you to embed
-everything at once.
+You can limit indexing to specific collections, and exclude Zotero **collections
+and tags** you don't want in the index. Excluded items are never embedded — which
+also means they can never be retrieved or sent to a cloud provider, so exclusions
+double as a [privacy control](./privacy.html).

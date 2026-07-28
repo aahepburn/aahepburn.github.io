@@ -19,7 +19,8 @@ profile · RAG Assistant Docs</title>
 
         /* Persistent sidebar / table of contents */
         .wiki-sidebar { position: sticky; top: 1.5rem; padding-top: 2.5rem; }
-        #wiki-nav { font-size: 0.88rem; }
+        /* Reset the global `nav { display:flex }` rule from styles.css */
+        #wiki-nav { display: block; max-width: none; margin: 0; padding: 0; font-size: 0.88rem; }
         .wiki-nav-home {
             display: block; font-family: var(--head-font); font-weight: 700; font-size: 1rem;
             color: var(--primary-text); text-decoration: none; margin-bottom: 1.5rem;

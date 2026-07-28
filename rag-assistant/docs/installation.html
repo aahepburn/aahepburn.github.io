@@ -18,7 +18,8 @@ Linux.">
 
         /* Persistent sidebar / table of contents */
         .wiki-sidebar { position: sticky; top: 1.5rem; padding-top: 2.5rem; }
-        #wiki-nav { font-size: 0.88rem; }
+        /* Reset the global `nav { display:flex }` rule from styles.css */
+        #wiki-nav { display: block; max-width: none; margin: 0; padding: 0; font-size: 0.88rem; }
         .wiki-nav-home {
             display: block; font-family: var(--head-font); font-weight: 700; font-size: 1rem;
             color: var(--primary-text); text-decoration: none; margin-bottom: 1.5rem;
@@ -142,7 +143,8 @@ requirements first.</p>
 <pre><code>brew tap Quiet-Signals-Lab/rag-assistant-for-zotero
 brew install --cask rag-assistant-for-zotero</code></pre>
 <p>macOS builds are signed and notarized, so they launch without extra
-steps.</p>
+steps. Apple Silicon (M1/M2/M3 or newer) only — there are no Intel
+builds.</p>
 <h2 id="windows">Windows</h2>
 <p>Install via winget:</p>
 <pre><code>winget install aahepburn.RAGAssistantForZotero</code></pre>

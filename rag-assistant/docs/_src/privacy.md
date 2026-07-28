@@ -1,7 +1,8 @@
 # Privacy & Data Controls
 
 RAG Assistant is designed so you decide how much, if anything, leaves your
-machine. All indexing and processing happen locally.
+machine. Indexing runs on your own CPU and everything is stored locally; retrieval
+happens on your device before any LLM is called.
 
 ## Local by default
 
@@ -12,9 +13,21 @@ stay on your computer.
 ## When you use a cloud provider
 
 If you choose a cloud provider (OpenAI, Anthropic, Google, Mistral, Groq,
-OpenRouter), only your **query and the retrieved document chunks** are sent to
-that provider's API to generate an answer. Your full library is never uploaded —
-only the specific passages retrieved for the current question.
+OpenRouter), the only data sent to its API is:
+
+- your query,
+- the **10–12 text chunks** retrieved from your library for that query, and
+- earlier responses from the same chat session (for follow-up context).
+
+Your full library is never uploaded — only the passages retrieved for the current
+question.
+
+## Shielding parts of your library
+
+If you use a cloud model but want to keep some material off it, you can exclude
+whole Zotero **collections and tags** from the index entirely. Excluded items are
+never embedded, so they can never be retrieved or sent to a third-party provider.
+See [Indexing Your Library](./indexing.html) for how to set exclusions.
 
 ## Where your data lives
 

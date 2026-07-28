@@ -2,9 +2,8 @@
 
 ## macOS
 
-macOS 11 Big Sur or later. Apple Silicon (M1/M2/M3) is recommended — Intel builds
-may have limited support due to PyTorch compatibility. Builds are signed and
-notarized.
+macOS 11 Big Sur or later, **Apple Silicon (M1/M2/M3 or newer) only** — there are
+no Intel builds. Builds are signed and notarized.
 
 ## Windows
 

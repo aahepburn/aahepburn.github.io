@@ -13,6 +13,7 @@ brew install --cask rag-assistant-for-zotero
 ```
 
 macOS builds are signed and notarized, so they launch without extra steps.
+Apple Silicon (M1/M2/M3 or newer) only — there are no Intel builds.
 
 ## Windows
 

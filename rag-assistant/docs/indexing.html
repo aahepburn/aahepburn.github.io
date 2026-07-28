@@ -18,7 +18,8 @@ models, and re-indexing.">
 
         /* Persistent sidebar / table of contents */
         .wiki-sidebar { position: sticky; top: 1.5rem; padding-top: 2.5rem; }
-        #wiki-nav { font-size: 0.88rem; }
+        /* Reset the global `nav { display:flex }` rule from styles.css */
+        #wiki-nav { display: block; max-width: none; margin: 0; padding: 0; font-size: 0.88rem; }
         .wiki-nav-home {
             display: block; font-family: var(--head-font); font-weight: 700; font-size: 1rem;
             color: var(--primary-text); text-decoration: none; margin-bottom: 1.5rem;
@@ -156,8 +157,8 @@ what powers both metadata filtering and citations.</li>
 database inside the active <a href="./profiles.html">profile</a>.</li>
 </ul>
 <h2 id="embedding-models">Embedding models</h2>
-<p>Embeddings are generated with SentenceTransformers, downloaded
-automatically on first use. Choose the model in Settings:</p>
+<p>Embeddings are generated on your own CPU with SentenceTransformers,
+downloaded automatically on first use. Choose the model in Settings:</p>
 <table>
 <thead>
 <tr>
@@ -192,9 +193,11 @@ for large libraries. Subsequent runs only process new or changed items.
 Only PDFs with selectable text can be indexed — scanned documents need
 OCR first.</p>
 <h2 id="scope-and-exclusions">Scope and exclusions</h2>
-<p>You can limit what gets indexed to specific collections, and exclude
-items you don’t want in the index, so a large library doesn’t force you
-to embed everything at once.</p>
+<p>You can limit indexing to specific collections, and exclude Zotero
+<strong>collections and tags</strong> you don’t want in the index.
+Excluded items are never embedded — which also means they can never be
+retrieved or sent to a cloud provider, so exclusions double as a <a
+href="./privacy.html">privacy control</a>.</p>
             </article>
         </div>
     </div>

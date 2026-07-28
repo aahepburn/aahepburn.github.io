@@ -18,7 +18,8 @@ to cloud providers.">
 
         /* Persistent sidebar / table of contents */
         .wiki-sidebar { position: sticky; top: 1.5rem; padding-top: 2.5rem; }
-        #wiki-nav { font-size: 0.88rem; }
+        /* Reset the global `nav { display:flex }` rule from styles.css */
+        #wiki-nav { display: block; max-width: none; margin: 0; padding: 0; font-size: 0.88rem; }
         .wiki-nav-home {
             display: block; font-family: var(--head-font); font-weight: 700; font-size: 1rem;
             color: var(--primary-text); text-decoration: none; margin-bottom: 1.5rem;
@@ -135,7 +136,8 @@ to cloud providers.">
             <article>
 <h1 id="privacy-data-controls">Privacy &amp; Data Controls</h1>
 <p>RAG Assistant is designed so you decide how much, if anything, leaves
-your machine. All indexing and processing happen locally.</p>
+your machine. Indexing runs on your own CPU and everything is stored
+locally; retrieval happens on your device before any LLM is called.</p>
 <h2 id="local-by-default">Local by default</h2>
 <p>If you use a local model via <a href="./providers.html">Ollama or LM
 Studio</a>, <strong>nothing leaves your machine at all</strong> — your
@@ -143,10 +145,24 @@ PDFs, your queries, and the generated answers stay on your computer.</p>
 <h2 id="when-you-use-a-cloud-provider">When you use a cloud
 provider</h2>
 <p>If you choose a cloud provider (OpenAI, Anthropic, Google, Mistral,
-Groq, OpenRouter), only your <strong>query and the retrieved document
-chunks</strong> are sent to that provider’s API to generate an answer.
-Your full library is never uploaded — only the specific passages
-retrieved for the current question.</p>
+Groq, OpenRouter), the only data sent to its API is:</p>
+<ul>
+<li>your query,</li>
+<li>the <strong>10–12 text chunks</strong> retrieved from your library
+for that query, and</li>
+<li>earlier responses from the same chat session (for follow-up
+context).</li>
+</ul>
+<p>Your full library is never uploaded — only the passages retrieved for
+the current question.</p>
+<h2 id="shielding-parts-of-your-library">Shielding parts of your
+library</h2>
+<p>If you use a cloud model but want to keep some material off it, you
+can exclude whole Zotero <strong>collections and tags</strong> from the
+index entirely. Excluded items are never embedded, so they can never be
+retrieved or sent to a third-party provider. See <a
+href="./indexing.html">Indexing Your Library</a> for how to set
+exclusions.</p>
 <h2 id="where-your-data-lives">Where your data lives</h2>
 <p>Everything is stored locally, per <a
 href="./profiles.html">profile</a>:</p>
