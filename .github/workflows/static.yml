@@ -39,6 +39,9 @@ jobs:
       # be made to agree.
       - name: No third-party loads
         run: ./ci/no-external-loads.sh
+      # An unclosed <style> renders a page blank while every content check still passes.
+      - name: Markup sanity
+        run: ./ci/markup-sanity.sh
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
