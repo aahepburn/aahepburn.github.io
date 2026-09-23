@@ -33,6 +33,12 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v5
+      # The footer on every page claims no cookies and no tracking, and the Solander
+      # privacy notice claims nothing is loaded from another origin. Checked here, before
+      # the deploy, because that is the last point where the claim and the site can still
+      # be made to agree.
+      - name: No third-party loads
+        run: ./ci/no-external-loads.sh
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

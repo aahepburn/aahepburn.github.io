@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Privacy notice for Solander — documents are processed entirely on your Mac; we hold only your email address and a licence record.">
+  <title>Privacy Policy · Solander</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="../styles.css">
+
+  <style>
+    .prose {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 3rem 2rem 5rem;
+    }
+
+    .prose .page-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--secondary-text);
+      margin-bottom: 0.5rem;
+    }
+
+    .prose h1 {
+      font-family: 'Avenir Next', 'Avenir', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--primary-text);
+      margin-bottom: 0.4rem;
+    }
+
+    .prose .page-meta {
+      font-size: 0.85rem;
+      color: var(--secondary-text);
+      margin-bottom: 2.5rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .prose .lede {
+      font-size: 1.1rem;
+      line-height: 1.75;
+      color: var(--primary-text);
+      font-weight: 400;
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .prose h2 {
+      font-family: 'Avenir Next', 'Avenir', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin: 2.5rem 0 0.75rem;
+    }
+
+    .prose p { color: var(--secondary-text); line-height: 1.8; margin-bottom: 1rem; }
+    .prose strong { color: var(--primary-text); font-weight: 600; }
+
+    .prose code {
+      font-size: 0.875em;
+      background: var(--light-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      padding: 0.1em 0.35em;
+      color: var(--primary-text);
+    }
+
+    .prose a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .constraint-box {
+      background: color-mix(in srgb, var(--accent) 8%, var(--primary-bg));
+      border-left: 3px solid var(--accent);
+      padding: 1rem 1.25rem;
+      border-radius: 0 6px 6px 0;
+      margin: 1.5rem 0;
+      font-size: 0.95rem;
+      color: var(--secondary-text);
+      line-height: 1.7;
+    }
+
+    .constraint-box strong {
+      display: block;
+      margin-bottom: 0.25rem;
+      color: var(--primary-text);
+    }
+
+    a.nav-brand {
+      text-decoration: none;
+      color: var(--primary-text);
+    }
+
+    @media (max-width: 768px) {
+      .prose { padding: 2rem 1.25rem 4rem; }
+      .prose h1 { font-size: 1.75rem; }
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="/" class="nav-brand">Quiet Signals Lab</a>
+    <ul class="nav-links">
+      <li><a href="/solander/">Solander</a></li>
+      <li><a href="/#software">Software</a></li>
+      <li><a href="/#about">About</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="prose">
+  <p class="page-label">Legal</p>
+  <h1>Privacy Policy — Solander</h1>
+  <p class="page-meta">Quiet Signals Lab &nbsp;·&nbsp; Last updated: 23 September 2026</p>
+
+  <p class="lede">
+    Your documents never leave your Mac, because the app cannot open a network connection. If you buy a licence, we hold your email address and a licence record — nothing else.
+  </p>
+
+<h2>The app</h2>
+
+<p>
+  Solander runs in Apple's App Sandbox <strong>without</strong> the network client entitlement. This is enforced by macOS, not by our policy: the operating system will refuse an outbound connection regardless of what the code asks for.
+</p>
+
+<div class="constraint-box">
+  <strong>You can verify this on the copy you downloaded.</strong>
+  <code>codesign -d --entitlements - /Applications/Solander.app</code>
+</div>
+
+<p>
+  There is no telemetry, no analytics and no crash reporting, on any surface. No account, no sign-in, no device identifier.
+</p>
+
+<p>
+  Documents you open stay in memory or in the location you choose to save to, with two exceptions, both inside the app's own sandbox container: page images held while you work, deleted when the session ends; and batch progress, which is encrypted and deleted when the batch finishes or you discard it.
+</p>
+
+<h2>Updates</h2>
+
+<p>
+  Checking for updates is the only network activity. It runs in a separate process, which receives no document data, and requests only the update feed and the download itself. It can be switched off in the app. We do not log update checks in a form tied to you.
+</p>
+
+<h2>Buying a licence</h2>
+
+<p>
+  Purchases are handled by <strong>Paddle.com Market Ltd</strong>, who act as merchant of record: they take the payment, handle VAT and issue the invoice. Their privacy notice covers what they collect — see <a href="https://www.paddle.com/legal/privacy" target="_blank" rel="noopener noreferrer">paddle.com/legal/privacy</a>. We never see your card details.
+</p>
+
+<p>
+  From that purchase we receive and store:
+</p>
+
+<p>
+  your email address; the name or organisation the licence is issued to; a licence ID and the Paddle transaction ID; and the date the licence was issued.
+</p>
+
+<p>
+  We use these to issue your licence, to send it again if you ask, and to keep a record of what was sold. The legal basis is performance of our contract with you, GDPR Art. 6(1)(b), and for the sale record, our legal obligation under tax law, Art. 6(1)(c). We keep them for as long as the licence is supported, plus the period Dutch tax law requires us to keep records of a sale. We do not use your address for marketing and there is no mailing list.
+</p>
+
+<p>
+  This licence record lives on a single serverless function, which is the only server Quiet Signals Lab operates for Solander. It never receives a document, a page image, or anything Solander detected — only the purchase details listed above.
+</p>
+
+<h2>Your licence file</h2>
+
+<p>
+  Your licence is a signed file, delivered by email. Solander checks it on your Mac against a key compiled into the app. There is no activation, no licence server, and no usage reporting — a licence works on a Mac that has never been online, and we cannot tell whether, where, or how often it is used.
+</p>
+
+<h2>This website</h2>
+
+<p>
+  No cookies, no analytics, no trackers, no embedded third-party content, and no fonts loaded from elsewhere. Our host records standard server logs, including IP addresses, for security and troubleshooting. Checkout pages are served by Paddle and are subject to Paddle's own notice.
+</p>
+
+<h2>Your rights</h2>
+
+<p>
+  You can ask for a copy of what we hold, correct it, or have it deleted — though deleting the record means we can no longer resend your licence, and the licence file already on your Mac keeps working regardless. You can also object to processing, ask for it to be restricted, or request your data in a portable form.
+</p>
+
+<p>
+  Write to <a href="mailto:hello@quietsignalslab.com">hello@quietsignalslab.com</a>. Requests are handled within 30 days. You may also complain to your national data protection authority; in the Netherlands this is the <a href="https://autoriteitpersoonsgegevens.nl" target="_blank" rel="noopener noreferrer">Autoriteit Persoonsgegevens</a>.
+</p>
+
+<h2>Children</h2>
+
+<p>
+  Solander is a professional tool and is not directed at children. The app collects nothing from anyone.
+</p>
+
+<h2>Changes to this policy</h2>
+
+<p>
+  If the app's data handling ever changes, this policy will be updated before the change takes effect, with a new "last updated" date. The current policy always applies to the current version of the app.
+</p>
+
+<h2>Contact</h2>
+
+<p>
+  Controller: <strong>Quiet Signals Lab</strong>, registered in the Netherlands, KvK 99556650, VAT NL005394204B58 &nbsp;·&nbsp; <a href="mailto:hello@quietsignalslab.com">hello@quietsignalslab.com</a>
+</p>
+
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="/solander/">Solander</a>
+    <a href="/solander/terms.html">Terms</a>
+    <a href="/solander/refunds.html">Refunds</a>
+    <a href="/privacy">Site Privacy</a>
+  </div>
+  <div class="footer-meta">
+    <p>Quiet Signals Lab · KvK 99556650 · VAT: NL005394204B58</p>
+    <p>This site does not use cookies or tracking technologies. <a href="/privacy">Privacy Notice</a></p>
+    <p>© 2026 Alexander Hepburn. All rights reserved.</p>
+  </div>
+</footer>
+
+</body>
+</html>
