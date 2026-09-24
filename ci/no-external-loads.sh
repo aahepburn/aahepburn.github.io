@@ -1,7 +1,7 @@
 #!/bin/bash
-# Every page footer says "This site does not use cookies or tracking technologies", and the
-# Solander privacy notice says "no embedded third-party content and no fonts loaded from
-# elsewhere". Paddle's domain review reads those pages. A claim on a public page needs a
+# Every page footer says "This site does not use cookies or tracking technologies". (Solander's
+# pages, which made the same claim for Paddle's domain review, now live in the solander-site
+# repo and carry their own copy of this check.) A claim on a public page needs a
 # check behind it: one added web font, embedded video or CDN script makes it false, silently.
 #
 # Links to other sites are fine — the privacy notice has to link Paddle's own. What is
