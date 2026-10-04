@@ -1,530 +1,202 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Quiet Signals Lab — ML & Privacy Engineer based in Amsterdam. AI systems for privacy-sensitive and regulated workflows: legal, immigration, healthcare-adjacent.">
-    <meta name="author" content="Alexander Hepburn">
-    <title>Quiet Signals Lab</title>
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="assets/app-icon-1024.png">
-    
-    <!-- Main Stylesheet -->
-    <link rel="stylesheet" href="styles.css">
-
-    <!-- Quote font -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quiet Signals Lab — On-device AI software for document privacy</title>
+<meta name="description" content="Quiet Signals Lab makes document redaction software with automatic PII detection, powered by multilingual small language models that run entirely on your device. Built for lawyers, journalists and compliance teams. Designed and built in the Netherlands.">
+<meta name="author" content="Alexander Hepburn">
+<meta property="og:title" content="Quiet Signals Lab">
+<meta property="og:description" content="On-device AI software for document privacy.">
+<meta property="og:image" content="https://quietsignalslab.com/assets/logo-square-1024.png">
+<meta property="og:url" content="https://quietsignalslab.com/">
+<link rel="canonical" href="https://quietsignalslab.com/">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="alternate" type="application/rss+xml" title="Quiet Signals Lab — writing" href="writing/feed.xml">
+<link rel="stylesheet" href="lab.css">
 </head>
 <body>
-    <!-- Hero Section (Two-Column) -->
-    <section class="hero">
-        <div class="hero-left">
-            <h1>Quiet Signals<br>Lab</h1>
-            <div class="hero-meta">
-                <div><span class="label">Alexander Hepburn</span></div>
-                <div>ML & Privacy Engineer</div>
-                <div>Netherlands</div>
-            </div>
-            <div class="social-buttons">
-                <a href="https://www.linkedin.com/company/quiet-signals-lab" target="_blank" rel="noopener noreferrer" class="social-button" title="LinkedIn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/>
-                    </svg>
-                </a>
-                <a href="https://github.com/Quiet-Signals-Lab" target="_blank" rel="noopener noreferrer" class="social-button" title="GitHub">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
-                    </svg>
-                </a>
-                <a href="mailto:hello@quietsignalslab.com" class="social-button" title="Email">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z"/>
-                    </svg>
-                </a>
-            </div>
-        </div>
-        <div class="hero-right">
-            <div class="hero-intro">
-                <p><b>Privacy engineering for machine learning systems</b></p>
-                <p>Quiet Signals Lab is an independent ML practice building software and publishing applied research. The focus is on systems where privacy and auditability are properties of the architecture.</p>
-                
-            </div>
-        </div>
-    </section>
+<a class="q-skip" href="#main">Skip to content</a>
 
-    <!-- Tab Navigation -->
-    <nav class="tab-nav" role="tablist" aria-label="Site sections">
-        <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="panel-software" data-panel="panel-software">Software</button>
-        <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-writing" data-panel="panel-writing">Blog</button>
-        <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-about" data-panel="panel-about">About</button>
-    </nav>
+<div class="q-signal" aria-hidden="true">
+<svg class="q-morse" viewBox="0 0 33 1" width="198" height="6" shape-rendering="crispEdges" focusable="false"><rect x="0" width="3" height="1"/><rect x="4" width="3" height="1"/><rect x="8" width="1" height="1"/><rect x="10" width="3" height="1"/><rect class="s" x="16" width="1" height="1"/><rect class="s" x="18" width="1" height="1"/><rect class="s" x="20" width="1" height="1"/><rect x="24" width="1" height="1"/><rect x="26" width="3" height="1"/><rect x="30" width="1" height="1"/><rect x="32" width="1" height="1"/></svg>
+</div>
 
-    <!-- Tab Panels -->
-    <div class="tab-panels">
-
-    <!-- Panel: About -->
-    <div class="tab-panel" id="panel-about" role="tabpanel">
-
-    <section class="about" id="about">
-        <h2 class="section-title">About</h2>
-        <p>Thanks for visiting my website!</p><br>
-        <p>My name is Alex. I am an engineer and applied researcher working on privacy, safety, and reliability in ML and AI systems. Through my client and open-source work, I program systems that are often hybrid-—making the best of what probabilistic models offer, combined with deterministic constraints. My background in both ML and business lets me act as a bridge between the two, with end-to-end ownership of what I build.</p><br>
-        <p>I hold a master's degree in data science from the University of Amsterdam. My thesis was on Evaluating multi-task learning as an inductive bias for improving NLP robustness under distribution shift. </p><br>
-        <p>Don't hesitate to drop me a message if you are interested in what I do.</p>
-    </section>
-
-    </div><!-- /panel-about -->
-
-    <!-- Panel: Services (hidden) -->
-    <div class="tab-panel" id="panel-services" role="tabpanel" style="display:none;">
-
-    <!-- Services -->
-    <!-- OLD CARD LAYOUT
-    <section class="services" id="services">
-        <h2 class="section-title">What I Do</h2>
-        <div class="services-grid fade-in">
-            <div class="service-card">
-                <h3>Machine Learning & Automation</h3>
-                <p>Prototyping and deploying models that solve business problems, primarily with text and financial data. I balance state-of-the-art approaches with well-established solutions tailored to your specific needs.</p>
-            </div>
-            <div class="service-card">
-                <h3>Model Robustness & Evaluation</h3>
-                <p>Diagnosing model behaviour under distribution shifts and biased data. I assess both performance and ethics—identifying biases and data issues that can seriously degrade your systems in production.</p>
-            </div>
-            <div class="service-card">
-                <h3>Retrieval Augmented Generation</h3>
-                <p>Building AI-powered knowledge systems that work with your data wherever it lives—locally or in the cloud—to make your knowledge base more accessible.</p>
-            </div>
-            <div class="service-card">
-                <h3>Analytics & Dashboards</h3>
-                <p>Turning data into actionable intelligence for decision-making, with clear visualisation and exploratory analysis.</p>
-            </div>
-        </div>
-    </section>
-    -->
-
-    <!-- ACCORDION LAYOUT -->
-    <section class="services" id="services">
-        <h2 class="section-title">Services</h2>
-        
-        <div class="accordion fade-in">
-            <!-- Item 1: Conversational AI Systems -->
-            <div class="accordion-item">
-                <button class="accordion-button" aria-expanded="false">
-                    <span class="accordion-icon">+</span>
-                    <span class="accordion-text">Conversational AI Systems</span>
-                </button>
-                <div class="accordion-content">
-                    <div class="accordion-body">
-                        <p>A functional sales or support agent needs two things: a clear model of the conversation it should have, and a reliable way to interpret what the user actually means at each step. I build both — the business logic as a deterministic state machine, with language model components inserted only where probabilistic behaviour is genuinely wanted (intent matching, paraphrase, extraction).</p>
-
-                        <p>The architectural payoff is operational integrity. The agent cannot say something it wasn't authorised to say, every transition is logged, and the system's correctness doesn't move when the underlying model is updated by a vendor. This matters most where conversations carry liability — regulated industries, customer data flows, anything subject to audit.</p>
-
-                        <p>Quiet Signals Lab operates a verified Meta messaging application that client businesses connect their Facebook Pages and Instagram accounts to. Rather than building a new integration per client, businesses get access to a single tested and approved system.</p>
-
-                        <p><strong>Deliverables:</strong></p>
-                        <ul>
-                            <li>Custom agent architecture with configurable business rules</li>
-                            <li>Integration with messaging platforms (Meta, WhatsApp, Telegram)</li>
-                            <li>State management and fallback handling</li>
-                            <li>Human escalation routing</li>
-                            <li>Documentation and deployment support</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Item 2: Retrieval-Augmented Generation -->
-            <div class="accordion-item">
-                <button class="accordion-button" aria-expanded="false">
-                    <span class="accordion-icon">+</span>
-                    <span class="accordion-text">Retrieval-Augmented Generation</span>
-                </button>
-                <div class="accordion-content">
-                    <div class="accordion-body">
-                        <p>The part of a RAG system most likely to fail is retrieval. A model can only work with what it's given; if the retrieved context is wrong or poorly ranked, the answer is wrong regardless of which model generates it. I build retrieval pipelines where chunking, embedding selection, and reranking are treated as the core engineering problems, and where every generated response carries provenance back to the source passages it was grounded in.</p>
-
-                        <p>For workflows where data can't leave the client's infrastructure, the entire stack runs locally — Ollama or vLLM for inference, ChromaDB or pgvector for storage, no third-party calls in the answer path. For less restrictive contexts, commercial providers (OpenAI, Mistral) substitute in cleanly. The architecture stays the same; only the inference target changes.</p>
-
-                        <p><strong>Deliverables:</strong></p>
-                        <ul>
-                            <li>Production-ready RAG backend with REST API</li>
-                            <li>Document ingestion pipeline and vector database setup</li>
-                            <li>Retrieval optimisation: chunking, embedding tuning, reranking</li>
-                            <li>Source attribution and generation constraints</li>
-                            <li>Documentation and handover</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Item 3: Document Automation for Regulated Workflows -->
-            <div class="accordion-item">
-                <button class="accordion-button" aria-expanded="false">
-                    <span class="accordion-icon">+</span>
-                    <span class="accordion-text">Document Automation for Regulated Workflows</span>
-                </button>
-                <div class="accordion-content">
-                    <div class="accordion-body">
-                        <p>Many regulated workflows still rest on people reading documents and copying fields into systems. The bottleneck is rarely volume — it's that the documents don't follow predictable schemas, and the cost of a wrong field (a misread date of birth, an inverted clause, a missed citation) is high enough that pure automation fails the reliability bar without further structure.</p>
-
-                        <p>I build pipelines that combine deterministic structure — OCR, layout parsing, defined-term and cross-reference resolution — with schema-constrained LLM extraction and per-field confidence scoring. Outputs route automatically: high confidence to acceptance, mid to human review, low to rejection. Every extracted field carries a provenance link back to its source span, and every pipeline event is logged for audit.</p>
-
-                        <p>The deterministic layers are built on Contractex, the open-source library released through Quiet Signals Lab.</p>
-
-                        <p><strong>Deliverables:</strong></p>
-                        <ul>
-                            <li>End-to-end pipeline from raw document to structured output</li>
-                            <li>Per-field confidence scoring with routed human-in-the-loop</li>
-                            <li>Provenance tracking with character-level source spans</li>
-                            <li>Audit-ready event logs for GDPR-compliant processing</li>
-                            <li>Integration with downstream CRM, filing, or PDF workflows</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Item 4: Model Integrity & Diagnostics -->
-            <div class="accordion-item">
-                <button class="accordion-button" aria-expanded="false">
-                    <span class="accordion-icon">+</span>
-                    <span class="accordion-text">Model Integrity & Diagnostics</span>
-                </button>
-                <div class="accordion-content">
-                    <div class="accordion-body">
-                        <p>Production models fail in two registers. The familiar one: distribution shift, data quality issues, patterns that didn't generalise. The less familiar one, more relevant in regulated settings: memorisation of training data, susceptibility to extraction attacks, behaviour under adversarial input. I run controlled ablation studies on the first set and integrity probes on the second, so fixes can be prioritised by evidence and the system's failure surface is documented before it ships rather than after a security review surfaces it.</p>
-
-                        <p><strong>Deliverables:</strong></p>
-                        <ul>
-                            <li>Root cause diagnosis with quantified impact analysis</li>
-                            <li>Distribution shift analysis and ablation studies</li>
-                            <li>Memorisation and extraction surface testing</li>
-                            <li>Documented failure modes and monitoring thresholds</li>
-                            <li>Recommendations ranked by priority</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    </div><!-- /panel-services -->
-
-    <!-- Panel: Software -->
-    <div class="tab-panel active" id="panel-software" role="tabpanel">
-
-    <!-- Software -->
-    <section class="software" id="software">
-        <h2 class="section-title">Software</h2>
-        <div class="project-list fade-in">
-
-            <div class="project-item">
-                <div class="project-meta">
-                    <h3 class="project-title"><a href="https://solander.quietsignalslab.com/" style="color:inherit;text-decoration:none;">Solander</a></h3>
-                    <div class="project-tags">
-                        <span class="tag">Document Redaction</span>
-                        <span class="tag">Verifiable Evidence</span>
-                        <span class="tag">macOS</span>
-                        <span class="tag">Offline</span>
-                    </div>
-                </div>
-                <div class="project-detail">
-                    <p class="project-desc">A macOS app for redacting PDFs and scans, built around the part most redaction tools leave out: checking that the redaction held. Pages are rewritten rather than covered over, the output is reopened and re-read for anything still legible, and text the OCR could not resolve is reported rather than counted as clean. Every export can carry a signed record of what was removed, what was verified, and what was never examined. Runs without the network entitlement, so the operating system — not a promise — keeps documents on the machine.</p>
-                    <a href="https://solander.quietsignalslab.com/" class="project-link">Learn more →</a>
-                    <a href="https://solander.quietsignalslab.com/#pricing" class="project-link">Pricing →</a>
-                </div>
-            </div>
-
-            <div class="project-item">
-                <div class="project-meta">
-                    <img src="assets/shadow_clip.png" alt="ShadowClip app icon" class="project-icon">
-                    <h3 class="project-title"><a href="/shadowclip/" style="color:inherit;text-decoration:none;">ShadowClip</a></h3>
-                    <div class="project-tags">
-                        <span class="tag">Computer Vision</span>
-                        <span class="tag">Privacy</span>
-                        <span class="tag">macOS &amp; iOS</span>
-                    </div>
-                </div>
-                <div class="project-detail">
-                    <p class="project-desc">A macOS and iOS utility for redacting sensitive content from screenshots before they reach AI tools, colleagues, or support tickets. All detection runs on-device — Apple Vision for faces and text layout, Natural Language for named entities, and hand-authored patterns for API keys and structured credentials — with no network entitlement and no data in transit.</p>
-                    <a href="https://apps.apple.com/us/app/shadowclip/id6769406635?platform=mac" target="_blank" rel="noopener noreferrer" style="display:inline-block;margin-top:0.6rem;"><img src="assets/appstore-badge.svg" alt="Download on the App Store" height="40" style="display:block"></a>
-                    <a href="/shadowclip/" class="project-link" style="display:inline;margin-left:1rem;">Learn more →</a>
-                </div>
-            </div>
-
-            <div class="project-item">
-                <div class="project-meta">
-                    <img src="assets/rag_zotero.png" alt="RAG Assistant for Zotero icon" style="height:52px;width:auto;margin-bottom:0.85rem;display:block;">
-                    <h3 class="project-title"><a href="/rag-assistant/" style="color:inherit;text-decoration:none;">RAG Assistant for Zotero</a></h3>
-                    <div class="project-tags">
-                        <span class="tag">Knowledge Discovery</span>
-                        <span class="tag">Local AI</span>
-                        <span class="tag">Provenance</span>
-                        <span class="tag" id="rag-stars" aria-label="GitHub star count">★ &thinsp;&hellip;</span>
-                        <span class="tag">Apache 2.0</span>
-                    </div>
-                </div>
-                <div class="project-detail">
-                    <p class="project-desc">A desktop application for semantic search over Zotero research libraries. Designed for researchers who need to navigate large literature collections and get answers with clear source attribution — not summaries that obscure where the information came from. Supports local LLMs end-to-end, so libraries containing preprints, embargoed work, or sensitive material never leave the user's machine.</p>
-                    <div class="install-cmd"><span style="color:var(--accent);font-weight:600;font-style:normal;">macOS · Apple Silicon</span>  ·  Homebrew
-brew tap Quiet-Signals-Lab/rag-assistant-for-zotero
-brew install --cask rag-assistant-for-zotero</div>
-                    <a href="/rag-assistant/" class="project-link">Learn more →</a>
-                    <a href="https://github.com/Quiet-Signals-Lab/RAG-Assistant-for-Zotero" target="_blank" rel="noopener noreferrer" class="project-link">View on GitHub →</a>
-                </div>
-            </div>
-
-            <!-- Hidden from the Software list while Paddle reviews quietsignalslab.com. It is
-                 the only visible entry shaped like a service rather than a product, and
-                 Paddle's domain review flags unrelated offerings on a selling domain. The
-                 page itself is still live at /ai-crm-chatbot/ and can be sent to prospects
-                 directly. Delete the style attribute below to bring it back. -->
-            <div class="project-item" style="display:none;">
-                <div class="project-meta">
-                    <h3 class="project-title"><a href="/ai-crm-chatbot/" style="color:inherit;text-decoration:none;">Hybrid AI CRM Chatbot</a></h3>
-                    <div class="project-tags">
-                        <span class="tag">Messenger &amp; Instagram</span>
-                        <span class="tag">FastAPI</span>
-                        <span class="tag">YAML</span>
-                        <span class="tag">Multi-Page</span>
-                    </div>
-                </div>
-                <div class="project-detail">
-                    <p class="project-desc">A sales agent for Messenger and Instagram DMs that runs authored conversation flows, not generated text. The language model classifies what the customer means; every reply is pre-written in YAML — so responses stay predictable, on-brand, and controllable per client. One deployment serves many pages, each with its own script and knowledge base. Deployed as a managed service.</p>
-                    <a href="/ai-crm-chatbot/" class="project-link">Learn more →</a>
-                </div>
-            </div>
-
-            <div class="project-item">
-                <div class="project-meta">
-                    <h3 class="project-title">Contractex</h3>
-                    <div class="project-tags">
-                        <span class="tag">Python Library</span>
-                        <span class="tag">Information Retrieval</span>
-                        <span class="tag">Provenance</span>
-                        <span class="tag" id="contractex-version" aria-label="PyPI version">PyPI ···</span>
-                        <span class="tag" id="contractex-downloads" aria-label="Monthly downloads">↓ ···</span>
-                        <span class="tag">Apache 2.0</span>
-                    </div>
-                </div>
-                <div class="project-detail">
-                    <p class="project-desc">ContractEx is a Python library for legal document intelligence. Every operation is a composable LegalTask that takes a LegalDoc and returns a LegalDoc, making it trivial to build privacy-respecting extraction pipelines, RAG chatbots, and document-automation workflows over contracts, statutes, regulations, identity documents, and more. Privacy controls are a mandatory first-class stage in every pipeline.</p>
-                    <div class="install-cmd"><span style="color:var(--accent);font-weight:600;font-style:normal;">pip</span>  ·  Python 3.9+
-pip install contractex</div>
-                    <a href="https://github.com/Quiet-Signals-Lab/Contractex-Legal-Tech-Library" target="_blank" rel="noopener noreferrer" class="project-link">View on GitHub →</a>
-                    <a href="https://pypi.org/project/contractex/" target="_blank" rel="noopener noreferrer" class="project-link">View on PyPI →</a>
-                </div>
-            </div>
+<header class="q-header">
+<div class="q-header-inner">
+<a class="q-wordmark" href="./" aria-label="Quiet Signals Lab"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 147.74 16.67" width="147.74" height="16.67" aria-hidden="true" focusable="false"><path fill="currentColor" d="M9.02 9.74Q9.38 9.25 9.59 8.53Q9.81 7.81 9.81 6.79Q9.81 5.94 9.62 5.15Q9.43 4.36 9.02 3.74Q8.6 3.11 7.94 2.75Q7.27 2.38 6.32 2.38Q5.36 2.38 4.7 2.75Q4.03 3.11 3.62 3.74Q3.2 4.36 3.01 5.15Q2.83 5.94 2.83 6.79Q2.83 7.6 3.01 8.36Q3.2 9.13 3.62 9.74Q4.03 10.35 4.7 10.72Q5.36 11.09 6.32 11.09Q6.77 11.09 7 11.05Q7.24 11.02 7.45 10.91L6.25 9.81L7.56 8.41ZM9.43 12.71Q8.15 13.45 6.32 13.45Q4.84 13.45 3.66 12.93Q2.48 12.42 1.67 11.52Q0.86 10.62 0.43 9.4Q0 8.19 0 6.79Q0 5.35 0.43 4.11Q0.86 2.88 1.67 1.96Q2.48 1.04 3.66 0.52Q4.84 0 6.32 0Q7.81 0 8.98 0.52Q10.15 1.04 10.96 1.96Q11.77 2.88 12.2 4.11Q12.64 5.35 12.64 6.79Q12.64 8.19 12.2 9.4Q11.77 10.6 10.96 11.52L12.56 12.98L11.25 14.35Z M22.66 13.16V3.85H20.11V8.73Q20.11 10.15 19.64 10.77Q19.17 11.39 18.13 11.39Q17.21 11.39 16.85 10.83Q16.49 10.26 16.49 9.11V3.85H13.93V9.58Q13.93 10.44 14.09 11.15Q14.24 11.86 14.62 12.36Q14.99 12.85 15.65 13.12Q16.31 13.39 17.33 13.39Q18.14 13.39 18.92 13.03Q19.69 12.67 20.18 11.86H20.23V13.16Z M26.87 2.41V0.31H24.32V2.41ZM24.32 3.85V13.16H26.87V3.85Z M34.79 7.51H30.64Q30.65 7.24 30.75 6.89Q30.85 6.55 31.09 6.25Q31.34 5.94 31.74 5.73Q32.15 5.53 32.76 5.53Q33.7 5.53 34.16 6.03Q34.61 6.53 34.79 7.51ZM30.64 9.13H37.35Q37.42 8.05 37.17 7.06Q36.92 6.07 36.35 5.29Q35.78 4.52 34.9 4.06Q34.02 3.6 32.83 3.6Q31.77 3.6 30.9 3.98Q30.02 4.36 29.39 5.01Q28.76 5.67 28.42 6.57Q28.08 7.47 28.08 8.51Q28.08 9.59 28.41 10.49Q28.75 11.39 29.36 12.04Q29.97 12.69 30.85 13.04Q31.73 13.39 32.83 13.39Q34.42 13.39 35.53 12.67Q36.65 11.95 37.19 10.28H34.94Q34.81 10.71 34.25 11.1Q33.7 11.48 32.92 11.48Q31.84 11.48 31.27 10.93Q30.69 10.37 30.64 9.13Z M41.74 3.85V1.06H39.19V3.85H37.64V5.56H39.19V11.05Q39.19 11.75 39.42 12.19Q39.65 12.62 40.06 12.85Q40.46 13.09 41 13.17Q41.53 13.25 42.12 13.25Q42.5 13.25 42.89 13.23Q43.29 13.21 43.61 13.16V11.18Q43.43 11.21 43.24 11.23Q43.04 11.25 42.82 11.25Q42.17 11.25 41.96 11.03Q41.74 10.82 41.74 10.17V5.56H43.61V3.85Z M51.32 8.89H48.58Q48.56 10.08 49.01 10.94Q49.46 11.81 50.23 12.37Q50.99 12.92 51.99 13.18Q52.99 13.45 54.05 13.45Q55.37 13.45 56.37 13.14Q57.37 12.83 58.04 12.29Q58.72 11.74 59.06 10.98Q59.4 10.22 59.4 9.34Q59.4 8.26 58.94 7.57Q58.48 6.88 57.85 6.46Q57.22 6.05 56.58 5.86Q55.94 5.67 55.58 5.6Q54.38 5.29 53.63 5.09Q52.88 4.9 52.46 4.7Q52.04 4.5 51.89 4.27Q51.75 4.03 51.75 3.65Q51.75 3.24 51.93 2.97Q52.11 2.7 52.39 2.52Q52.67 2.34 53.01 2.27Q53.35 2.2 53.69 2.2Q54.22 2.2 54.66 2.29Q55.1 2.38 55.44 2.59Q55.78 2.81 55.99 3.19Q56.2 3.56 56.23 4.14H58.97Q58.97 3.02 58.55 2.24Q58.12 1.46 57.4 0.95Q56.68 0.45 55.75 0.23Q54.83 0 53.82 0Q52.96 0 52.09 0.23Q51.23 0.47 50.54 0.95Q49.86 1.44 49.44 2.17Q49.01 2.9 49.01 3.89Q49.01 4.77 49.35 5.39Q49.68 6.01 50.22 6.43Q50.76 6.84 51.44 7.1Q52.13 7.36 52.85 7.54Q53.55 7.74 54.23 7.9Q54.92 8.06 55.46 8.28Q56 8.5 56.33 8.82Q56.66 9.14 56.66 9.67Q56.66 10.15 56.41 10.47Q56.16 10.78 55.78 10.96Q55.4 11.14 54.97 11.2Q54.54 11.27 54.16 11.27Q53.6 11.27 53.08 11.13Q52.56 11 52.17 10.72Q51.79 10.44 51.55 9.99Q51.32 9.54 51.32 8.89Z M63.07 2.41V0.31H60.52V2.41ZM60.52 3.85V13.16H63.07V3.85Z M69.07 10.96Q68.47 10.96 68.08 10.71Q67.68 10.46 67.44 10.06Q67.19 9.67 67.09 9.17Q67 8.68 67 8.17Q67 7.65 67.11 7.17Q67.23 6.7 67.49 6.33Q67.75 5.96 68.14 5.74Q68.53 5.53 69.07 5.53Q69.7 5.53 70.11 5.76Q70.52 5.99 70.78 6.39Q71.03 6.79 71.14 7.3Q71.24 7.81 71.24 8.39Q71.24 8.89 71.11 9.35Q70.97 9.81 70.7 10.17Q70.43 10.53 70.02 10.75Q69.61 10.96 69.07 10.96ZM73.67 12.56V3.85H71.24V5.09H71.21Q70.74 4.28 70.05 3.94Q69.35 3.6 68.44 3.6Q67.46 3.6 66.72 3.98Q65.97 4.36 65.47 5Q64.96 5.63 64.7 6.47Q64.44 7.31 64.44 8.21Q64.44 9.16 64.66 10.02Q64.89 10.87 65.38 11.51Q65.86 12.15 66.62 12.52Q67.37 12.89 68.42 12.89Q69.26 12.89 70.03 12.54Q70.79 12.19 71.21 11.45H71.24V12.67Q71.26 13.66 70.77 14.31Q70.27 14.96 69.19 14.96Q68.51 14.96 67.99 14.68Q67.46 14.4 67.28 13.68H64.75Q64.8 14.47 65.19 15.04Q65.57 15.61 66.16 15.97Q66.74 16.33 67.45 16.5Q68.17 16.67 68.85 16.67Q70.45 16.67 71.41 16.24Q72.36 15.8 72.86 15.18Q73.37 14.56 73.52 13.84Q73.67 13.12 73.67 12.56Z M75.37 3.85V13.16H77.92V8.28Q77.92 6.86 78.39 6.24Q78.86 5.62 79.9 5.62Q80.82 5.62 81.18 6.18Q81.54 6.75 81.54 7.9V13.16H84.1V7.43Q84.1 6.57 83.94 5.86Q83.79 5.15 83.41 4.65Q83.03 4.16 82.38 3.88Q81.72 3.6 80.69 3.6Q79.88 3.6 79.11 3.97Q78.34 4.34 77.85 5.15H77.8V3.85Z M85.57 6.71Q85.63 5.81 86.02 5.22Q86.42 4.63 87.03 4.27Q87.64 3.91 88.41 3.75Q89.17 3.6 89.95 3.6Q90.65 3.6 91.37 3.7Q92.09 3.8 92.68 4.09Q93.28 4.37 93.65 4.89Q94.03 5.4 94.03 6.25V11.09Q94.03 11.72 94.1 12.29Q94.18 12.87 94.36 13.16H91.76Q91.69 12.94 91.65 12.72Q91.6 12.49 91.58 12.26Q90.97 12.89 90.14 13.14Q89.32 13.39 88.45 13.39Q87.79 13.39 87.21 13.23Q86.63 13.07 86.2 12.73Q85.77 12.38 85.53 11.86Q85.28 11.34 85.28 10.62Q85.28 9.83 85.56 9.31Q85.84 8.8 86.28 8.5Q86.72 8.19 87.29 8.04Q87.86 7.88 88.43 7.79Q89.01 7.7 89.57 7.65Q90.13 7.6 90.56 7.49Q90.99 7.38 91.24 7.17Q91.49 6.97 91.48 6.57Q91.48 6.16 91.34 5.91Q91.21 5.67 90.98 5.54Q90.76 5.4 90.46 5.36Q90.16 5.31 89.82 5.31Q89.06 5.31 88.63 5.63Q88.2 5.96 88.13 6.71ZM91.48 8.6Q91.31 8.75 91.07 8.83Q90.83 8.91 90.55 8.96Q90.27 9.02 89.96 9.05Q89.66 9.09 89.35 9.14Q89.06 9.2 88.79 9.29Q88.51 9.38 88.3 9.53Q88.09 9.68 87.97 9.92Q87.84 10.15 87.84 10.51Q87.84 10.85 87.97 11.09Q88.09 11.32 88.31 11.46Q88.52 11.59 88.81 11.65Q89.1 11.7 89.41 11.7Q90.16 11.7 90.58 11.45Q90.99 11.2 91.19 10.84Q91.39 10.49 91.43 10.13Q91.48 9.77 91.48 9.56Z M95.72 0.31V13.16H98.28V0.31Z M101.92 10.13H99.49Q99.52 11.07 99.91 11.69Q100.3 12.31 100.9 12.69Q101.5 13.07 102.28 13.23Q103.05 13.39 103.86 13.39Q104.65 13.39 105.42 13.24Q106.18 13.09 106.78 12.71Q107.37 12.33 107.74 11.71Q108.11 11.09 108.11 10.17Q108.11 9.52 107.86 9.08Q107.6 8.64 107.19 8.34Q106.78 8.05 106.25 7.87Q105.71 7.69 105.16 7.56Q104.62 7.43 104.09 7.33Q103.57 7.22 103.17 7.08Q102.76 6.95 102.51 6.73Q102.26 6.52 102.26 6.17Q102.26 5.89 102.4 5.71Q102.55 5.54 102.75 5.45Q102.96 5.36 103.21 5.34Q103.46 5.31 103.68 5.31Q104.36 5.31 104.87 5.57Q105.37 5.83 105.43 6.57H107.86Q107.78 5.71 107.42 5.14Q107.05 4.57 106.49 4.23Q105.93 3.89 105.22 3.74Q104.51 3.6 103.75 3.6Q103 3.6 102.28 3.74Q101.56 3.87 100.98 4.2Q100.4 4.54 100.05 5.11Q99.7 5.69 99.7 6.59Q99.7 7.2 99.95 7.62Q100.21 8.05 100.62 8.32Q101.03 8.6 101.57 8.77Q102.1 8.95 102.65 9.07Q104.02 9.36 104.79 9.65Q105.55 9.94 105.55 10.51Q105.55 10.85 105.39 11.08Q105.23 11.3 104.99 11.44Q104.74 11.57 104.45 11.64Q104.15 11.7 103.88 11.7Q103.5 11.7 103.15 11.61Q102.8 11.52 102.53 11.33Q102.26 11.14 102.09 10.84Q101.92 10.55 101.92 10.13Z M114.16 0.31V13.16H123.25V10.78H116.98V0.31Z M124.09 6.71Q124.15 5.81 124.54 5.22Q124.94 4.63 125.55 4.27Q126.16 3.91 126.93 3.75Q127.69 3.6 128.47 3.6Q129.17 3.6 129.89 3.7Q130.61 3.8 131.2 4.09Q131.8 4.37 132.17 4.89Q132.55 5.4 132.55 6.25V11.09Q132.55 11.72 132.62 12.29Q132.7 12.87 132.88 13.16H130.28Q130.21 12.94 130.17 12.72Q130.12 12.49 130.1 12.26Q129.49 12.89 128.66 13.14Q127.84 13.39 126.97 13.39Q126.31 13.39 125.73 13.23Q125.15 13.07 124.72 12.73Q124.29 12.38 124.05 11.86Q123.8 11.34 123.8 10.62Q123.8 9.83 124.08 9.31Q124.36 8.8 124.8 8.5Q125.24 8.19 125.81 8.04Q126.38 7.88 126.95 7.79Q127.53 7.7 128.09 7.65Q128.65 7.6 129.08 7.49Q129.51 7.38 129.76 7.17Q130.01 6.97 130 6.57Q130 6.16 129.86 5.91Q129.73 5.67 129.5 5.54Q129.28 5.4 128.98 5.36Q128.68 5.31 128.34 5.31Q127.58 5.31 127.15 5.63Q126.72 5.96 126.65 6.71ZM130 8.6Q129.83 8.75 129.59 8.83Q129.35 8.91 129.07 8.96Q128.79 9.02 128.48 9.05Q128.18 9.09 127.87 9.14Q127.58 9.2 127.31 9.29Q127.03 9.38 126.82 9.53Q126.61 9.68 126.49 9.92Q126.36 10.15 126.36 10.51Q126.36 10.85 126.49 11.09Q126.61 11.32 126.83 11.46Q127.04 11.59 127.33 11.65Q127.62 11.7 127.93 11.7Q128.68 11.7 129.1 11.45Q129.51 11.2 129.71 10.84Q129.91 10.49 129.95 10.13Q130 9.77 130 9.56Z M140.99 8.51Q140.99 9.09 140.87 9.63Q140.74 10.17 140.47 10.58Q140.2 11 139.8 11.24Q139.39 11.48 138.82 11.48Q138.26 11.48 137.84 11.24Q137.43 11 137.16 10.58Q136.89 10.17 136.76 9.63Q136.64 9.09 136.64 8.51Q136.64 7.92 136.76 7.38Q136.89 6.84 137.16 6.43Q137.43 6.01 137.84 5.77Q138.26 5.53 138.82 5.53Q139.39 5.53 139.8 5.77Q140.2 6.01 140.47 6.43Q140.74 6.84 140.87 7.38Q140.99 7.92 140.99 8.51ZM134.17 0.31V13.16H136.6V11.97H136.64Q137.05 12.74 137.86 13.07Q138.67 13.39 139.7 13.39Q140.4 13.39 141.08 13.1Q141.77 12.82 142.32 12.22Q142.87 11.63 143.21 10.7Q143.55 9.77 143.55 8.5Q143.55 7.22 143.21 6.29Q142.87 5.36 142.32 4.77Q141.77 4.18 141.08 3.89Q140.4 3.6 139.7 3.6Q138.83 3.6 138.03 3.93Q137.23 4.27 136.76 4.99H136.73V0.31Z"/><path fill="#D2421F" d="M144.92 10.39V13.16H147.74V10.39Z"/></svg></a>
+<nav aria-label="Main">
+<ul class="q-nav">
+<li><a href="#software">Software</a></li>
+<li><a href="writing/">Writing</a></li>
+<li><a href="#about">About</a></li>
+<li><a href="mailto:hello@quietsignalslab.com">Contact</a></li>
+</ul>
+</nav>
+</div>
+</header>
 
 
-        </div>
-    </section>
 
-    </div><!-- /panel-software -->
+<main id="main">
 
-    <!-- Panel: Work (hidden) -->
-    <div class="tab-panel" id="panel-work" role="tabpanel" style="display:none;">
+<section class="q-hero">
+<div class="q-hero-text">
+<h1>On-device AI software for document privacy.</h1>
+<p class="q-lede">Document redaction with automatic PII detection, powered by our multilingual small language models that run entirely on your device. Built for lawyers, journalists, researchers, and compliance teams.</p>
+<p class="q-lede q-origin">Designed and built in the Netherlands.</p>
+</div>
+<div class="q-hero-art" aria-hidden="true">
+<svg class="q-morse" viewBox="0 0 13 5" width="260" height="100" shape-rendering="crispEdges" focusable="false"><rect x="0" y="0" width="3" height="1"/><rect x="4" y="0" width="3" height="1"/><rect x="8" y="0" width="1" height="1"/><rect x="10" y="0" width="3" height="1"/><rect class="s" x="0" y="2" width="1" height="1"/><rect class="s" x="2" y="2" width="1" height="1"/><rect class="s" x="4" y="2" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="2" y="4" width="3" height="1"/><rect x="6" y="4" width="1" height="1"/><rect x="8" y="4" width="1" height="1"/></svg>
+</div>
+</section>
 
-    <!-- Featured Work -->
-    <section class="featured-work" id="work">
-        <h2 class="section-title">Selected Work</h2>
-        <div class="project-list fade-in">
+<div class="q-featured">
 
-            <div class="project-item">
-                <div class="project-meta">
-                    <h3 class="project-title"><a href="/ai-crm-chatbot/" style="color:inherit;text-decoration:none;">Meta AI Sales Bot for an SMM Agency</a></h3>
-                    <div class="project-tags">
-                        <span class="tag">Python</span>
-                        <span class="tag">Meta API</span>
-                        <span class="tag">YAML</span>
-                        <span class="tag">FastAPI</span>
-                    </div>
-                </div>
-                <div class="project-detail">
-                    <p class="project-desc">A configurable sales agent deployed for a social media marketing agency, running on the Quiet Signals Lab Meta messaging platform. The conversation logic is a deterministic state machine — branching, objection handling, escalation — with the language model used at one specific point: scoring which authored branch best matches what the user said. Responses are defined in YAML, never generated. New client accounts onboard onto the shared platform without rebuilding the underlying integration.</p>
-                    <a href="/ai-crm-chatbot/" class="project-link">Learn more →</a>
-                </div>
-            </div>
+<!-- 01 Now. The featured product. Swap the contents; keep the structure. -->
+<section class="q-box" aria-labelledby="now-title">
+<div class="q-label q-label-now"><span class="q-kicker">Featured</span></div>
+<div class="q-now">
+<div>
+<p class="q-kicker">Document redaction for Mac · On-device AI</p>
+<h2 id="now-title">Solander.</h2>
+<p>Redact PDF, Word and Excel with provenance receipts. Own small language model fine-tuned on English, French and Dutch for optimal performance.</p>
+<p class="q-mono">Free for one document at a time. No account.</p>
+<div class="q-actions">
+<a class="q-btn" href="mailto:hello@quietsignalslab.com?subject=Solander">Email me at launch</a>
+<a class="q-btn-quiet" href="https://solander.quietsignalslab.com/">See Solander</a>
+</div>
+</div>
+<div class="q-now-art" aria-hidden="true">
+<svg viewBox="0 0 168 216" width="168" height="216" focusable="false"><rect class="q-page" x="1" y="1" width="166" height="214" stroke-width="2"/><rect class="q-page-line" x="20" y="24" width="88" height="6"/><rect class="q-page-line" x="20" y="40" width="128" height="6"/><rect class="q-page-line" x="20" y="56" width="48" height="6"/><rect class="q-page-redaction" x="74" y="53" width="66" height="12"/><rect class="q-page-line" x="20" y="72" width="116" height="6"/><rect class="q-page-line" x="20" y="88" width="128" height="6"/><rect class="q-page-redaction" x="20" y="102" width="82" height="12"/><rect class="q-page-line" x="20" y="120" width="108" height="6"/><rect class="q-page-line" x="20" y="136" width="128" height="6"/><rect class="q-page-line" x="20" y="152" width="72" height="6"/></svg>
+</div>
+</div>
+</section>
 
+<!-- Writing. The three newest posts, newest first: add an <li> at the top, drop the fourth. -->
+<section class="q-box" id="writing" aria-labelledby="writing-title">
+<div class="q-label"><span class="q-kicker">Writing</span></div>
+<p class="q-kicker">Machine learning · Engineering notes</p>
+<h2 id="writing-title">Engineering blog</h2>
+<ol class="q-box-posts">
+<li><a href="writing/multi-task-learning-distribution-shift/"><time class="q-mono" datetime="2026-04-14">14 April 2026</time><span class="q-box-post-title">Multi-Task Learning as Inductive Bias Under Distribution Shift</span></a></li>
+</ol>
+<p class="q-more"><a href="writing/">All writing</a> <span class="q-mono">·</span> <a href="writing/feed.xml">RSS</a></p>
+</section>
 
-        </div>
-    </section>
+</div>
 
-    </div><!-- /panel-work -->
+<section class="q-section q-section-first" id="software" aria-labelledby="software-title">
+<p class="q-statement q-principles">AI models have long outrun what most tasks actually require. The issue today is rarely about model power but rather about vague task definition or inadequate security. We design purpose&#8209;built software around small language models, each specialised for a specific job and small enough to run on your device.</p>
 
-    <!-- Panel: Blog -->
-    <div class="tab-panel" id="panel-writing" role="tabpanel">
+<div class="q-wide">
+<div class="q-group"><h2 class="q-group-title" id="software-title">Our software</h2><p class="q-mono">Offline, no account</p></div>
+<ul class="q-cards">
 
-    <section class="writing" id="writing">
-        <h2 class="section-title">Blog</h2>
-        <div class="project-list fade-in">
+<li class="q-card">
+<div class="q-card-top"><span class="q-tag q-soon">Launching soon</span></div>
+<h3><a href="https://solander.quietsignalslab.com/">Solander</a></h3>
+<p class="q-mono">macOS 14+ · from $49</p>
+<p>Redact PDFs, scans, Word and Excel files, with personal details found by our own small language model. Then check that the redaction held.</p>
+<dl class="q-spec">
+<dt>Editions</dt><dd>PDF ($49) for PDFs and scans. Desk ($69) for Word and Excel, with names swapped for placeholders.</dd>
+<dt>Checks</dt><dd>Reads its own output back for anything still legible</dd>
+<dt>Records</dt><dd>A redaction log and a signed report with every export</dd>
+<dt>Network</dt><dd>None. The app has no network entitlement.</dd>
+</dl>
+<div class="q-card-actions">
+<a href="mailto:hello@quietsignalslab.com?subject=Solander">Email me at launch</a>
+<a href="https://solander.quietsignalslab.com/">More on solander.quietsignalslab.com</a>
+</div>
+</li>
 
-            <div class="project-item" style="display:none;">
-                <div class="project-meta">
-                    <h3 class="project-title"><a href="/writing/example-post/" style="color:inherit;text-decoration:none;">Membership Inference at the Threshold: Likelihood Ratios and What They Expose</a></h3>
-                    <div class="project-tags">
-                        <span class="tag">ML Privacy</span>
-                        <span class="tag">May 2026</span>
-                    </div>
-                </div>
-                <div class="project-detail">
-                    <p class="project-desc">Training samples sit closer to the decision boundary than non-members — here is what that means in practice, and what the ROC curve actually tells you about your model's privacy surface.</p>
-                    <a href="/writing/example-post/" class="project-link">Read →</a>
-                </div>
-            </div>
+<li class="q-card">
+<div class="q-card-top"><span class="q-tag">Available</span></div>
+<h3><a href="shadowclip/">ShadowClip</a></h3>
+<p class="q-mono">macOS 14+ · iOS 17+</p>
+<p>Redact screenshots before they go to an AI tool, a colleague or a support ticket. Review what it found, then save a clean copy. The original is never touched.</p>
+<dl class="q-spec">
+<dt>Finds</dt><dd>API keys and tokens, card numbers, IBANs, emails, faces, QR codes, names</dd>
+<dt>Network</dt><dd>None. The app has no network entitlement.</dd>
+<dt>Price</dt><dd>One purchase covers Mac and iPhone</dd>
+</dl>
+<div class="q-card-actions">
+<a href="https://apps.apple.com/us/app/shadowclip/id6769406635?platform=mac"><img src="assets/appstore-badge.svg" alt="Download ShadowClip on the App Store" width="120" height="40"></a>
+<a href="shadowclip/">About ShadowClip</a>
+</div>
+</li>
 
-            <div class="project-item">
-                <div class="project-meta">
-                    <h3 class="project-title"><a href="/writing/multi-task-learning-distribution-shift/" style="color:inherit;text-decoration:none;">Multi-Task Learning as Inductive Bias Under Distribution Shift</a></h3>
-                    <div class="project-tags">
-                        <span class="tag">ML Systems</span>
-                        <span class="tag">April 2026</span>
-                    </div>
-                </div>
-                <div class="project-detail">
-                    <p class="project-desc">Four controlled ablations that isolate when multi-task learning helps, when it hurts, and why — including the data-duplication control that separates task interaction from raw data volume.</p>
-                    <a href="/writing/multi-task-learning-distribution-shift/" class="project-link">Read →</a>
-                </div>
-            </div>
+<li class="q-card">
+<div class="q-card-top"><span class="q-tag">Available · free</span></div>
+<h3><a href="rag-assistant/">RAG Assistant for Zotero</a></h3>
+<p class="q-mono">macOS · Windows · Linux · GPL-3.0</p>
+<p>Semantic search across your Zotero library. Describe what's on your mind and it finds related passages in your PDFs, surfacing connections you might miss in a literature review. A library clerk, not a summariser.</p>
+<dl class="q-spec">
+<dt>Search</dt><dd>Semantic and keyword search together, reranked passage by passage</dd>
+<dt>Models</dt><dd>Local with Ollama or LM Studio, or a cloud provider you choose</dd>
+<dt>Downloads</dt><dd>9,000+ across 30+ releases</dd>
+<dt>Sources</dt><dd>Every passage cited to its paper and page, filterable by year, tag, collection or author</dd>
+</dl>
+<pre class="q-install">brew tap Quiet-Signals-Lab/rag-assistant-for-zotero
+brew install --cask rag-assistant-for-zotero</pre>
+<div class="q-card-actions">
+<a href="rag-assistant/">About the app</a>
+<a href="https://github.com/Quiet-Signals-Lab/RAG-Assistant-for-Zotero">GitHub</a>
+</div>
+</li>
 
-        </div>
-    </section>
+</ul>
 
-    </div><!-- /panel-writing -->
+<div class="q-group"><p class="q-kicker">For developers</p><p class="q-mono">Open source, free to use, change and share</p></div>
+<ul class="q-cards">
 
-    </div><!-- /tab-panels -->
+<li class="q-card">
+<div class="q-card-top"><span class="q-tag">Python library</span></div>
+<h3><a href="contractex/docs/">Contractex</a></h3>
+<p class="q-mono">v0.5 · Python 3.9+ · Apache 2.0</p>
+<p>The processing layer for legal AI: chunking, extraction, retrieval, privacy enforcement and quality measurement.</p>
+<dl class="q-spec">
+<dt>Documents</dt><dd>Contracts, statutes, regulations, identity documents</dd>
+<dt>Privacy</dt><dd>A required stage in every pipeline, not an option</dd>
+<dt>Design</dt><dd>Every step takes a document and returns one, so steps compose</dd>
+</dl>
+<pre class="q-install">pip install contractex</pre>
+<div class="q-card-actions">
+<a href="contractex/docs/">Documentation</a>
+<a href="https://github.com/Quiet-Signals-Lab/Contractex-Legal-Tech-Library">GitHub</a>
+<a href="https://pypi.org/project/contractex/">PyPI</a>
+</div>
+</li>
 
-    <!-- Pull Quote (hidden) -->
-    <!--
-    <blockquote class="site-quote">
-        <p>&#8220;All models are wrong, but some are useful.&#8221;</p>
-        <cite>— George Box</cite>
-    </blockquote>
-    -->
+</ul>
+</div>
+</section>
 
-    <!-- Footer -->
-    <footer>
-        <div class="footer-links">
-            <a href="https://solander.quietsignalslab.com/">Solander</a>
-            <a href="https://solander.quietsignalslab.com/terms.html">Solander Terms</a>
-            <a href="https://solander.quietsignalslab.com/refunds.html">Solander Refunds</a>
-            <a href="/privacy">Privacy</a>
-            <a href="mailto:hello@quietsignalslab.com">Contact</a>
-        </div>
-        <div class="footer-meta">
-            <p>Quiet Signals Lab · KvK 99556650 · VAT: NL005394204B58</p>
-            <p>This site does not use cookies or tracking technologies. <a href="/privacy">Privacy Notice</a></p>
-            <p>© 2026 Alexander Hepburn. All rights reserved.</p>
-        </div>
-    </footer>
+<section class="q-section" id="about" aria-labelledby="about-title">
+<div class="q-label"><span class="q-kicker" id="about-title">About</span></div>
+<div class="q-body">
+<p>Thanks for visiting my website!</p>
+<p>My name is Alex. I am an engineer and applied researcher working on privacy, safety, and reliability in AI systems. Through my client and open-source work, I program systems that are often hybrid -- making the best of what probabilistic models offer, combined with deterministic constraints. My background in both ML and business lets me act as a bridge between the two, with end-to-end ownership of what I build.</p>
+<p>Don't hesitate to <a href="mailto:hello@quietsignalslab.com">drop me a message</a> if you are interested in what I do.</p>
+</div>
+</section>
 
+</main>
 
-    <script>
-        // ── Tab navigation ──────────────────────────────────────────
-        const tabBtns = document.querySelectorAll('.tab-btn');
-        const ANIM_DURATION = 200;
+<footer class="q-footer">
+<ul class="q-footer-links">
+<li><a href="#software">Software</a></li>
+<li><a href="writing/">Writing</a></li>
+<li><a href="writing/feed.xml">RSS</a></li>
+<li><a href="https://github.com/Quiet-Signals-Lab">GitHub</a></li>
+<li><a href="https://www.linkedin.com/company/quiet-signals-lab">LinkedIn</a></li>
+<li><a href="privacy/">Privacy</a></li>
+</ul>
+<p>Quiet Signals Lab · Amsterdam, Netherlands · KvK 99556650 · VAT NL005394204B58</p>
+<p>This site does not use cookies or tracking. © 2025-2026 Alexander Hepburn</p>
+</footer>
 
-        function activatePanel(btn) {
-            const targetId = btn.dataset.panel;
-            const current = document.querySelector('.tab-panel.active');
-            const next = document.getElementById(targetId);
-            if (!next || current === next) return;
-
-            tabBtns.forEach(b => {
-                b.classList.remove('active');
-                b.setAttribute('aria-selected', 'false');
-            });
-            btn.classList.add('active');
-            btn.setAttribute('aria-selected', 'true');
-
-            current.classList.add('exiting');
-            setTimeout(() => {
-                current.classList.remove('active', 'exiting');
-                next.classList.add('active');
-                next.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
-            }, ANIM_DURATION);
-        }
-
-        tabBtns.forEach(btn => btn.addEventListener('click', () => activatePanel(btn)));
-
-        // Hash-based tab activation (e.g. /#about, /#blog, /#software)
-        const hashMap = { '#about': 'panel-about', '#blog': 'panel-writing', '#writing': 'panel-writing', '#software': 'panel-software' };
-        const hashTarget = hashMap[window.location.hash];
-        if (hashTarget) {
-            const btn = document.querySelector(`.tab-btn[data-panel="${hashTarget}"]`);
-            if (btn) activatePanel(btn);
-        }
-
-        // Mark fade-in elements in the initial active panel as visible
-        document.querySelector('.tab-panel.active')
-            ?.querySelectorAll('.fade-in')
-            .forEach(el => el.classList.add('visible'));
-
-        // ── Accordion ───────────────────────────────────────────────
-        const accordionButtons = document.querySelectorAll('.accordion-button');
-
-        accordionButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const isExpanded = button.getAttribute('aria-expanded') === 'true';
-                const content = button.nextElementSibling;
-
-                accordionButtons.forEach(other => {
-                    if (other !== button) {
-                        other.setAttribute('aria-expanded', 'false');
-                        other.classList.remove('expanded');
-                        other.nextElementSibling.classList.remove('expanded');
-                    }
-                });
-
-                button.setAttribute('aria-expanded', !isExpanded);
-                button.classList.toggle('expanded');
-                content.classList.toggle('expanded');
-            });
-        });
-    </script>
-    <script>
-        // Fetch PyPI data for contractex
-        (function () {
-            var verEl = document.getElementById('contractex-version');
-            var dlEl  = document.getElementById('contractex-downloads');
-
-            if (verEl) {
-                fetch('https://pypi.org/pypi/contractex/json')
-                    .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
-                    .then(function (data) {
-                        verEl.textContent = 'v' + data.info.version;
-                    })
-                    .catch(function () { verEl.style.display = 'none'; });
-            }
-
-            if (dlEl) {
-                fetch('https://pypistats.org/api/packages/contractex/recent')
-                    .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
-                    .then(function (data) {
-                        var count = data.data.last_month;
-                        var formatted = count >= 1000
-                            ? (count / 1000).toFixed(1).replace(/\.0$/, '') + 'k'
-                            : count.toString();
-                        dlEl.textContent = '\u2193 ' + formatted + '/mo';
-                    })
-                    .catch(function () { dlEl.style.display = 'none'; });
-            }
-        })();
-    </script>
-    <script>
-        // Fetch GitHub star count for RAG-Assistant-for-Zotero
-        (function () {
-            var el = document.getElementById('rag-stars');
-            if (!el) return;
-            fetch('https://api.github.com/repos/Quiet-Signals-Lab/RAG-Assistant-for-Zotero', {
-                headers: { Accept: 'application/vnd.github+json' }
-            })
-            .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
-            .then(function (data) {
-                el.textContent = '★ ' + data.stargazers_count.toLocaleString();
-            })
-            .catch(function () { el.style.display = 'none'; });
-        })();
-    </script>
 </body>
 </html>

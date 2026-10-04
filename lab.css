@@ -1,0 +1,358 @@
+/* Quiet Signals Lab — the lab pages' stylesheet (homepage first).
+ *
+ * Separate from styles.css, which the privacy notices, product pages and docs still use.
+ *
+ * The tokens are Solander's, value for value (solander-site/styles.css), so the lab and its
+ * products read as one family. The lab adds one colour: the accent.
+ *
+ * Rules:
+ * - Quiet. Hierarchy from weight, size and space. Hairlines, no shadows, gradients or rounding.
+ * - Colour carries meaning. Blue is what you can act on. Amber is "not yet".
+ *   The accent is the signal, and appears in three places only: the full stop of the
+ *   wordmark, the S of the Morse rule, and the marker on the "Now" section. Never as UI state.
+ * - One grid: twelve columns, 4px module.
+ * - Type from the system, as on Solander. The wordmark is Helvetica Neue Bold.
+ */
+
+:root {
+    color-scheme: light dark;
+
+    --ink: #101010;
+    --ink-2: #52524C;
+    --ink-3: #686862;
+    --paper: #FFFFFF;
+    --ground: #F4F4F2;
+    --rule: #D8D8D4;
+    --selected: #1B3FD8;
+    --attention: #8C6309;
+    --accent: #D2421F;
+    --redaction: #000000;
+
+    --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+
+    --gutter: 32px;
+    --max: 1120px;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --ink: #F0F0EC;
+        --ink-2: #B0B0A9;
+        --ink-3: #8C8C85;
+        --paper: #1A1A19;
+        --ground: #0E0E0D;
+        --rule: #343432;
+        --selected: #6B86F5;
+        --attention: #E8B92E;
+    }
+}
+
+/* ---- Base ------------------------------------------------------------------------ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; }
+body { background: var(--paper); color: var(--ink); font: 400 16px/1.6 var(--sans); -webkit-font-smoothing: antialiased; }
+
+a { color: var(--selected); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+a:hover { color: var(--ink); }
+:focus-visible { outline: 2px solid var(--selected); outline-offset: 2px; }
+
+h1, h2, h3 { font-family: var(--display); color: var(--ink); text-wrap: balance; }
+p, li { color: var(--ink-2); }
+
+.q-skip { position: absolute; left: -9999px; }
+.q-skip:focus { left: var(--gutter); top: 8px; background: var(--paper); padding: 8px 12px; z-index: 1; }
+
+/* Small uppercase label, as on Solander. */
+.q-kicker, .q-nav a, .q-footer-links a, .q-tag {
+    font: 600 11px/1.4 var(--sans);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+}
+
+.q-mono { font-family: var(--mono); font-size: 12px; color: var(--ink-3); }
+
+/* ---- The signal: QSL in Morse, then a flat line ---------------------------------- */
+
+.q-signal {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 24px var(--gutter) 0;
+    display: flex;
+    align-items: center;
+}
+.q-signal svg { flex: none; display: block; }
+.q-signal::after { content: ""; flex: 1 1 auto; height: 1px; background: var(--ink); margin-left: 18px; }
+
+.q-morse rect { fill: var(--ink); }
+.q-morse .s { fill: var(--accent); }
+
+/* ---- Header ---------------------------------------------------------------------- */
+
+.q-header { border-bottom: 1px solid var(--rule); }
+.q-header-inner {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 0 var(--gutter);
+    min-height: 64px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px 32px;
+}
+
+/* The wordmark: brand/wordmark-text.svg inlined, ink as currentColor so it follows the theme. */
+.q-wordmark { display: block; padding: 12px 0; color: var(--ink); }
+.q-wordmark svg { display: block; }
+.q-wordmark:hover { color: var(--ink); }
+
+.q-nav { list-style: none; display: flex; flex-wrap: wrap; gap: 0 24px; }
+.q-nav a { display: inline-block; padding: 12px 0; text-decoration: none; }
+.q-nav a:hover, .q-nav a[aria-current="page"] { color: var(--ink); }
+.q-nav a[aria-current="page"] { box-shadow: inset 0 -2px 0 var(--ink); }
+
+/* ---- Announcement band: swap its contents as news changes ------------------------- */
+
+.q-band { background: var(--ground); border-bottom: 1px solid var(--rule); }
+.q-band-inner {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 12px var(--gutter);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 16px;
+    font-size: 14px;
+}
+.q-band p { color: var(--ink); }
+
+/* "Not yet": an amber square, as on Solander's coming-soon buttons. */
+.q-soon { display: inline-flex; align-items: center; gap: 8px; }
+.q-soon::before { content: ""; width: 6px; height: 6px; background: var(--attention); flex: none; }
+
+/* ---- Page frame ------------------------------------------------------------------ */
+
+main { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
+
+/* ---- Hero ------------------------------------------------------------------------ */
+
+.q-hero {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: 24px;
+    align-items: center;
+    padding: 88px 0 72px;
+}
+.q-hero-text { grid-column: 1 / 8; }
+.q-hero-art { grid-column: 9 / -1; }
+
+.q-hero .q-kicker { margin-bottom: 20px; }
+.q-hero h1 {
+    font-size: clamp(2.5rem, 1.6rem + 3.4vw, 4.25rem);
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    font-weight: 700;
+    margin-bottom: 24px;
+    max-width: 11em;
+}
+.q-lede { font-size: 1.1875rem; line-height: 1.55; max-width: 30em; }
+/* A short hairline sets the origin line apart from the lede. */
+.q-origin { margin-top: 24px; }
+.q-origin::before { content: ""; display: block; width: 32px; height: 1px; background: var(--ink); margin-bottom: 16px; }
+
+/* The stacked Morse block on the ground, where Solander puts its drawn page. */
+.q-hero-art { background: var(--ground); aspect-ratio: 1; max-width: 380px; padding: 40px; display: flex; align-items: flex-end; }
+.q-hero-art svg { width: 100%; max-width: 260px; height: auto; display: block; }
+
+/* ---- Sections: label in the left quarter, content in the rest -------------------- */
+
+.q-section {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: 24px;
+    border-top: 1px solid var(--rule);
+    padding: 40px 0 72px;
+}
+.q-section > * { grid-column: 4 / -1; }
+.q-section > .q-label { grid-column: 1 / 4; }
+.q-section-first { border-top: 2px solid var(--ink); }
+
+.q-label { display: flex; align-items: center; align-self: start; gap: 10px; padding-top: 2px; }
+.q-label .q-kicker { color: var(--ink); }
+/* The one accent marker on the page: the current thing. */
+.q-label-now::before { content: ""; width: 8px; height: 8px; background: var(--accent); flex: none; }
+
+.q-sub { margin-bottom: 4px; }
+
+/* ---- Featured: Now (60%) and Writing (40%), two boxes under the hero -------------- */
+
+.q-featured { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 24px; padding-bottom: 96px; }
+.q-box { min-width: 0; border: 1px solid var(--ink); padding: 28px 32px 32px; display: flex; flex-direction: column; container-type: inline-size; }
+.q-box > .q-label { margin-bottom: 28px; }
+.q-box h2, .q-box h3 { letter-spacing: -0.02em; font-weight: 600; }
+
+/* Now: the featured product. Swap the contents; keep the structure. */
+.q-now { flex: 1; display: grid; grid-template-columns: minmax(0, 1fr) 168px; gap: 32px; }
+.q-box h2 { font-size: 1.875rem; line-height: 1.15; margin: 12px 0; }
+.q-now p { max-width: 32em; }
+.q-now .q-mono { margin-top: 8px; }
+.q-now-art { background: var(--ground); display: flex; align-items: center; justify-content: center; padding: 24px; }
+.q-now-art svg { width: 100%; max-width: 120px; height: auto; display: block; }
+/* A narrow box stacks; the drawn page fills whatever height the Writing box leaves. */
+@container (max-width: 520px) {
+    .q-now { display: flex; flex-direction: column; }
+    .q-now-art { flex: 1; min-height: 160px; margin-top: 8px; }
+}
+
+/* Writing: the latest post, what's coming, the way in. */
+.q-box-posts { list-style: none; margin-top: 12px; border-top: 1px solid var(--ink); }
+.q-box-posts a { display: block; padding: 14px 0; border-bottom: 1px solid var(--rule); color: var(--ink); text-decoration: none; }
+.q-box-posts .q-mono { display: block; margin-bottom: 4px; }
+.q-box-post-title { font-size: 17px; font-weight: 600; line-height: 1.3; letter-spacing: -0.01em; }
+.q-box-posts a:hover .q-box-post-title { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+.q-box .q-more { margin-top: auto; padding-top: 24px; }
+.q-page { fill: var(--paper); stroke: var(--ink); }
+.q-page-line { fill: var(--rule); }
+.q-page-redaction { fill: var(--redaction); }
+
+.q-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.q-btn, .q-btn-quiet {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 18px;
+    font: 500 14px/1.2 var(--sans);
+    text-decoration: none;
+    border: 1px solid var(--ink);
+}
+.q-btn { background: var(--ink); color: var(--paper); }
+.q-btn:hover { opacity: 0.85; color: var(--paper); }
+.q-btn-quiet { background: var(--paper); color: var(--ink); border-color: var(--rule); }
+.q-btn-quiet:hover { border-color: var(--ink-3); }
+
+/* ---- Lists of things: software, posts -------------------------------------------- */
+
+/* Software: a spec card per product. Commercial and open source in separate groups. */
+.q-section > .q-wide { grid-column: 1 / -1; margin-top: 40px; }
+.q-group { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px; margin-bottom: 16px; }
+.q-cards { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(272px, 1fr)); gap: 24px; }
+.q-cards + .q-group { margin-top: 56px; }
+.q-section > .q-principles { grid-column: 1 / -1; max-width: none; }
+.q-group-title { font-size: 1.875rem; line-height: 1.15; letter-spacing: -0.02em; font-weight: 600; color: var(--ink); }
+.q-card { min-width: 0; border: 1px solid var(--rule); border-top: 2px solid var(--ink); padding: 20px 24px 24px; display: flex; flex-direction: column; }
+.q-card-top { margin-bottom: 20px; }
+.q-card h3 { font-size: 1.375rem; line-height: 1.2; letter-spacing: -0.02em; font-weight: 600; margin-bottom: 4px; }
+.q-card h3 + .q-mono { font-size: 12px; margin-bottom: 12px; }
+.q-card h3 a { color: var(--ink); text-decoration: none; }
+.q-card h3 a:hover { text-decoration: underline; }
+.q-card > p { font-size: 15px; margin-bottom: 20px; }
+
+.q-spec { display: grid; grid-template-columns: 76px minmax(0, 1fr); border-top: 1px solid var(--rule); margin-bottom: 20px; }
+.q-spec dt, .q-spec dd { padding: 8px 0; border-bottom: 1px solid var(--rule); }
+.q-spec dt { font: 400 11px/1.9 var(--mono); color: var(--ink-3); }
+.q-spec dd { font-size: 14px; line-height: 1.5; color: var(--ink); }
+
+.q-install { margin-bottom: 20px; padding: 12px 14px; background: var(--ground); border: 1px solid var(--rule); font: 400 12px/1.7 var(--mono); color: var(--ink); overflow-x: auto; }
+.q-card-actions { margin-top: auto; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; font-size: 14px; }
+.q-card-actions img { display: block; }
+
+.q-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 10px; border: 1px solid var(--rule); padding: 2px 8px; color: var(--ink-2); }
+.q-tag.q-soon::before { width: 6px; height: 6px; }
+
+.q-posts { list-style: none; border-top: 1px solid var(--ink); }
+.q-post a {
+    display: grid;
+    grid-template-columns: 112px minmax(0, 1fr) auto;
+    align-items: baseline;
+    gap: 4px 24px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--rule);
+    color: var(--ink);
+    text-decoration: none;
+}
+.q-post-title { font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+.q-post a:hover .q-post-title { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+.q-more { margin-top: 20px; font-size: 14px; }
+
+/* ---- About ----------------------------------------------------------------------- */
+
+.q-statement { font-size: 1.5rem; line-height: 1.35; letter-spacing: -0.015em; color: var(--ink); max-width: 26em; margin-bottom: 24px; }
+.q-body { max-width: 38em; }
+.q-body p + p { margin-top: 16px; }
+
+/* ---- Index pages (writing) ------------------------------------------------------- */
+
+.q-page-top { margin-top: 48px; }
+.q-page-title { font-size: 1.875rem; line-height: 1.15; letter-spacing: -0.02em; font-weight: 600; margin-bottom: 12px; }
+.q-intro { margin-bottom: 32px; }
+
+/* ---- Article --------------------------------------------------------------------- */
+
+.q-article { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; padding: 72px 0 80px; }
+.q-article-meta { grid-column: 1 / 4; font: 400 12px/1.8 var(--mono); color: var(--ink-3); }
+.q-article-meta .q-label { margin-bottom: 16px; }
+.q-article-body { grid-column: 4 / 11; min-width: 0; }
+.q-article h1 { font-size: clamp(2.125rem, 1.5rem + 2.4vw, 3.25rem); line-height: 1.05; letter-spacing: -0.03em; font-weight: 700; margin-bottom: 20px; }
+.q-standfirst { font-size: 1.25rem; line-height: 1.5; padding-bottom: 32px; margin-bottom: 40px; border-bottom: 2px solid var(--ink); }
+
+.q-prose p, .q-prose li { font-size: 1.125rem; line-height: 1.7; color: var(--ink); }
+.q-prose p { margin-bottom: 20px; }
+.q-prose h2 { font-size: 1.375rem; line-height: 1.3; letter-spacing: -0.015em; font-weight: 600; margin: 48px 0 16px; }
+.q-prose ul { list-style: none; margin-bottom: 20px; }
+.q-prose li { position: relative; padding-left: 20px; margin-bottom: 8px; }
+.q-prose li::before { content: ""; position: absolute; left: 0; top: 0.68em; width: 6px; height: 6px; background: var(--ink); }
+.q-prose pre {
+    margin: 0 0 20px;
+    padding: 16px 20px;
+    background: var(--ground);
+    border: 1px solid var(--rule);
+    font: 400 14px/1.7 var(--mono);
+    color: var(--ink);
+    overflow-x: auto;
+}
+.q-prose code { font-family: var(--mono); font-size: 0.875em; }
+.q-prompt { color: var(--ink-3); user-select: none; }
+
+.q-note { background: var(--ground); padding: 24px; margin: 40px 0; }
+.q-note p { font-size: 1rem; line-height: 1.6; color: var(--ink-2); margin: 0; }
+.q-note strong { color: var(--ink); font-weight: 600; }
+
+.q-article-foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--rule); font-size: 14px; }
+
+/* ---- Footer ---------------------------------------------------------------------- */
+
+.q-footer { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter) 56px; }
+.q-footer-links { list-style: none; display: flex; flex-wrap: wrap; gap: 0 24px; padding-top: 24px; margin-bottom: 16px; border-top: 1px solid var(--rule); }
+.q-footer-links a { display: inline-block; padding: 10px 0; text-decoration: none; }
+.q-footer-links a:hover { color: var(--ink); }
+.q-footer p { font: 400 12px/1.7 var(--mono); color: var(--ink-3); }
+.q-footer p a { color: inherit; }
+
+/* ---- Narrow ---------------------------------------------------------------------- */
+
+@media (max-width: 860px) {
+    .q-hero { padding: 48px 0 56px; row-gap: 40px; }
+    .q-hero-text, .q-hero-art { grid-column: 1 / -1; }
+    .q-hero-art { aspect-ratio: 3 / 2; max-width: none; }
+    .q-section > *, .q-section > .q-label { grid-column: 1 / -1; }
+    .q-section > .q-label { padding-bottom: 16px; }
+    .q-section { padding: 32px 0 56px; }
+    .q-featured { grid-template-columns: 1fr; padding-bottom: 64px; }
+    .q-post a { grid-template-columns: 1fr; }
+    .q-article-meta, .q-article-body { grid-column: 1 / -1; }
+    .q-article-meta { margin-bottom: 24px; }
+}
+
+@media (max-width: 600px) {
+    :root { --gutter: 16px; }
+    .q-signal { padding-top: 20px; }
+    .q-header-inner { padding-top: 16px; padding-bottom: 4px; }
+    .q-lede { font-size: 1.0625rem; }
+    .q-hero-art { padding: 28px; }
+    .q-box { padding: 20px 20px 24px; }
+    .q-card { padding: 16px 16px 20px; }
+}
