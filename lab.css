@@ -1,6 +1,7 @@
 /* Quiet Signals Lab — the lab pages' stylesheet (homepage first).
  *
- * Separate from styles.css, which the privacy notices, product pages and docs still use.
+ * The site's one stylesheet: homepage, product pages, writing, legal notices and docs.
+ * (contractex/docs/ is built by MkDocs and carries its own.)
  *
  * The tokens are Solander's, value for value (solander-site/styles.css), so the lab and its
  * products read as one family. The lab adds one colour: the accent.
@@ -36,8 +37,10 @@
     --max: 1120px;
 }
 
+/* Dark follows the system unless the visitor picks a theme with the switch in the nav
+ * (theme.js sets data-theme on <html>). The dark values are listed twice for that reason. */
 @media (prefers-color-scheme: dark) {
-    :root {
+    :root:not([data-theme="light"]) {
         --ink: #F0F0EC;
         --ink-2: #B0B0A9;
         --ink-3: #8C8C85;
@@ -48,6 +51,18 @@
         --attention: #E8B92E;
     }
 }
+:root[data-theme="dark"] {
+    --ink: #F0F0EC;
+    --ink-2: #B0B0A9;
+    --ink-3: #8C8C85;
+    --paper: #1A1A19;
+    --ground: #0E0E0D;
+    --rule: #343432;
+    --selected: #6B86F5;
+    --attention: #E8B92E;
+    color-scheme: dark;
+}
+:root[data-theme="light"] { color-scheme: light; }
 
 /* ---- Base ------------------------------------------------------------------------ */
 
@@ -110,10 +125,22 @@ p, li { color: var(--ink-2); }
 .q-wordmark svg { display: block; }
 .q-wordmark:hover { color: var(--ink); }
 
-.q-nav { list-style: none; display: flex; flex-wrap: wrap; gap: 0 24px; }
+.q-nav { list-style: none; display: flex; flex-wrap: wrap; align-items: center; gap: 0 24px; }
 .q-nav a { display: inline-block; padding: 12px 0; text-decoration: none; }
 .q-nav a:hover, .q-nav a[aria-current="page"] { color: var(--ink); }
 .q-nav a[aria-current="page"] { box-shadow: inset 0 -2px 0 var(--ink); }
+
+/* Light/dark switch: shows the moon in light mode and the sun in dark mode. */
+.q-theme { display: inline-flex; padding: 12px 0; background: none; border: 0; color: var(--ink-3); cursor: pointer; }
+.q-theme:hover { color: var(--ink); }
+.q-theme svg { display: block; width: 16px; height: 16px; }
+.q-theme .q-sun { display: none; }
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .q-theme .q-sun { display: block; }
+    :root:not([data-theme="light"]) .q-theme .q-moon { display: none; }
+}
+:root[data-theme="dark"] .q-theme .q-sun { display: block; }
+:root[data-theme="dark"] .q-theme .q-moon { display: none; }
 
 /* ---- Announcement band: swap its contents as news changes ------------------------- */
 
@@ -150,8 +177,8 @@ main { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
 .q-hero-text { grid-column: 1 / 8; }
 .q-hero-art { grid-column: 9 / -1; }
 
-.q-hero .q-kicker { margin-bottom: 20px; }
-.q-hero h1 {
+.q-hero .q-kicker, .q-product .q-kicker { margin-bottom: 20px; }
+.q-hero h1, .q-product h1 {
     font-size: clamp(2.5rem, 1.6rem + 3.4vw, 4.25rem);
     line-height: 1.02;
     letter-spacing: -0.035em;
@@ -244,7 +271,8 @@ main { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
 .q-section > .q-principles { grid-column: 1 / -1; max-width: none; }
 .q-group-title { font-size: 1.875rem; line-height: 1.15; letter-spacing: -0.02em; font-weight: 600; color: var(--ink); }
 .q-card { min-width: 0; border: 1px solid var(--rule); border-top: 2px solid var(--ink); padding: 20px 24px 24px; display: flex; flex-direction: column; }
-.q-card-top { margin-bottom: 20px; }
+.q-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 20px; }
+.q-card-icon { display: block; width: 56px; height: 56px; }
 .q-card h3 { font-size: 1.375rem; line-height: 1.2; letter-spacing: -0.02em; font-weight: 600; margin-bottom: 4px; }
 .q-card h3 + .q-mono { font-size: 12px; margin-bottom: 12px; }
 .q-card h3 a { color: var(--ink); text-decoration: none; }
@@ -303,8 +331,10 @@ main { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
 .q-prose p { margin-bottom: 20px; }
 .q-prose h2 { font-size: 1.375rem; line-height: 1.3; letter-spacing: -0.015em; font-weight: 600; margin: 48px 0 16px; }
 .q-prose ul { list-style: none; margin-bottom: 20px; }
-.q-prose li { position: relative; padding-left: 20px; margin-bottom: 8px; }
-.q-prose li::before { content: ""; position: absolute; left: 0; top: 0.68em; width: 6px; height: 6px; background: var(--ink); }
+.q-prose ol { margin: 0 0 20px 1.25em; }
+.q-prose li { margin-bottom: 8px; }
+.q-prose ul > li { position: relative; padding-left: 20px; }
+.q-prose ul > li::before { content: ""; position: absolute; left: 0; top: 0.68em; width: 6px; height: 6px; background: var(--ink); }
 .q-prose pre {
     margin: 0 0 20px;
     padding: 16px 20px;
@@ -316,12 +346,71 @@ main { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
 }
 .q-prose code { font-family: var(--mono); font-size: 0.875em; }
 .q-prompt { color: var(--ink-3); user-select: none; }
+.q-prose h3 { font-size: 1.125rem; line-height: 1.35; font-weight: 600; margin: 32px 0 12px; }
+.q-prose strong { color: var(--ink); font-weight: 600; }
+.q-prose figure { margin: 32px 0; }
+.q-prose img { display: block; max-width: 100%; height: auto; }
+.q-prose figcaption { margin-top: 12px; font-size: 14px; line-height: 1.6; color: var(--ink-3); }
+.q-prose blockquote { margin: 32px 0; padding-left: 20px; border-left: 2px solid var(--ink); }
+.q-prose blockquote p { color: var(--ink-2); }
+.q-prose table { width: 100%; border-collapse: collapse; margin: 8px 0 24px; }
+.q-prose th { text-align: left; vertical-align: bottom; padding: 10px 16px 10px 0; border-bottom: 1px solid var(--ink); font: 600 11px/1.4 var(--sans); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+.q-prose td { padding: 12px 16px 12px 0; border-bottom: 1px solid var(--rule); vertical-align: top; font-size: 15px; line-height: 1.55; color: var(--ink-2); }
 
-.q-note { background: var(--ground); padding: 24px; margin: 40px 0; }
+.q-note { background: var(--ground); padding: 24px; margin: 40px 0; font-size: 1rem; line-height: 1.6; color: var(--ink-2); }
+.q-note p + p { margin-top: 12px; }
 .q-note p { font-size: 1rem; line-height: 1.6; color: var(--ink-2); margin: 0; }
 .q-note strong { color: var(--ink); font-weight: 600; }
 
 .q-article-foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--rule); font-size: 14px; }
+
+/* ---- Product pages ---------------------------------------------------------------- */
+
+.q-product { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 40px; align-items: start; padding: 72px 0 64px; }
+.q-product-icon { display: block; width: 112px; height: 112px; }
+.q-product-plain { grid-template-columns: minmax(0, 1fr); }
+.q-product-meta { margin-top: 20px; }
+.q-actions img { display: block; }
+
+/* Sections after the label stack with a fixed gap. */
+.q-section > .q-label ~ * + * { margin-top: 24px; }
+.q-section > .q-note { margin-bottom: 0; }
+
+/* The spec list at page width: a named row, then what it means. */
+.q-spec-wide { grid-template-columns: 200px minmax(0, 1fr); margin-bottom: 0; }
+.q-spec-wide dt, .q-spec-wide dd { padding: 14px 0; }
+.q-spec-wide dt { padding-right: 24px; font: 600 15px/1.5 var(--sans); color: var(--ink); }
+.q-spec-wide dd { font-size: 15px; line-height: 1.6; color: var(--ink-2); }
+.q-spec code, .q-body code { font-family: var(--mono); font-size: 0.875em; }
+
+/* FAQ: native disclosure, one question per row. */
+.q-faq { border-top: 1px solid var(--rule); }
+.q-faq details { border-bottom: 1px solid var(--rule); }
+.q-faq summary { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 16px 0; cursor: pointer; list-style: none; font-weight: 600; color: var(--ink); }
+.q-faq summary::-webkit-details-marker { display: none; }
+.q-faq summary::after { content: "+"; font: 400 18px/1 var(--mono); color: var(--ink-3); }
+.q-faq details[open] summary::after { content: "\2212"; }
+.q-faq details p { padding-bottom: 20px; max-width: 38em; }
+
+/* ---- Docs: sidebar in the left quarter, page in the middle ------------------------ */
+
+.q-docs { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; padding: 56px 0 80px; }
+.q-docs-nav { grid-column: 1 / 4; align-self: start; position: sticky; top: 24px; max-height: calc(100vh - 48px); overflow-y: auto; padding-right: 16px; }
+.q-docs-body { grid-column: 4 / 11; min-width: 0; }
+.q-docs-body h1 { font-size: clamp(2rem, 1.5rem + 2vw, 2.75rem); line-height: 1.08; letter-spacing: -0.03em; font-weight: 700; margin-bottom: 32px; }
+.q-docs-body .q-prose h2:first-of-type { margin-top: 0; }
+
+/* The sidebar is generated by build.sh as #wiki-nav. */
+#wiki-nav ul { list-style: none; }
+#wiki-nav a { display: block; padding: 4px 0; font-size: 14px; line-height: 1.4; color: var(--ink-2); text-decoration: none; }
+#wiki-nav a:hover, #wiki-nav a.active, #wiki-nav a.here { color: var(--ink); }
+#wiki-nav a.active { font-weight: 600; }
+#wiki-nav .wiki-nav-home, #wiki-nav .wiki-nav-section { font: 600 11px/1.4 var(--sans); letter-spacing: 0.08em; text-transform: uppercase; }
+#wiki-nav .wiki-nav-home { color: var(--ink); padding-bottom: 8px; }
+#wiki-nav .wiki-nav-section { color: var(--ink-3); margin: 20px 0 4px; }
+#wiki-nav .wiki-subnav { margin: 4px 0 8px; padding-left: 12px; border-left: 1px solid var(--rule); }
+#wiki-nav .wiki-subnav a { font-size: 13px; color: var(--ink-3); }
+#wiki-nav .wiki-subnav .lvl-h3 a { padding-left: 12px; }
 
 /* ---- Footer ---------------------------------------------------------------------- */
 
@@ -345,6 +434,10 @@ main { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
     .q-post a { grid-template-columns: 1fr; }
     .q-article-meta, .q-article-body { grid-column: 1 / -1; }
     .q-article-meta { margin-bottom: 24px; }
+    .q-product { grid-template-columns: 1fr; gap: 24px; padding: 48px 0 40px; }
+    .q-product-icon { width: 72px; height: 72px; }
+    .q-docs-nav, .q-docs-body { grid-column: 1 / -1; }
+    .q-docs-nav { position: static; max-height: none; margin-bottom: 40px; }
 }
 
 @media (max-width: 600px) {
@@ -355,4 +448,7 @@ main { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
     .q-hero-art { padding: 28px; }
     .q-box { padding: 20px 20px 24px; }
     .q-card { padding: 16px 16px 20px; }
+    .q-spec-wide { grid-template-columns: 1fr; }
+    .q-spec-wide dt { border-bottom: 0; padding-bottom: 0; }
+    .q-spec-wide dd { padding-top: 4px; }
 }

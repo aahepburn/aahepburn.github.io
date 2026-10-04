@@ -1,112 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Fixing indexing that won't
-start.">
-    <meta name="author" content="Quiet Signals Lab">
-    <title>The app won't index my library · RAG Assistant Docs</title>
-    <link rel="icon" type="image/png" href="/assets/app-icon-1024.png">
-    <link rel="stylesheet" href="/styles.css">
-    <style>
-        /* --- Docs portal (reuses styles.css design tokens) --- */
-        .doc-shell {
-            max-width: 1160px; margin: 0 auto; padding: 0 2rem 5rem;
-            display: grid; grid-template-columns: 240px 1fr; gap: 3rem; align-items: start;
-        }
-
-        /* Persistent sidebar / table of contents */
-        .wiki-sidebar { position: sticky; top: 1.5rem; padding-top: 2.5rem; }
-        /* Reset the global `nav { display:flex }` rule from styles.css */
-        #wiki-nav { display: block; max-width: none; margin: 0; padding: 0; font-size: 0.88rem; }
-        .wiki-nav-home {
-            display: block; font-family: var(--head-font); font-weight: 700; font-size: 1rem;
-            color: var(--primary-text); text-decoration: none; margin-bottom: 1.5rem;
-        }
-        .wiki-nav-section {
-            font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
-            color: var(--accent); margin: 1.5rem 0 0.5rem;
-        }
-        #wiki-nav ul { list-style: none; padding: 0; margin: 0; }
-        #wiki-nav li { margin: 0; }
-        #wiki-nav > ul > li > a {
-            display: block; color: var(--secondary-text); text-decoration: none;
-            padding: 0.32rem 0 0.32rem 0.75rem; line-height: 1.4;
-            border-left: 2px solid var(--border-color);
-        }
-        #wiki-nav > ul > li > a:hover { color: var(--primary-text); border-left-color: var(--secondary-text); }
-        #wiki-nav > ul > li > a.active { color: var(--accent); font-weight: 600; border-left-color: var(--accent); }
-
-        /* Current page's sub-headings (built client-side from the article) */
-        .wiki-subnav { list-style: none; margin: 0.15rem 0 0.4rem; padding: 0; }
-        .wiki-subnav a {
-            display: block; font-size: 0.82rem; color: var(--secondary-text); text-decoration: none;
-            padding: 0.2rem 0 0.2rem 1.25rem; line-height: 1.35;
-            border-left: 2px solid var(--border-color);
-        }
-        .wiki-subnav li.lvl-h3 a { padding-left: 2.1rem; }
-        .wiki-subnav a:hover { color: var(--primary-text); }
-        .wiki-subnav a.here { color: var(--accent); border-left-color: var(--accent); }
-
-        /* Prose */
-        .doc-content { min-width: 0; padding-top: 2.5rem; }
-        .doc-content article { max-width: 720px; font-size: 0.95rem; line-height: 1.8; color: var(--secondary-text); }
-        .doc-content h1 {
-            font-family: var(--head-font); font-size: 2.1rem; font-weight: 700;
-            letter-spacing: -0.5px; line-height: 1.15; color: var(--primary-text); margin-bottom: 1.5rem;
-        }
-        .doc-content h2 {
-            font-family: var(--head-font); font-size: 1.35rem; font-weight: 700;
-            color: var(--primary-text); margin: 2.5rem 0 1rem; padding-top: 1rem; border-top: 1px solid var(--border-color);
-        }
-        .doc-content h3 { font-size: 1.05rem; font-weight: 600; color: var(--primary-text); margin: 1.8rem 0 0.6rem; }
-        .doc-content h4 { font-size: 0.95rem; font-weight: 600; color: var(--primary-text); margin: 1.4rem 0 0.5rem; }
-        .doc-content p { margin: 0 0 1rem; }
-        .doc-content a { color: var(--accent); }
-        .doc-content ul, .doc-content ol { margin: 0 0 1rem; padding-left: 1.4rem; }
-        .doc-content li { margin-bottom: 0.4rem; }
-        .doc-content strong { color: var(--primary-text); }
-        .doc-content code {
-            font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace; font-size: 0.85em;
-            background: var(--light-bg); padding: 0.15em 0.4em; border-radius: 4px; word-break: break-word;
-        }
-        .doc-content pre {
-            background: var(--light-bg); border: 1px solid var(--border-color); border-radius: 7px;
-            padding: 1rem 1.1rem; overflow-x: auto; margin: 0 0 1.25rem; font-size: 0.8rem; line-height: 1.7;
-        }
-        .doc-content pre code { background: none; padding: 0; font-size: inherit; word-break: normal; }
-        .doc-content blockquote {
-            border-left: 3px solid var(--accent); margin: 0 0 1.25rem; padding: 0.25rem 0 0.25rem 1.1rem; color: var(--secondary-text);
-        }
-        .doc-content table { border-collapse: collapse; width: 100%; margin: 0 0 1.25rem; font-size: 0.88rem; display: block; overflow-x: auto; }
-        .doc-content th, .doc-content td { border: 1px solid var(--border-color); padding: 0.5rem 0.75rem; text-align: left; }
-        .doc-content th { background: var(--light-bg); color: var(--primary-text); font-weight: 600; }
-        .doc-content img { max-width: 100%; height: auto; }
-        .doc-content hr { border: none; border-top: 1px solid var(--border-color); margin: 2rem 0; }
-
-        @media (max-width: 820px) {
-            .doc-shell { grid-template-columns: 1fr; gap: 0; }
-            .wiki-sidebar { position: static; padding: 1.5rem 0; border-bottom: 1px solid var(--border-color); }
-            .doc-content { padding-top: 1.5rem; }
-        }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Fixing indexing that won't start.">
+<title>The app won't index my library · RAG Assistant Docs</title>
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../../assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+<link rel="alternate" type="application/rss+xml" title="Quiet Signals Lab — writing" href="../../writing/feed.xml">
+<link rel="stylesheet" href="../../lab.css">
+<script src="../../theme.js"></script>
 </head>
 <body>
+<a class="q-skip" href="#main">Skip to content</a>
 
-    <header>
-        <nav>
-            <a href="/" class="nav-brand">Quiet Signals Lab</a>
-            <ul class="nav-links">
-                <li><a href="/#software">Software</a></li>
-                <li><a href="/#writing">Blog</a></li>
-                <li><a href="/#about">About</a></li>
-            </ul>
-        </nav>
-    </header>
+<div class="q-signal" aria-hidden="true">
+<svg class="q-morse" viewBox="0 0 33 1" width="198" height="6" shape-rendering="crispEdges" focusable="false"><rect x="0" width="3" height="1"/><rect x="4" width="3" height="1"/><rect x="8" width="1" height="1"/><rect x="10" width="3" height="1"/><rect class="s" x="16" width="1" height="1"/><rect class="s" x="18" width="1" height="1"/><rect class="s" x="20" width="1" height="1"/><rect x="24" width="1" height="1"/><rect x="26" width="3" height="1"/><rect x="30" width="1" height="1"/><rect x="32" width="1" height="1"/></svg>
+</div>
 
-    <div class="doc-shell">
-        <aside class="wiki-sidebar"><nav id="wiki-nav">
+<header class="q-header">
+<div class="q-header-inner">
+<a class="q-wordmark" href="../../" aria-label="Quiet Signals Lab"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 147.74 16.67" width="147.74" height="16.67" aria-hidden="true" focusable="false"><path fill="currentColor" d="M9.02 9.74Q9.38 9.25 9.59 8.53Q9.81 7.81 9.81 6.79Q9.81 5.94 9.62 5.15Q9.43 4.36 9.02 3.74Q8.6 3.11 7.94 2.75Q7.27 2.38 6.32 2.38Q5.36 2.38 4.7 2.75Q4.03 3.11 3.62 3.74Q3.2 4.36 3.01 5.15Q2.83 5.94 2.83 6.79Q2.83 7.6 3.01 8.36Q3.2 9.13 3.62 9.74Q4.03 10.35 4.7 10.72Q5.36 11.09 6.32 11.09Q6.77 11.09 7 11.05Q7.24 11.02 7.45 10.91L6.25 9.81L7.56 8.41ZM9.43 12.71Q8.15 13.45 6.32 13.45Q4.84 13.45 3.66 12.93Q2.48 12.42 1.67 11.52Q0.86 10.62 0.43 9.4Q0 8.19 0 6.79Q0 5.35 0.43 4.11Q0.86 2.88 1.67 1.96Q2.48 1.04 3.66 0.52Q4.84 0 6.32 0Q7.81 0 8.98 0.52Q10.15 1.04 10.96 1.96Q11.77 2.88 12.2 4.11Q12.64 5.35 12.64 6.79Q12.64 8.19 12.2 9.4Q11.77 10.6 10.96 11.52L12.56 12.98L11.25 14.35Z M22.66 13.16V3.85H20.11V8.73Q20.11 10.15 19.64 10.77Q19.17 11.39 18.13 11.39Q17.21 11.39 16.85 10.83Q16.49 10.26 16.49 9.11V3.85H13.93V9.58Q13.93 10.44 14.09 11.15Q14.24 11.86 14.62 12.36Q14.99 12.85 15.65 13.12Q16.31 13.39 17.33 13.39Q18.14 13.39 18.92 13.03Q19.69 12.67 20.18 11.86H20.23V13.16Z M26.87 2.41V0.31H24.32V2.41ZM24.32 3.85V13.16H26.87V3.85Z M34.79 7.51H30.64Q30.65 7.24 30.75 6.89Q30.85 6.55 31.09 6.25Q31.34 5.94 31.74 5.73Q32.15 5.53 32.76 5.53Q33.7 5.53 34.16 6.03Q34.61 6.53 34.79 7.51ZM30.64 9.13H37.35Q37.42 8.05 37.17 7.06Q36.92 6.07 36.35 5.29Q35.78 4.52 34.9 4.06Q34.02 3.6 32.83 3.6Q31.77 3.6 30.9 3.98Q30.02 4.36 29.39 5.01Q28.76 5.67 28.42 6.57Q28.08 7.47 28.08 8.51Q28.08 9.59 28.41 10.49Q28.75 11.39 29.36 12.04Q29.97 12.69 30.85 13.04Q31.73 13.39 32.83 13.39Q34.42 13.39 35.53 12.67Q36.65 11.95 37.19 10.28H34.94Q34.81 10.71 34.25 11.1Q33.7 11.48 32.92 11.48Q31.84 11.48 31.27 10.93Q30.69 10.37 30.64 9.13Z M41.74 3.85V1.06H39.19V3.85H37.64V5.56H39.19V11.05Q39.19 11.75 39.42 12.19Q39.65 12.62 40.06 12.85Q40.46 13.09 41 13.17Q41.53 13.25 42.12 13.25Q42.5 13.25 42.89 13.23Q43.29 13.21 43.61 13.16V11.18Q43.43 11.21 43.24 11.23Q43.04 11.25 42.82 11.25Q42.17 11.25 41.96 11.03Q41.74 10.82 41.74 10.17V5.56H43.61V3.85Z M51.32 8.89H48.58Q48.56 10.08 49.01 10.94Q49.46 11.81 50.23 12.37Q50.99 12.92 51.99 13.18Q52.99 13.45 54.05 13.45Q55.37 13.45 56.37 13.14Q57.37 12.83 58.04 12.29Q58.72 11.74 59.06 10.98Q59.4 10.22 59.4 9.34Q59.4 8.26 58.94 7.57Q58.48 6.88 57.85 6.46Q57.22 6.05 56.58 5.86Q55.94 5.67 55.58 5.6Q54.38 5.29 53.63 5.09Q52.88 4.9 52.46 4.7Q52.04 4.5 51.89 4.27Q51.75 4.03 51.75 3.65Q51.75 3.24 51.93 2.97Q52.11 2.7 52.39 2.52Q52.67 2.34 53.01 2.27Q53.35 2.2 53.69 2.2Q54.22 2.2 54.66 2.29Q55.1 2.38 55.44 2.59Q55.78 2.81 55.99 3.19Q56.2 3.56 56.23 4.14H58.97Q58.97 3.02 58.55 2.24Q58.12 1.46 57.4 0.95Q56.68 0.45 55.75 0.23Q54.83 0 53.82 0Q52.96 0 52.09 0.23Q51.23 0.47 50.54 0.95Q49.86 1.44 49.44 2.17Q49.01 2.9 49.01 3.89Q49.01 4.77 49.35 5.39Q49.68 6.01 50.22 6.43Q50.76 6.84 51.44 7.1Q52.13 7.36 52.85 7.54Q53.55 7.74 54.23 7.9Q54.92 8.06 55.46 8.28Q56 8.5 56.33 8.82Q56.66 9.14 56.66 9.67Q56.66 10.15 56.41 10.47Q56.16 10.78 55.78 10.96Q55.4 11.14 54.97 11.2Q54.54 11.27 54.16 11.27Q53.6 11.27 53.08 11.13Q52.56 11 52.17 10.72Q51.79 10.44 51.55 9.99Q51.32 9.54 51.32 8.89Z M63.07 2.41V0.31H60.52V2.41ZM60.52 3.85V13.16H63.07V3.85Z M69.07 10.96Q68.47 10.96 68.08 10.71Q67.68 10.46 67.44 10.06Q67.19 9.67 67.09 9.17Q67 8.68 67 8.17Q67 7.65 67.11 7.17Q67.23 6.7 67.49 6.33Q67.75 5.96 68.14 5.74Q68.53 5.53 69.07 5.53Q69.7 5.53 70.11 5.76Q70.52 5.99 70.78 6.39Q71.03 6.79 71.14 7.3Q71.24 7.81 71.24 8.39Q71.24 8.89 71.11 9.35Q70.97 9.81 70.7 10.17Q70.43 10.53 70.02 10.75Q69.61 10.96 69.07 10.96ZM73.67 12.56V3.85H71.24V5.09H71.21Q70.74 4.28 70.05 3.94Q69.35 3.6 68.44 3.6Q67.46 3.6 66.72 3.98Q65.97 4.36 65.47 5Q64.96 5.63 64.7 6.47Q64.44 7.31 64.44 8.21Q64.44 9.16 64.66 10.02Q64.89 10.87 65.38 11.51Q65.86 12.15 66.62 12.52Q67.37 12.89 68.42 12.89Q69.26 12.89 70.03 12.54Q70.79 12.19 71.21 11.45H71.24V12.67Q71.26 13.66 70.77 14.31Q70.27 14.96 69.19 14.96Q68.51 14.96 67.99 14.68Q67.46 14.4 67.28 13.68H64.75Q64.8 14.47 65.19 15.04Q65.57 15.61 66.16 15.97Q66.74 16.33 67.45 16.5Q68.17 16.67 68.85 16.67Q70.45 16.67 71.41 16.24Q72.36 15.8 72.86 15.18Q73.37 14.56 73.52 13.84Q73.67 13.12 73.67 12.56Z M75.37 3.85V13.16H77.92V8.28Q77.92 6.86 78.39 6.24Q78.86 5.62 79.9 5.62Q80.82 5.62 81.18 6.18Q81.54 6.75 81.54 7.9V13.16H84.1V7.43Q84.1 6.57 83.94 5.86Q83.79 5.15 83.41 4.65Q83.03 4.16 82.38 3.88Q81.72 3.6 80.69 3.6Q79.88 3.6 79.11 3.97Q78.34 4.34 77.85 5.15H77.8V3.85Z M85.57 6.71Q85.63 5.81 86.02 5.22Q86.42 4.63 87.03 4.27Q87.64 3.91 88.41 3.75Q89.17 3.6 89.95 3.6Q90.65 3.6 91.37 3.7Q92.09 3.8 92.68 4.09Q93.28 4.37 93.65 4.89Q94.03 5.4 94.03 6.25V11.09Q94.03 11.72 94.1 12.29Q94.18 12.87 94.36 13.16H91.76Q91.69 12.94 91.65 12.72Q91.6 12.49 91.58 12.26Q90.97 12.89 90.14 13.14Q89.32 13.39 88.45 13.39Q87.79 13.39 87.21 13.23Q86.63 13.07 86.2 12.73Q85.77 12.38 85.53 11.86Q85.28 11.34 85.28 10.62Q85.28 9.83 85.56 9.31Q85.84 8.8 86.28 8.5Q86.72 8.19 87.29 8.04Q87.86 7.88 88.43 7.79Q89.01 7.7 89.57 7.65Q90.13 7.6 90.56 7.49Q90.99 7.38 91.24 7.17Q91.49 6.97 91.48 6.57Q91.48 6.16 91.34 5.91Q91.21 5.67 90.98 5.54Q90.76 5.4 90.46 5.36Q90.16 5.31 89.82 5.31Q89.06 5.31 88.63 5.63Q88.2 5.96 88.13 6.71ZM91.48 8.6Q91.31 8.75 91.07 8.83Q90.83 8.91 90.55 8.96Q90.27 9.02 89.96 9.05Q89.66 9.09 89.35 9.14Q89.06 9.2 88.79 9.29Q88.51 9.38 88.3 9.53Q88.09 9.68 87.97 9.92Q87.84 10.15 87.84 10.51Q87.84 10.85 87.97 11.09Q88.09 11.32 88.31 11.46Q88.52 11.59 88.81 11.65Q89.1 11.7 89.41 11.7Q90.16 11.7 90.58 11.45Q90.99 11.2 91.19 10.84Q91.39 10.49 91.43 10.13Q91.48 9.77 91.48 9.56Z M95.72 0.31V13.16H98.28V0.31Z M101.92 10.13H99.49Q99.52 11.07 99.91 11.69Q100.3 12.31 100.9 12.69Q101.5 13.07 102.28 13.23Q103.05 13.39 103.86 13.39Q104.65 13.39 105.42 13.24Q106.18 13.09 106.78 12.71Q107.37 12.33 107.74 11.71Q108.11 11.09 108.11 10.17Q108.11 9.52 107.86 9.08Q107.6 8.64 107.19 8.34Q106.78 8.05 106.25 7.87Q105.71 7.69 105.16 7.56Q104.62 7.43 104.09 7.33Q103.57 7.22 103.17 7.08Q102.76 6.95 102.51 6.73Q102.26 6.52 102.26 6.17Q102.26 5.89 102.4 5.71Q102.55 5.54 102.75 5.45Q102.96 5.36 103.21 5.34Q103.46 5.31 103.68 5.31Q104.36 5.31 104.87 5.57Q105.37 5.83 105.43 6.57H107.86Q107.78 5.71 107.42 5.14Q107.05 4.57 106.49 4.23Q105.93 3.89 105.22 3.74Q104.51 3.6 103.75 3.6Q103 3.6 102.28 3.74Q101.56 3.87 100.98 4.2Q100.4 4.54 100.05 5.11Q99.7 5.69 99.7 6.59Q99.7 7.2 99.95 7.62Q100.21 8.05 100.62 8.32Q101.03 8.6 101.57 8.77Q102.1 8.95 102.65 9.07Q104.02 9.36 104.79 9.65Q105.55 9.94 105.55 10.51Q105.55 10.85 105.39 11.08Q105.23 11.3 104.99 11.44Q104.74 11.57 104.45 11.64Q104.15 11.7 103.88 11.7Q103.5 11.7 103.15 11.61Q102.8 11.52 102.53 11.33Q102.26 11.14 102.09 10.84Q101.92 10.55 101.92 10.13Z M114.16 0.31V13.16H123.25V10.78H116.98V0.31Z M124.09 6.71Q124.15 5.81 124.54 5.22Q124.94 4.63 125.55 4.27Q126.16 3.91 126.93 3.75Q127.69 3.6 128.47 3.6Q129.17 3.6 129.89 3.7Q130.61 3.8 131.2 4.09Q131.8 4.37 132.17 4.89Q132.55 5.4 132.55 6.25V11.09Q132.55 11.72 132.62 12.29Q132.7 12.87 132.88 13.16H130.28Q130.21 12.94 130.17 12.72Q130.12 12.49 130.1 12.26Q129.49 12.89 128.66 13.14Q127.84 13.39 126.97 13.39Q126.31 13.39 125.73 13.23Q125.15 13.07 124.72 12.73Q124.29 12.38 124.05 11.86Q123.8 11.34 123.8 10.62Q123.8 9.83 124.08 9.31Q124.36 8.8 124.8 8.5Q125.24 8.19 125.81 8.04Q126.38 7.88 126.95 7.79Q127.53 7.7 128.09 7.65Q128.65 7.6 129.08 7.49Q129.51 7.38 129.76 7.17Q130.01 6.97 130 6.57Q130 6.16 129.86 5.91Q129.73 5.67 129.5 5.54Q129.28 5.4 128.98 5.36Q128.68 5.31 128.34 5.31Q127.58 5.31 127.15 5.63Q126.72 5.96 126.65 6.71ZM130 8.6Q129.83 8.75 129.59 8.83Q129.35 8.91 129.07 8.96Q128.79 9.02 128.48 9.05Q128.18 9.09 127.87 9.14Q127.58 9.2 127.31 9.29Q127.03 9.38 126.82 9.53Q126.61 9.68 126.49 9.92Q126.36 10.15 126.36 10.51Q126.36 10.85 126.49 11.09Q126.61 11.32 126.83 11.46Q127.04 11.59 127.33 11.65Q127.62 11.7 127.93 11.7Q128.68 11.7 129.1 11.45Q129.51 11.2 129.71 10.84Q129.91 10.49 129.95 10.13Q130 9.77 130 9.56Z M140.99 8.51Q140.99 9.09 140.87 9.63Q140.74 10.17 140.47 10.58Q140.2 11 139.8 11.24Q139.39 11.48 138.82 11.48Q138.26 11.48 137.84 11.24Q137.43 11 137.16 10.58Q136.89 10.17 136.76 9.63Q136.64 9.09 136.64 8.51Q136.64 7.92 136.76 7.38Q136.89 6.84 137.16 6.43Q137.43 6.01 137.84 5.77Q138.26 5.53 138.82 5.53Q139.39 5.53 139.8 5.77Q140.2 6.01 140.47 6.43Q140.74 6.84 140.87 7.38Q140.99 7.92 140.99 8.51ZM134.17 0.31V13.16H136.6V11.97H136.64Q137.05 12.74 137.86 13.07Q138.67 13.39 139.7 13.39Q140.4 13.39 141.08 13.1Q141.77 12.82 142.32 12.22Q142.87 11.63 143.21 10.7Q143.55 9.77 143.55 8.5Q143.55 7.22 143.21 6.29Q142.87 5.36 142.32 4.77Q141.77 4.18 141.08 3.89Q140.4 3.6 139.7 3.6Q138.83 3.6 138.03 3.93Q137.23 4.27 136.76 4.99H136.73V0.31Z"/><path fill="#D2421F" d="M144.92 10.39V13.16H147.74V10.39Z"/></svg></a>
+<nav aria-label="Main">
+<ul class="q-nav">
+<li><a href="../../#software">Software</a></li>
+<li><a href="../../writing/">Writing</a></li>
+<li><a href="../../#about">About</a></li>
+<li><a href="mailto:hello@quietsignalslab.com">Contact</a></li>
+<li><button class="q-theme" type="button" aria-label="Switch between light and dark mode"><svg class="q-moon" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M13.5 9.6A6 6 0 0 1 6.4 2.5a6 6 0 1 0 7.1 7.1z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg><svg class="q-sun" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="3" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 0.5v2M8 13.5v2M0.5 8h2M13.5 8h2M2.7 2.7l1.4 1.4M11.9 11.9l1.4 1.4M2.7 13.3l1.4-1.4M11.9 4.1l1.4-1.4" stroke="currentColor" stroke-width="1.5"/></svg></button></li>
+</ul>
+</nav>
+</div>
+</header>
+
+<main id="main">
+<div class="q-docs">
+<aside class="q-docs-nav"><nav id="wiki-nav">
   <a class="wiki-nav-home" href="/rag-assistant/docs/">Documentation</a>
   <div class="wiki-nav-section">Getting Started</div>
   <ul>
@@ -132,8 +62,7 @@ start.">
   </ul>
 </nav>
 </aside>
-        <div class="doc-content">
-            <article>
+<article class="q-docs-body q-prose">
 <h1 id="the-app-wont-index-my-library">The app won’t index my
 library</h1>
 <p>Make sure your <strong>Zotero client is completely closed</strong>
@@ -144,17 +73,22 @@ and indexing will fail.</p>
 <p>Quit Zotero fully (not just close the window), then start indexing
 again. See <a href="./indexing.html">Indexing Your Library</a> for how
 indexing works.</p>
-            </article>
-        </div>
-    </div>
+</article>
+</div>
+</main>
 
-    <footer>
-        <div class="footer-meta">
-            <p>Quiet Signals Lab · KvK 99556650 · VAT: NL005394204B58</p>
-            <p>This site does not use cookies or tracking technologies. <a href="/privacy">Privacy Notice</a></p>
-            <p>© 2026 Alexander Hepburn. All rights reserved.</p>
-        </div>
-    </footer>
+<footer class="q-footer">
+<ul class="q-footer-links">
+<li><a href="../../#software">Software</a></li>
+<li><a href="../../writing/">Writing</a></li>
+<li><a href="../../writing/feed.xml">RSS</a></li>
+<li><a href="https://github.com/Quiet-Signals-Lab">GitHub</a></li>
+<li><a href="https://www.linkedin.com/company/quiet-signals-lab">LinkedIn</a></li>
+<li><a href="../../privacy/">Privacy</a></li>
+</ul>
+<p>Quiet Signals Lab · Amsterdam, Netherlands · KvK 99556650 · VAT NL005394204B58</p>
+<p>This site does not use cookies or tracking. © 2025-2026 Alexander Hepburn</p>
+</footer>
 
     <script>
     (function () {
@@ -170,7 +104,7 @@ indexing works.</p>
         if (!li) return; // hub / home link: no sub-headings
 
         // Build a nested ToC of this page's H2/H3 headings.
-        var headings = document.querySelectorAll('.doc-content article h2[id], .doc-content article h3[id]');
+        var headings = document.querySelectorAll('.q-docs-body h2[id], .q-docs-body h3[id]');
         if (!headings.length) return;
         var sub = document.createElement('ul');
         sub.className = 'wiki-subnav';
