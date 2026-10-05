@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Privacy Notice for Quiet Signals Lab — how we handle personal data.">
-  <title>Privacy Notice · Quiet Signals Lab</title>
+  <meta name="description" content="Code of Ethics for Quiet Signals Lab — the principles we build by and what we will not build.">
+  <title>Code of Ethics · Quiet Signals Lab</title>
 <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="../assets/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
@@ -38,111 +38,93 @@
 <article class="q-article">
 <aside class="q-article-meta">
 <div class="q-label"><span class="q-kicker">Legal</span></div>
-<p>Last updated: March 2026</p>
-<p>Applies to quietsignalslab.com</p>
+<p>Last updated: October 2026</p>
+<p>Applies to all Quiet Signals Lab software</p>
 </aside>
 <div class="q-article-body">
-<h1>Privacy Notice</h1>
+<h1>Code of Ethics</h1>
 <div class="q-prose">
-<h2>1. Who is responsible</h2>
-  <p>
-    This website is operated by Alexander Hepburn, trading as <strong>Quiet Signals Lab</strong>, a sole proprietorship (eenmanszaak) registered in the Netherlands.
-  </p>
-  <ul>
-    <li>KvK: 99556650</li>
-    <li>VAT: NL005394204B58</li>
-    <li>Legal form: sole proprietorship (eenmanszaak), KvK 99556650, VAT NL005394204B58</li>
-    <li>Address: Box E2268, Keurenplein 41, 1069 CD Amsterdam, Netherlands</li>
-    <li>Contact: <a href="mailto:hello@quietsignalslab.com">hello@quietsignalslab.com</a></li>
-  </ul>
-  <p>
-    Alexander Hepburn is the data controller within the meaning of the General Data Protection Regulation (GDPR / AVG).
-  </p>
+<h2>Why we have this code</h2>
+<p>Quiet Signals Lab builds software that reads sensitive documents: legal records, research libraries, screenshots and files full of personal data. We work with machine learning, and machine learning can be wrong, biased or misused. This code sets out the principles we build by and the specific things we commit to doing.</p>
+<p>We are a small software lab based in the Netherlands. Our products use small language models that we train for one narrow job each, and they run on the user's own device. That design is itself an ethical choice. Data that never leaves a device cannot leak from a server, be sold or be quietly reused for training.</p>
+<p><strong>Scope.</strong> This code applies to everything we build and release, paid or open source. It covers how we collect and handle data, how we train and evaluate models, what we publish and what we refuse to build. It binds anyone who works on our software, including contractors and collaborators.</p>
+<p><strong>Who is accountable.</strong> The founder, Alexander Hepburn, is responsible for compliance with this code and for any licence terms we accept from data providers.</p>
 
-  <h2>2. What data we collect and why</h2>
-  <p>This is a static portfolio site. The table below covers all personal data processing that occurs.</p>
+<h2>Our principles</h2>
+<p>Each principle is a plain statement, followed by what we actually do to keep it.</p>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Activity</th>
-        <th>Data</th>
-        <th>Legal basis</th>
-        <th>Retention</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>You send a contact message</td>
-        <td>Name, email address, message content</td>
-        <td>Legitimate interest (responding to a business inquiry)</td>
-        <td>Until the inquiry is resolved, then deleted within 12 months</td>
-      </tr>
-      <tr>
-        <td>Site is served via GitHub Pages</td>
-        <td>IP address, browser/OS, referring URL (server logs)</td>
-        <td>Legitimate interest (standard infrastructure logging)</td>
-        <td>Controlled by GitHub — see <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">GitHub's privacy statement</a></td>
-      </tr>
-    </tbody>
-  </table>
+<h3>1. Privacy is designed in, not added on</h3>
+<p>We collect the least data a task needs, and we process it on the user's device wherever we can.</p>
+<ul>
+  <li>Our paid apps have no network entitlement. The operating system blocks them from making any outbound connection.</li>
+  <li>We collect no telemetry and no analytics from inside our apps, and we require no account.</li>
+  <li>When we use personal data to train or test a model, we have a lawful basis under the UK GDPR and EU GDPR. We record what we used, why, and when we will delete it.</li>
+  <li>Training data is stored encrypted, on machines we control, and is never shared with third parties for processing.</li>
+</ul>
 
-  <p>
-    This site does not use analytics tools, advertising trackers, or any cookies. No profiling takes place.
-  </p>
+<h3>2. Models assist people; they do not decide for them</h3>
+<p>Our software makes suggestions. A person reviews them and makes the decision.</p>
+<ul>
+  <li>Every detection a model makes is shown to the user for review before it takes effect.</li>
+  <li>Where a model is less certain, as with names, we present its output as a suggestion, not an automatic action.</li>
+  <li>We do not build tools that give automated legal advice or predict the outcome of a case for a client.</li>
+</ul>
 
-  <h2>3. Who we share data with</h2>
-  <p>
-    Contact messages are received directly by Alexander Hepburn. No data is sold or shared with third parties for marketing purposes. The only third-party infrastructure involved is GitHub Pages for website hosting.
-  </p>
+<h3>3. We measure our errors and publish them</h3>
+<p>A model that is sometimes wrong is acceptable if users know how often and in which ways.</p>
+<ul>
+  <li>We evaluate each model on held-out test sets before release and record its precision and recall per category and per language.</li>
+  <li>We tell users what a model misses as well as what it finds. Software that hides its own failure rate is unsafe in privacy work.</li>
+  <li>Our products check their own output where possible. For example, Solander reads back its redacted file to confirm nothing is still legible.</li>
+</ul>
 
-  <h2>4. Transfers outside the EEA</h2>
-  <p>
-    GitHub Pages is operated by GitHub, Inc. (US). GitHub relies on Standard Contractual Clauses to legitimise transfers of personal data outside the European Economic Area. Details are available in GitHub's privacy documentation linked above.
-  </p>
+<h3>4. We look for bias and fix what we find</h3>
+<p>A redaction model that misses names from some cultures more than others protects some people less than others. We treat that as a defect.</p>
+<ul>
+  <li>We test detection rates across name origins, languages, scripts and document types, not only in aggregate.</li>
+  <li>When we find a gap, we record it, fix it in the training data or model, and retest before the next release.</li>
+  <li>We review every model for bias at least once a year, and again whenever its training data changes.</li>
+</ul>
 
-  <h2>5. Your rights</h2>
-  <p>Under the GDPR you have the right to:</p>
-  <ul>
-    <li><strong>Access</strong> — request a copy of personal data held about you</li>
-    <li><strong>Rectification</strong> — ask for inaccurate data to be corrected</li>
-    <li><strong>Erasure</strong> — ask for your data to be deleted where no overriding legitimate ground applies</li>
-    <li><strong>Restriction</strong> — ask for processing to be restricted while a dispute is resolved</li>
-    <li><strong>Objection</strong> — object to processing based on legitimate interest</li>
-    <li><strong>Portability</strong> — receive data you provided in a structured, machine-readable format</li>
-  </ul>
-  <p>
-    To exercise any of these rights, email <a href="mailto:hello@quietsignalslab.com">hello@quietsignalslab.com</a>. Requests are handled within 30 days.
-  </p>
+<h3>5. We are open about how our software works</h3>
+<p>Users should be able to understand what our software does with their documents.</p>
+<ul>
+  <li>We publish plain-language descriptions of our methods, models and data sources.</li>
+  <li>Our open-source tools, including Contractex and RAG Assistant for Zotero, can be inspected line by line.</li>
+  <li>Where a feature uses generative AI, we say so in the interface.</li>
+  <li>Every answer from a retrieval tool cites its source passage and page, so users can check it.</li>
+</ul>
 
-  <h2>6. Complaints</h2>
-  <p>
-    If you believe your data is being processed unlawfully, you have the right to lodge a complaint with the Dutch supervisory authority:
-  </p>
-  <ul>
-    <li>Autoriteit Persoonsgegevens (AP)</li>
-    <li><a href="https://www.autoriteitpersoonsgegevens.nl" target="_blank" rel="noopener">autoriteitpersoonsgegevens.nl</a></li>
-  </ul>
+<h3>6. We respect the sources we learn from</h3>
+<p>Court records, archives and research papers belong to public institutions and their subjects, not to us.</p>
+<ul>
+  <li>We use data only under the licence that covers it, and only for the purposes that licence allows.</li>
+  <li>We do not make the content of licensed records discoverable on search engines, or available for scraping.</li>
+  <li>We remove records from our datasets when the publisher withdraws or revises them.</li>
+</ul>
 
-  <h2>7. Changes to this notice</h2>
-  <p>
-    If this notice changes materially, the updated version will be published at this URL with a revised date. Given the minimal nature of data processing on this site, significant changes are unlikely.
-  </p>
+<h3>7. We represent our results honestly</h3>
+<p>No dataset is complete, and no model is perfect. We say so.</p>
+<ul>
+  <li>We describe the limits of the data our models were trained on, including what it leaves out.</li>
+  <li>We do not overstate accuracy in marketing. Any figure we publish comes from a documented test.</li>
+  <li>We do not present outputs derived from incomplete data as a full picture of a court, a field or a population.</li>
+</ul>
 
-  <h2>8. Chatbot interactions</h2>
-  <p>
-    If you have interacted with a chatbot powered by Quiet Signals Lab on Facebook Messenger or
-    Instagram, a <a href="/privacy/chatbot">separate policy</a> applies to that data processing.
-  </p>
+<h2>What we will not build</h2>
+<p>Some uses of our technology are off the table, whoever asks and whatever they offer to pay.</p>
+<ul>
+  <li><strong>Re-identification.</strong> We will not build tools that de-anonymise people in court records or other redacted documents, or combine sources to reveal who an anonymised person is.</li>
+  <li><strong>Profiles of individuals.</strong> We will not build tools that profile, score or track named people, including judges, parties, witnesses or lawyers.</li>
+  <li><strong>Judge analytics.</strong> We will not rank, rate or predict the decisions of individual judges.</li>
+  <li><strong>Automated legal decisions.</strong> We will not build software that gives legal advice without a human professional, or that tells someone whether to pursue legal action.</li>
+  <li><strong>Surveillance.</strong> We will not build tools for covert monitoring of people or their communications.</li>
+  <li><strong>Selling data.</strong> We will not sell, license or trade user data, or licensed source data, to anyone.</li>
+</ul>
 
-  <h2>9. App privacy policies</h2>
-  <p>
-    Privacy policies for individual apps published by Quiet Signals Lab are listed below.
-  </p>
-  <ul>
-    <li><a href="/privacy/shadowclip">ShadowClip</a> — on-device image redaction for macOS and iOS. No data leaves your device.</li>
-    <li><a href="https://solander.quietsignalslab.com/privacy.html">Solander</a> — on-device document redaction for macOS. Documents never leave your Mac; we hold a purchase record for licensing.</li>
-  </ul>
+<h2>Raising a concern</h2>
+<p>Anyone can tell us when they think our software, or our conduct, falls short of this code. Email <a href="mailto:hello@quietsignalslab.com">hello@quietsignalslab.com</a> with "Ethics" in the subject line. We reply within 10 working days, and we never penalise anyone, inside or outside the lab, for raising a concern in good faith.</p>
+<p>We review this code every year and publish each version on our website, with a note of what changed.</p>
 </div>
 </div>
 </article>
