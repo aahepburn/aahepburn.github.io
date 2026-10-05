@@ -9,8 +9,9 @@
  * Rules:
  * - Quiet. Hierarchy from weight, size and space. Hairlines, no shadows, gradients or rounding.
  * - Colour carries meaning. Blue is what you can act on. Amber is "not yet".
- *   The accent is the signal, and appears in three places only: the full stop of the
- *   wordmark, the S of the Morse rule, and the marker on the "Now" section. Never as UI state.
+ *   The accent is the signal, and appears in four places only: the full stop of the
+ *   wordmark, the S of the Morse rule, the marker on the "Now" section, and the tulip that
+ *   ends the hero's origin line, standing in for a full stop. Never as UI state.
  * - One grid: twelve columns, 4px module.
  * - Type from the system, as on Solander. The wordmark is Helvetica Neue Bold.
  */
@@ -190,6 +191,7 @@ main { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
 /* A short hairline sets the origin line apart from the lede. */
 .q-origin { margin-top: 24px; }
 .q-origin::before { content: ""; display: block; width: 32px; height: 1px; background: var(--ink); margin-bottom: 16px; }
+.q-tulip { display: inline-block; width: 1.1em; height: 1.1em; vertical-align: -0.2em; margin-left: 8px; color: var(--accent); }
 
 /* The stacked Morse block on the ground, where Solander puts its drawn page. */
 .q-hero-art { background: var(--ground); aspect-ratio: 1; max-width: 380px; padding: 40px; display: flex; align-items: flex-end; }
