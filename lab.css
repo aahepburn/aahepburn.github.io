@@ -28,7 +28,6 @@
     --selected: #1B3FD8;
     --attention: #8C6309;
     --accent: #D2421F;
-    --redaction: #000000;
 
     --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
     --display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -231,7 +230,7 @@ main { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
 .q-now .q-mono { margin-top: 8px; }
 .q-now-art { background: var(--ground); display: flex; align-items: center; justify-content: center; padding: 24px; }
 .q-now-art svg { width: 100%; max-width: 120px; height: auto; display: block; }
-/* A narrow box stacks; the drawn page fills whatever height the Writing box leaves. */
+/* A narrow box stacks; the mark's panel fills whatever height the Writing box leaves. */
 @container (max-width: 520px) {
     .q-now { display: flex; flex-direction: column; }
     .q-now-art { flex: 1; min-height: 160px; margin-top: 8px; }
@@ -244,9 +243,8 @@ main { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
 .q-box-post-title { font-size: 17px; font-weight: 600; line-height: 1.3; letter-spacing: -0.01em; }
 .q-box-posts a:hover .q-box-post-title { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
 .q-box .q-more { margin-top: auto; padding-top: 24px; }
-.q-page { fill: var(--paper); stroke: var(--ink); }
-.q-page-line { fill: var(--rule); }
-.q-page-redaction { fill: var(--redaction); }
+/* Solander's mark, the redaction bar from its site's nav: ink, so it follows the theme as there. */
+.q-solander-mark { fill: var(--ink); }
 
 .q-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
 .q-btn, .q-btn-quiet {
