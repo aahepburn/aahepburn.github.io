@@ -260,6 +260,9 @@ main { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
 .q-btn:hover { opacity: 0.85; color: var(--paper); }
 .q-btn-quiet { background: var(--paper); color: var(--ink); border-color: var(--rule); }
 .q-btn-quiet:hover { border-color: var(--ink-3); }
+/* Icon-only: square, the label lives in aria-label. */
+.q-icon-btn { width: 44px; padding: 0; justify-content: center; }
+.q-icon-btn svg { width: 20px; height: 20px; }
 
 /* ---- Lists of things: software, posts -------------------------------------------- */
 
