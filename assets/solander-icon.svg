@@ -1,6 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-    <!-- Solander's mark: the redaction bar from the site's nav (14 × 7), on white paper so it
-         shows on light and dark tabs alike. -->
+    <!-- Solander's mark: the coded bar, a redaction with the place its reason goes. The
+         same bar is solander.quietsignalslab.com's favicon and nav mark; change them together. -->
     <rect width="32" height="32" fill="#FFFFFF"/>
-    <rect x="4" y="10" width="24" height="12" fill="#101010"/>
+    <rect x="4" y="12" width="24" height="8" fill="#101010"/>
+    <rect x="6.5" y="14.5" width="3" height="3" fill="#FFFFFF"/>
 </svg>
